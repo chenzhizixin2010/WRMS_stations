@@ -20,31 +20,46 @@
   --btn:#3478ed;
   --border:#383848;
 }
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
-body{background:var(--bg);color:var(--text);padding:20px;min-height:100vh;transition:.3s}
-.container{max-width:980px;margin:0 auto}
-h1{margin-bottom:12px;font-size:22px}
-.tip{font-size:13px;color:#777;margin-bottom:16px}
-.box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px}
-.row{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;align-items:center}
-input{padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);outline:none}
-select{padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text)}
-button{padding:8px 14px;border:none;border-radius:6px;background:var(--btn);color:white;cursor:pointer}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui, -apple-system}
+body{background:var(--bg);color:var(--text);padding:16px;min-height:100vh;transition:.3s}
+.container{max-width:1020px;margin:0 auto}
+h1{margin-bottom:8px;font-size:24px}
+.tip{font-size:13px;color:#777;margin-bottom:18px;line-height:1.5}
+.box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;align-items:center}
+.row-top{margin-bottom:16px}
+input{padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);outline:none;font-size:14px}
+select{padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:14px}
+button{padding:9px 14px;border:none;border-radius:8px;background:var(--btn);color:white;cursor:pointer;font-size:14px;transition:opacity 0.2s}
+button:active{opacity:0.85}
 button.gray{background:#666}
 button.green{background:#23a959}
 button.orange{background:#e67e22}
-table{width:100%;border-collapse:collapse;margin:12px 0}
-th,td{border:1px solid var(--border);padding:9px;text-align:center}
-th{background:rgba(120,120,120,0.15)}
-textarea{width:100%;height:120px;padding:10px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px}
-#msg{color:#32cd32;margin-top:8px}
-.search{width:260px}
-/* 状态标签颜色 */
+button.link{background:#9b59b6}
+table{width:100%;border-collapse:collapse;margin:14px 0}
+th,td{border:1px solid var(--border);padding:10px;text-align:center;font-size:14px}
+th{background:rgba(120,120,120,0.15);font-weight:600}
+textarea{width:100%;height:130px;padding:12px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:14px}
+#msg{color:#32cd32;margin-top:10px;height:22px}
+.search{min-width:240px;flex:1}
+/* 状态标签颜色（修正：停运红，废弃灰） */
 .status-plan{color:#3478ed;font-weight:bold}
 .status-build{color:#e67e22;font-weight:bold}
 .status-done{color:#23a959;font-weight:bold}
-.status-stop{color:#999;font-weight:bold}
-.status-remove{color:#c0392b;font-weight:bold}
+.status-stop{color:#c0392b;font-weight:bold}
+.status-remove{color:#888;font-weight:bold}
+/* 弹窗样式 */
+.modal-mask{
+  position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);
+  display:none;align-items:center;justify-content:center;z-index:999
+}
+.modal-box{
+  width:min(90%,520px);background:var(--card);border-radius:12px;padding:24px;border:1px solid var(--border)
+}
+.modal-box h3{margin-bottom:16px}
+.modal-box p{margin:8px 0;line-height:1.6}
+.modal-log{margin:12px 0;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:13px}
+.modal-close{margin-top:16px;width:100%}
 </style>
 </head>
 <body>
@@ -52,12 +67,17 @@ textarea{width:100%;height:120px;padding:10px;background:var(--bg);color:var(--t
   <h1>📍 MTR轨道规划坐标清单【在线查询】</h1>
   <div class="tip">公共数据由仓库维护；本地新增站点仅保存在浏览器，提交站点请导出JSON发给管理员更新库</div>
   <div class="box">
-    <div class="row">
+    <!-- 顶部操作栏 -->
+    <div class="row row-top">
       <input id="searchInput" class="search" placeholder="搜索站点/线路名称/状态">
       <button id="refreshPublic">🔄 刷新公共站点库</button>
       <button id="deduplicateBtn" class="orange">一键去重本地站点</button>
       <button id="themeBtn">切换深色模式</button>
+      <button id="aboutBtn">开发者信息</button>
+      <button id="mapGenBtn" class="link">地名生成器</button>
     </div>
+
+    <!-- 添加站点输入行 -->
     <div class="row">
       <input id="sName" placeholder="站点名称">
       <input id="sLine" placeholder="所属线路">
@@ -72,6 +92,7 @@ textarea{width:100%;height:120px;padding:10px;background:var(--bg);color:var(--t
       </select>
       <button id="addBtn">本地添加站点</button>
     </div>
+
     <table>
       <thead>
         <tr>
@@ -85,14 +106,37 @@ textarea{width:100%;height:120px;padding:10px;background:var(--bg);color:var(--t
       </thead>
       <tbody id="tableBody"></tbody>
     </table>
+
     <div class="row">
       <button id="exportTextBtn">导出文本清单</button>
       <button id="exportJsonBtn" class="green">导出JSON(提交给管理员)</button>
       <button id="clearLocalBtn" class="gray">清空本地新增</button>
     </div>
     <div id="msg"></div>
-    <h4 style="margin-top:14px;">清单预览</h4>
+
+    <h4 style="margin-top:16px;margin-bottom:8px;">清单预览</h4>
     <textarea id="previewText" readonly></textarea>
+  </div>
+</div>
+
+<!-- 开发者弹窗 -->
+<div class="modal-mask" id="aboutMask">
+  <div class="modal-box">
+    <h3>ℹ️ 工具信息</h3>
+    <p><strong>开发者：</strong>豆包·陈之自信</p>
+    <p><strong>当前版本：</strong>V1.0_ALPHA</p>
+    <p><strong>版权归属：</strong>©五洲铁路模组服务器 2026</p>
+    <div class="modal-log">
+      <strong>更新日志 V1.0_ALPHA</strong>
+      <p>1. 基础功能：公共站点在线加载、本地新增站点、搜索查询</p>
+      <p>2. 新增站点状态标签：规划中/在建中/已建成/停运/已废弃，区分文字颜色</p>
+      <p>3. 本地站点一键去重（名称+X+Z判定重复）</p>
+      <p>4. 支持导出文本/JSON提交给管理员更新公共库</p>
+      <p>5. 深色/浅色模式切换</p>
+      <p>6. 新增开发者信息弹窗、地名生成器快捷跳转按钮</p>
+      <p>7. 界面整体排版优化，修复停运/废弃状态文字颜色颠倒问题</p>
+    </div>
+    <button class="modal-close" id="closeAbout">关闭</button>
   </div>
 </div>
 
@@ -110,8 +154,22 @@ const tableBody=document.getElementById('tableBody');
 const previewText=document.getElementById('previewText');
 const msg=document.getElementById('msg');
 const searchInput=document.getElementById('searchInput');
+const aboutMask=document.getElementById('aboutMask');
+const aboutBtn=document.getElementById('aboutBtn');
+const closeAbout=document.getElementById('closeAbout');
+const mapGenBtn=document.getElementById('mapGenBtn');
 
-// 加载公共站点（jsdelivr加速链接，修复引号bug）
+// 地名生成器跳转
+mapGenBtn.onclick = ()=> window.open("https://wrmspng.github.io", "_blank");
+
+// 弹窗开关
+aboutBtn.onclick = ()=> aboutMask.style.display = "flex";
+closeAbout.onclick = ()=> aboutMask.style.display = "none";
+aboutMask.onclick = (e)=>{
+  if(e.target === aboutMask) aboutMask.style.display = "none";
+}
+
+// 加载公共站点（jsdelivr加速链接）
 async function loadPublicData(){
   try{
     const res = await fetch("https://cdn.jsdelivr.net/gh/chenzhizixin2010/WRMS_stations@main/station.json");
@@ -131,7 +189,7 @@ function combineData(){
   updatePreview();
 }
 
-// 获取状态对应样式class
+// 获取状态对应样式class（已修正停运/废弃颜色）
 function getStatusClass(status){
   switch(status){
     case "规划中": return "status-plan";
@@ -148,8 +206,8 @@ function renderTable(){
   const keyword = searchInput.value.toLowerCase().trim();
   tableBody.innerHTML = "";
   const filterData = allList.filter(item=>{
-    return item.name.toLowerCase().includes(keyword)
-        || item.line.toLowerCase().includes(keyword)
+    return item.name?.toLowerCase().includes(keyword)
+        || item.line?.toLowerCase().includes(keyword)
         || item.status?.toLowerCase().includes(keyword);
   })
   filterData.forEach((item)=>{
@@ -248,18 +306,14 @@ document.getElementById('clearLocalBtn').onclick = ()=>{
 
 // 去重按钮
 document.getElementById('deduplicateBtn').onclick = deduplicateLocal;
-
 // 刷新公共数据
 document.getElementById('refreshPublic').onclick = loadPublicData;
-
 // 搜索监听
 searchInput.oninput = renderTable;
-
 // 深色切换
 document.getElementById('themeBtn').onclick=()=>{
   document.body.classList.toggle('dark');
 }
-
 // 页面启动加载
 loadPublicData();
 </script>
