@@ -105,7 +105,7 @@ const searchInput=document.getElementById('searchInput');
 // 加载公共站点
 async function loadPublicData(){
   try{
-    const res = await fetch(JSON_URL);
+    const res = await fetch(https://raw.githubusercontent.com/chenzhizixin2010/WRMS_stations/refs/heads/main/station.json);
     publicList = await res.json();
     combineData();
     showMsg("✅ 公共站点加载完成");
