@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTR轨道规划坐标清单 | 在线查询版</title>
+<style>
+:root{
+  --bg:#ffffff;
+  --text:#222;
+  --card:#f4f4f4;
+  --btn:#3478ed;
+  --btntext:#fff;
+  --border:#ddd;
+}
+.dark{
+  --bg:#1a1a22;
+  --text:#eee;
+  --card:#272735;
+  --btn:#3478ed;
+  --border:#383848;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
+body{background:var(--bg);color:var(--text);padding:20px;min-height:100vh;transition:.3s}
+.container{max-width:900px;margin:0 auto}
+h1{margin-bottom:12px;font-size:22px}
+.tip{font-size:13px;color:#777;margin-bottom:16px}
+.box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;align-items:center}
+input{padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);outline:none}
+button{padding:8px 14px;border:none;border-radius:6px;background:var(--btn);color:white;cursor:pointer}
+button.gray{background:#666}
+button.green{background:#23a959}
+table{width:100%;border-collapse:collapse;margin:12px 0}
+th,td{border:1px solid var(--border);padding:9px;text-align:center}
+th{background:rgba(120,120,120,0.15)}
+textarea{width:100%;height:120px;padding:10px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px}
+#msg{color:#32cd32;margin-top:8px}
+.search{width:260px}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📍 MTR轨道规划坐标清单【在线查询】</h1>
+  <div class="tip">公共数据由仓库维护；本地新增站点仅保存在浏览器，提交站点请导出JSON发给管理员更新库</div>
+
+  <div class="box">
+    <div class="row">
+      <input id="searchInput" class="search" placeholder="搜索站点/线路名称">
+      <button id="refreshPublic">🔄 刷新公共站点库</button>
+      <button id="themeBtn">切换深色模式</button>
+    </div>
+
+    <div class="row">
+      <input id="sName" placeholder="站点名称">
+      <input id="sLine" placeholder="所属线路">
+      <input id="sX" placeholder="X坐标">
+      <input id="sZ" placeholder="Z坐标">
+      <button id="addBtn">本地添加站点</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>站点名称</th>
+          <th>线路</th>
+          <th>X</th>
+          <th>Z</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+
+    <div class="row">
+      <button id="exportTextBtn">导出文本清单</button>
+      <button id="exportJsonBtn" class="green">导出JSON(提交给管理员)</button>
+      <button id="clearLocalBtn" class="gray">清空本地新增</button>
+    </div>
+    <div id="msg"></div>
+
+    <h4 style="margin-top:14px;">清单预览</h4>
+    <textarea id="previewText" readonly></textarea>
+  </div>
+</div>
+
+<script>
+// =====================【重要！这里修改为你的仓库原始JSON地址】=====================
+// 获取方式：github打开station.json → Raw → 复制链接
+const JSON_URL = "https://raw.githubusercontent.com/你的用户名/仓库名/main/station.json";
+
+let publicList = []; // 仓库公共站点
+let localList = [];  // 用户本地新增站点
+let allList = [];    // 合并总列表
+
+const sName=document.getElementById('sName');
+const sLine=document.getElementById('sLine');
+const sX=document.getElementById('sX');
+const sZ=document.getElementById('sZ');
+const tableBody=document.getElementById('tableBody');
+const previewText=document.getElementById('previewText');
+const msg=document.getElementById('msg');
+const searchInput=document.getElementById('searchInput');
+
+// 加载公共站点
+async function loadPublicData(){
+  try{
+    const res = await fetch(JSON_URL);
+    publicList = await res.json();
+    combineData();
+    showMsg("✅ 公共站点加载完成");
+  }catch(e){
+    showMsg("⚠️ 公共库加载失败，网络问题或链接错误");
+    console.error(e);
+  }
+}
+
+// 合并公共列表 + 本地列表
+function combineData(){
+  allList = [...publicList, ...localList];
+  renderTable();
+  updatePreview();
+}
+
+// 渲染表格 + 搜索过滤
+function renderTable(){
+  const keyword = searchInput.value.toLowerCase().trim();
+  tableBody.innerHTML = "";
+
+  const filterData = allList.filter(item=>{
+    return item.name.toLowerCase().includes(keyword) || item.line.toLowerCase().includes(keyword);
+  })
+
+  filterData.forEach((item,idx)=>{
+    const tr=document.createElement('tr');
+    let isLocal = localList.find(v=>v.name==item.name && v.x==item.x && v.z==item.z);
+    tr.innerHTML=`
+    <td>${item.name}</td>
+    <td>${item.line}</td>
+    <td>${item.x}</td>
+    <td>${item.z}</td>
+    <td>
+      ${isLocal?`<button data-index="${localList.indexOf(item)}" class="delLocal">删除本地</button>`:"<span style='color:#888'>公共数据</span>"}
+    </td>
+    `;
+    tableBody.appendChild(tr);
+  })
+
+  // 删除本地条目事件
+  document.querySelectorAll(".delLocal").forEach(btn=>{
+    btn.onclick = ()=>{
+      const i = Number(btn.dataset.index);
+      localList.splice(i,1);
+      combineData();
+    }
+  })
+}
+
+function updatePreview(){
+  let str="=====MTR站点清单=====\n";
+  allList.forEach(s=>{
+    str+=`【${s.line}】${s.name} | X:${s.x}, Z:${s.z}\n`
+  })
+  previewText.value=str;
+}
+
+function showMsg(text){
+  msg.textContent = text;
+  setTimeout(()=>msg.textContent="",2500);
+}
+
+// 本地新增站点
+document.getElementById('addBtn').onclick = ()=>{
+  const name=sName.value.trim();
+  const line=sLine.value.trim();
+  const x=sX.value.trim();
+  const z=sZ.value.trim();
+  if(!name||!x||!z){
+    showMsg("⚠️站点名称、X、Z不能为空");
+    return;
+  }
+  localList.push({name,line,x,z});
+  sName.value="";sLine.value="";sX.value="";sZ.value="";
+  combineData();
+  showMsg("✅ 已添加至本地列表");
+}
+
+// 导出纯文本
+document.getElementById('exportTextBtn').onclick = ()=>{
+  navigator.clipboard.writeText(previewText.value);
+  showMsg("✅ 文本清单复制完成");
+}
+
+// 导出JSON（提交给管理员更新仓库）
+document.getElementById('exportJsonBtn').onclick = ()=>{
+  const text = JSON.stringify(localList,null,2);
+  navigator.clipboard.writeText(text);
+  showMsg("✅ 本地站点JSON已复制，发送给服主！");
+}
+
+// 清空本地
+document.getElementById('clearLocalBtn').onclick = ()=>{
+  if(confirm("确认清空所有本地新增站点？公共库不受影响")){
+    localList=[];
+    combineData();
+  }
+}
+
+// 刷新公共数据
+document.getElementById('refreshPublic').onclick = loadPublicData;
+
+// 搜索监听
+searchInput.oninput = renderTable;
+
+// 深色切换
+document.getElementById('themeBtn').onclick=()=>{
+  document.body.classList.toggle('dark');
+}
+
+// 页面启动加载
+loadPublicData();
+</script>
+</body>
+</html>
