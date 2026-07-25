@@ -37,11 +37,14 @@ button.green{background:#23a959}
 button.orange{background:#e67e22}
 button.link{background:#9b59b6}
 button.submit{background:#16a085}
+button.fulljson{background:#2980b9}
 table{width:100%;border-collapse:collapse;margin:14px 0}
 th,td{border:1px solid var(--border);padding:10px;text-align:center;font-size:14px}
 th{background:rgba(120,120,120,0.15);font-weight:600}
 textarea{width:100%;height:130px;padding:12px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:14px}
-#msg{color:#32cd32;margin-top:10px;height:22px}
+#msg{margin-top:10px;height:22px}
+.msg-success{color:#32cd32}
+.msg-error{color:#e74c3c}
 .search{min-width:240px;flex:1}
 /* 状态标签颜色（修正：停运红，废弃灰） */
 .status-plan{color:#3478ed;font-weight:bold}
@@ -64,6 +67,7 @@ textarea{width:100%;height:130px;padding:12px;background:var(--bg);color:var(--t
 /* 管理员导入区域 */
 .admin-area{margin-top:16px;padding:14px;border:1px dashed var(--border);border-radius:8px;display:none}
 .admin-area h4{margin-bottom:8px}
+.id-input{max-width:220px}
 </style>
 </head>
 <body>
@@ -79,6 +83,11 @@ textarea{width:100%;height:130px;padding:12px;background:var(--bg);color:var(--t
       <button id="themeBtn">切换深色模式</button>
       <button id="aboutBtn">开发者信息</button>
       <button id="mapGenBtn" class="link">地名生成器</button>
+    </div>
+
+    <!-- 提交人ID输入框 -->
+    <div class="row">
+      <input id="playerId" class="id-input" placeholder="填写你的游戏ID/昵称（导出提交文本会携带）">
     </div>
 
     <!-- 添加站点输入行 -->
@@ -114,7 +123,7 @@ textarea{width:100%;height:130px;padding:12px;background:var(--bg);color:var(--t
     <div class="row">
       <button id="exportTextBtn">导出文本清单</button>
       <button id="copySubmitBtn" class="submit">复制提交文本(发管理员)</button>
-      <button id="exportJsonBtn" class="green">导出JSON(仓库更新)</button>
+      <button id="exportFullJsonBtn" class="fulljson">导出全站完整JSON(更新GitHub)</button>
       <button id="clearLocalBtn" class="gray">清空本地新增</button>
     </div>
     <div id="msg"></div>
@@ -130,7 +139,7 @@ textarea{width:100%;height:130px;padding:12px;background:var(--bg);color:var(--t
       <h4>管理员批量导入（粘贴玩家提交文本）</h4>
       <textarea id="adminImportText" placeholder="粘贴玩家发来的站点提交文本"></textarea>
       <div class="row" style="margin-top:8px;">
-        <button id="parseImportBtn">解析并批量添加</button>
+        <button id="parseImportBtn">解析并批量合并更新</button>
       </div>
     </div>
   </div>
@@ -145,15 +154,18 @@ textarea{width:100%;height:130px;padding:12px;background:var(--bg);color:var(--t
     <p><strong>版权归属：</strong>©五洲铁路模组服务器 2026</p>
     <div class="modal-log">
       <strong>更新日志 V1.0_ALPHA</strong>
-      <p>1. 基础功能：公共站点在线加载、本地新增站点、搜索查询</p>
-      <p>2. 新增站点状态标签：规划中/在建中/已建成/停运/已废弃，区分文字颜色</p>
-      <p>3. 本地站点一键去重（名称+X+Z判定重复）</p>
-      <p>4. 支持导出文本/JSON提交给管理员更新公共库</p>
-      <p>5. 深色/浅色模式切换</p>
-      <p>6. 新增开发者信息弹窗、地名生成器快捷跳转按钮</p>
-      <p>7. 界面整体排版优化，修复停运/废弃状态文字颜色颠倒问题</p>
-      <p>8. 新增简易提交文本，替代复杂JSON，玩家一键复制明文发给管理员</p>
-      <p>9. 内置管理员批量导入解析工具，粘贴文本一键批量入库</p>
+      <p>1. 基础功能：公共站点在线加载、本地新增站点、关键词搜索查询</p>
+      <p>2. 五种站点建设状态标签，区分独立文字颜色，直观区分工程进度</p>
+      <p>3. 本地站点一键去重，判定规则：站点名+X+Z坐标完全一致判定重复</p>
+      <p>4. 浅色/深色双模式切换，适配不同使用环境</p>
+      <p>5. 内置开发者信息弹窗、地名生成器快捷跳转按钮，互通配套工具</p>
+      <p>6. 简化玩家提交方式，抛弃复杂JSON，使用易读纯文本提交格式</p>
+      <p>7. 新增提交人ID填写框，导出提交文本自动携带玩家昵称/ID，方便管理员溯源</p>
+      <p>8. 修复管理员批量导入解析X/Z坐标错乱bug，拆分逻辑完全重写</p>
+      <p>9. 公共库加载失败提示文字改为红色醒目提示，区分成功/错误信息</p>
+      <p>10. 合并逻辑优化：匹配线上已有站点仅更新状态，不会篡改线路、坐标数据</p>
+      <p>11. 管理员导入完成提示新增统计：更新线上站点数量、新增站点数量</p>
+      <p>12. 区分双导出按钮：全站完整JSON用于直接更新GitHub仓库站点库</p>
     </div>
     <button class="modal-close" id="closeAbout">关闭</button>
   </div>
@@ -161,7 +173,7 @@ textarea{width:100%;height:130px;padding:12px;background:var(--bg);color:var(--t
 
 <script>
 let publicList = []; // 仓库公共站点
-let localList = [];  // 用户本地新增站点
+let localList = [];  // 用户本地新增/临时修改站点
 let allList = [];    // 合并总列表
 
 const sName=document.getElementById('sName');
@@ -182,6 +194,8 @@ const toggleAdmin=document.getElementById('toggleAdmin');
 const adminPanel=document.getElementById('adminPanel');
 const adminImportText=document.getElementById('adminImportText');
 const parseImportBtn=document.getElementById('parseImportBtn');
+const exportFullJsonBtn = document.getElementById('exportFullJsonBtn');
+const playerId = document.getElementById('playerId');
 
 // 地名生成器跳转
 mapGenBtn.onclick = ()=> window.open("https://wrmspng.github.io", "_blank");
@@ -198,13 +212,24 @@ toggleAdmin.onclick = ()=>{
   adminPanel.style.display = adminPanel.style.display === "block" ? "none" : "block";
 }
 
-// 玩家一键复制简易提交文本
+// 统一消息提示封装，区分成功/红色错误
+function showMsg(text, isError = false){
+  msg.textContent = text;
+  msg.className = isError ? "msg-error" : "msg-success";
+  setTimeout(()=>{
+    msg.textContent = "";
+    msg.className = "";
+  },2500);
+}
+
+// 玩家一键复制简易提交文本（携带ID）
 copySubmitBtn.onclick = ()=>{
   if(localList.length === 0){
-    showMsg("⚠️ 暂无本地新增站点，无需提交");
+    showMsg("⚠️ 暂无本地新增/修改站点，无需提交", true);
     return;
   }
-  let text = "【站点提交清单】\n";
+  const uid = playerId.value.trim() || "未填写ID";
+  let text = `【站点提交清单 | 提交人：${uid}】\n`;
   localList.forEach(item=>{
     text += `${item.name} | ${item.line} | X:${item.x} Z:${item.z} | ${item.status}\n`;
   })
@@ -212,34 +237,57 @@ copySubmitBtn.onclick = ()=>{
   showMsg("✅ 简易提交文本已复制，直接发送群聊即可！");
 }
 
-// 管理员解析玩家提交文本批量导入
+// 管理员解析玩家提交文本，修复XZ解析bug，合并更新公共库
 parseImportBtn.onclick = ()=>{
   const raw = adminImportText.value.trim();
   if(!raw){
-    showMsg("⚠️ 请粘贴玩家提交的站点文本");
+    showMsg("⚠️ 请粘贴玩家提交的站点文本", true);
     return;
   }
+  // 先拉取最新公共数据保证合并基准最新
+  combineData();
   const lines = raw.split("\n");
   let addCount = 0;
+  let updateCount = 0;
   lines.forEach(line=>{
     const l = line.trim();
     if(!l || l.startsWith("【")) return;
+    // 按 | 分割四段：名称 | 线路 | X:xx Z:xx | 状态
     const parts = l.split("|").map(p=>p.trim());
     if(parts.length <4) return;
+
     const name = parts[0];
     const lineName = parts[1];
-    const x = parts[2].replace("X:","");
-    const z = parts[3].replace("Z:","");
-    const status = parts[4] || "规划中";
-    localList.push({name,line:lineName,x,z,status});
-    addCount++;
+    const xzRaw = parts[2];
+    const status = parts[3];
+
+    // 正确拆分X、Z，修复原bug
+    const xMatch = xzRaw.match(/X:([\d\-]+)/);
+    const zMatch = xzRaw.match(/Z:([\d\-]+)/);
+    if(!xMatch || !zMatch) return;
+    const x = xMatch[1];
+    const z = zMatch[1];
+
+    // 匹配规则：名称+X+Z 唯一标识
+    const targetKey = `${name}|${x}|${z}`;
+    const existIndex = publicList.findIndex(item => `${item.name}|${item.x}|${item.z}` === targetKey);
+
+    if(existIndex > -1){
+      // 线上已有站点：仅更新状态，线路、坐标保留原版
+      publicList[existIndex].status = status;
+      updateCount++;
+    }else{
+      // 全新站点追加到本地列表，导出完整JSON时并入全站
+      localList.push({name,line:lineName,x,z,status});
+      addCount++;
+    }
   })
   deduplicateLocal();
   adminImportText.value = "";
-  showMsg(`✅ 批量导入完成，新增${addCount}个站点，已自动去重`);
+  showMsg(`✅ 合并完成！更新线上站点${updateCount}个，新增站点${addCount}个`);
 }
 
-// 加载公共站点（jsdelivr加速链接）
+// 加载公共站点（jsdelivr加速链接）失败提示红色
 async function loadPublicData(){
   try{
     const res = await fetch("https://cdn.jsdelivr.net/gh/chenzhizixin2010/WRMS_stations@main/station.json");
@@ -247,7 +295,7 @@ async function loadPublicData(){
     combineData();
     showMsg("✅ 公共站点加载完成");
   }catch(e){
-    showMsg("⚠️ 公共库加载失败，网络问题或链接错误");
+    showMsg("⚠️ 公共库加载失败，网络问题或仓库链接错误", true);
     console.error(e);
   }
 }
@@ -324,16 +372,11 @@ function deduplicateLocal(){
 }
 
 function updatePreview(){
-  let str="=====MTR站点清单=====\n";
+  let str="=====MTR站点完整清单=====\n";
   allList.forEach(s=>{
     str+=`【${s.line}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || "规划中"}\n`
   })
   previewText.value=str;
-}
-
-function showMsg(text){
-  msg.textContent = text;
-  setTimeout(()=>msg.textContent="",2500);
 }
 
 // 本地新增站点
@@ -344,7 +387,7 @@ document.getElementById('addBtn').onclick = ()=>{
   const z=sZ.value.trim();
   const status=sStatus.value;
   if(!name||!x||!z){
-    showMsg("⚠️站点名称、X、Z不能为空");
+    showMsg("⚠️站点名称、X、Z坐标不能为空", true);
     return;
   }
   localList.push({name,line,x,z,status});
@@ -353,22 +396,22 @@ document.getElementById('addBtn').onclick = ()=>{
   showMsg("✅ 已添加至本地列表");
 }
 
-// 导出纯文本
+// 导出纯文本全部清单
 document.getElementById('exportTextBtn').onclick = ()=>{
   navigator.clipboard.writeText(previewText.value);
-  showMsg("✅ 文本清单复制完成");
+  showMsg("✅ 全文本清单复制完成");
 }
 
-// 导出JSON（提交给管理员更新仓库）
-document.getElementById('exportJsonBtn').onclick = ()=>{
-  const text = JSON.stringify(localList,null,2);
+// 导出全站完整JSON（直接覆盖GitHub station.json）
+exportFullJsonBtn.onclick = ()=>{
+  const text = JSON.stringify(allList,null,2);
   navigator.clipboard.writeText(text);
-  showMsg("✅ 本地站点JSON已复制，用于仓库更新！");
+  showMsg("✅ 完整全站JSON已复制，可直接替换仓库station.json！");
 }
 
 // 清空本地
 document.getElementById('clearLocalBtn').onclick = ()=>{
-  if(confirm("确认清空所有本地新增站点？公共库不受影响")){
+  if(confirm("确认清空所有本地新增站点？线上公共库不受影响")){
     localList=[];
     combineData();
   }
@@ -384,7 +427,7 @@ searchInput.oninput = renderTable;
 document.getElementById('themeBtn').onclick=()=>{
   document.body.classList.toggle('dark');
 }
-// 页面启动加载
+// 页面启动加载公共站点
 loadPublicData();
 </script>
 </body>
