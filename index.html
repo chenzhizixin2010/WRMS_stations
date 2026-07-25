@@ -36,6 +36,7 @@ button.gray{background:#666}
 button.green{background:#23a959}
 button.orange{background:#e67e22}
 button.link{background:#9b59b6}
+button.submit{background:#16a085}
 table{width:100%;border-collapse:collapse;margin:14px 0}
 th,td{border:1px solid var(--border);padding:10px;text-align:center;font-size:14px}
 th{background:rgba(120,120,120,0.15);font-weight:600}
@@ -60,12 +61,15 @@ textarea{width:100%;height:130px;padding:12px;background:var(--bg);color:var(--t
 .modal-box p{margin:8px 0;line-height:1.6}
 .modal-log{margin:12px 0;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:13px}
 .modal-close{margin-top:16px;width:100%}
+/* 管理员导入区域 */
+.admin-area{margin-top:16px;padding:14px;border:1px dashed var(--border);border-radius:8px;display:none}
+.admin-area h4{margin-bottom:8px}
 </style>
 </head>
 <body>
 <div class="container">
   <h1>📍 MTR轨道规划坐标清单【在线查询】</h1>
-  <div class="tip">公共数据由仓库维护；本地新增站点仅保存在浏览器，提交站点请导出JSON发给管理员更新库</div>
+  <div class="tip">公共数据由仓库维护；本地新增站点仅保存在浏览器，提交站点复制文本发给管理员即可</div>
   <div class="box">
     <!-- 顶部操作栏 -->
     <div class="row row-top">
@@ -109,13 +113,26 @@ textarea{width:100%;height:130px;padding:12px;background:var(--bg);color:var(--t
 
     <div class="row">
       <button id="exportTextBtn">导出文本清单</button>
-      <button id="exportJsonBtn" class="green">导出JSON(提交给管理员)</button>
+      <button id="copySubmitBtn" class="submit">复制提交文本(发管理员)</button>
+      <button id="exportJsonBtn" class="green">导出JSON(仓库更新)</button>
       <button id="clearLocalBtn" class="gray">清空本地新增</button>
     </div>
     <div id="msg"></div>
 
     <h4 style="margin-top:16px;margin-bottom:8px;">清单预览</h4>
     <textarea id="previewText" readonly></textarea>
+
+    <!-- 管理员批量导入面板 默认隐藏 -->
+    <div class="row" style="margin-top:12px;">
+      <button id="toggleAdmin">展开管理员批量导入工具</button>
+    </div>
+    <div class="admin-area" id="adminPanel">
+      <h4>管理员批量导入（粘贴玩家提交文本）</h4>
+      <textarea id="adminImportText" placeholder="粘贴玩家发来的站点提交文本"></textarea>
+      <div class="row" style="margin-top:8px;">
+        <button id="parseImportBtn">解析并批量添加</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -135,6 +152,8 @@ textarea{width:100%;height:130px;padding:12px;background:var(--bg);color:var(--t
       <p>5. 深色/浅色模式切换</p>
       <p>6. 新增开发者信息弹窗、地名生成器快捷跳转按钮</p>
       <p>7. 界面整体排版优化，修复停运/废弃状态文字颜色颠倒问题</p>
+      <p>8. 新增简易提交文本，替代复杂JSON，玩家一键复制明文发给管理员</p>
+      <p>9. 内置管理员批量导入解析工具，粘贴文本一键批量入库</p>
     </div>
     <button class="modal-close" id="closeAbout">关闭</button>
   </div>
@@ -158,6 +177,11 @@ const aboutMask=document.getElementById('aboutMask');
 const aboutBtn=document.getElementById('aboutBtn');
 const closeAbout=document.getElementById('closeAbout');
 const mapGenBtn=document.getElementById('mapGenBtn');
+const copySubmitBtn=document.getElementById('copySubmitBtn');
+const toggleAdmin=document.getElementById('toggleAdmin');
+const adminPanel=document.getElementById('adminPanel');
+const adminImportText=document.getElementById('adminImportText');
+const parseImportBtn=document.getElementById('parseImportBtn');
 
 // 地名生成器跳转
 mapGenBtn.onclick = ()=> window.open("https://wrmspng.github.io", "_blank");
@@ -167,6 +191,52 @@ aboutBtn.onclick = ()=> aboutMask.style.display = "flex";
 closeAbout.onclick = ()=> aboutMask.style.display = "none";
 aboutMask.onclick = (e)=>{
   if(e.target === aboutMask) aboutMask.style.display = "none";
+}
+
+// 管理员面板展开/收起
+toggleAdmin.onclick = ()=>{
+  adminPanel.style.display = adminPanel.style.display === "block" ? "none" : "block";
+}
+
+// 玩家一键复制简易提交文本
+copySubmitBtn.onclick = ()=>{
+  if(localList.length === 0){
+    showMsg("⚠️ 暂无本地新增站点，无需提交");
+    return;
+  }
+  let text = "【站点提交清单】\n";
+  localList.forEach(item=>{
+    text += `${item.name} | ${item.line} | X:${item.x} Z:${item.z} | ${item.status}\n`;
+  })
+  navigator.clipboard.writeText(text);
+  showMsg("✅ 简易提交文本已复制，直接发送群聊即可！");
+}
+
+// 管理员解析玩家提交文本批量导入
+parseImportBtn.onclick = ()=>{
+  const raw = adminImportText.value.trim();
+  if(!raw){
+    showMsg("⚠️ 请粘贴玩家提交的站点文本");
+    return;
+  }
+  const lines = raw.split("\n");
+  let addCount = 0;
+  lines.forEach(line=>{
+    const l = line.trim();
+    if(!l || l.startsWith("【")) return;
+    const parts = l.split("|").map(p=>p.trim());
+    if(parts.length <4) return;
+    const name = parts[0];
+    const lineName = parts[1];
+    const x = parts[2].replace("X:","");
+    const z = parts[3].replace("Z:","");
+    const status = parts[4] || "规划中";
+    localList.push({name,line:lineName,x,z,status});
+    addCount++;
+  })
+  deduplicateLocal();
+  adminImportText.value = "";
+  showMsg(`✅ 批量导入完成，新增${addCount}个站点，已自动去重`);
 }
 
 // 加载公共站点（jsdelivr加速链接）
@@ -250,7 +320,7 @@ function deduplicateLocal(){
   const delCount = localList.length - unique.length;
   localList = unique;
   combineData();
-  showMsg(`✅ 去重完成，移除${delCount}条重复站点`);
+  if(delCount>0) showMsg(`✅ 去重完成，移除${delCount}条重复站点`);
 }
 
 function updatePreview(){
@@ -293,7 +363,7 @@ document.getElementById('exportTextBtn').onclick = ()=>{
 document.getElementById('exportJsonBtn').onclick = ()=>{
   const text = JSON.stringify(localList,null,2);
   navigator.clipboard.writeText(text);
-  showMsg("✅ 本地站点JSON已复制，发送给服主！");
+  showMsg("✅ 本地站点JSON已复制，用于仓库更新！");
 }
 
 // 清空本地
@@ -319,3 +389,4 @@ loadPublicData();
 </script>
 </body>
 </html>
+
