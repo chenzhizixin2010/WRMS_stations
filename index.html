@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>五洲铁路模组服务器线路车站录入系统 V3.0_RC</title>
+    <title>五洲铁路模组服务器线路车站录入系统 V3.0_RELEASE</title>
     <style>
         /* ===== CSS 变量 & 主题 ===== */
         :root {
@@ -408,19 +408,16 @@
                 <strong>📖 使用说明</strong>
                 <p>🔍 <b>查询区</b> — 搜索站点/线路/状态，浏览全部车站数据，点击「显示线路图 <span class="beta-tag">Beta</span>」查看拓扑线路图</p>
                 <p>✏️ <b>录入区</b> — 每次只添加一条线路，换乘站需多次录入（同一站名和坐标，不同线路）</p>
-                <p>⚙️ <b>管理员工具</b> — 批量导入、导出JSON、管理本地数据（需密码）</p>
+                <p>⚙️ <b>管理员工具</b> — 批量导入、导出JSON、管理本地数据（需密码，首次解锁后保持状态）</p>
                 <p>💡 本地新增站点仅保存在浏览器，提交文本发给管理员即可</p>
                 <p>🗺️ <b>线路图</b> — 基于X/Z坐标映射，站点等距排列，换乘站自然交汇，呈现真实网络形态</p>
                 <br>
-                <strong>📌 更新日志 V3.0_RC</strong>
-                <p>✦ 🗺️ 线路图布局改为基于X/Z坐标映射，站点等距分布，线路自然交汇</p>
-                <p>✦ 🔄 换乘站位置重合，形成网络拓扑，符合现实地铁图样式</p>
-                <p>✦ 🎨 保留MTR风格：纯白背景、高饱和色彩、扁平化站点</p>
-                <p>✦ 🖱️ 拖拽平移、滚轮缩放、图例开关、站点悬浮提示功能保留</p>
-                <p>✦ 🧹 移除网格线，固定文字颜色，提升视觉清晰度</p>
-                <p>✦ 🔗 地名生成器按钮跳转至 wrmspng.github.io 外部站点</p>
-                <p>✦ 🏷️ 线路图状态标记为 Beta（稳定测试版）</p>
-                <p>✦ 📝 版本号升级至 V3.0_RC（Release Candidate）</p>
+                <strong>📌 更新日志 V3.0_RELEASE</strong>
+                <p>✦ 🖼️ 线路图适配高DPI屏幕，画质清晰度大幅提升</p>
+                <p>✦ 🧭 修正Z轴方向：Z坐标越大（南方）显示在画布上方，符合常规地图习惯</p>
+                <p>✦ 🔓 管理员工具解锁状态持久化，无需重复输入密码</p>
+                <p>✦ 🚀 版本号正式升级为 V3.0_RELEASE（稳定发布版）</p>
+                <p>✦ ✨ 所有核心功能稳定，线路图拖拽、缩放、图例交互流畅</p>
             </div>
             <div class="id-input-wrap">
                 <input id="entryIdInput" placeholder="请输入你的游戏ID / 昵称" autofocus>
@@ -432,7 +429,7 @@
     <!-- 主页面容器 -->
     <div class="container" id="mainApp" style="display:none;">
         <header class="header">
-            <h1>🚆 五洲铁路模组服务器 <small>线路车站录入系统</small> <span class="version-tag">V3.0_RC</span></h1>
+            <h1>🚆 五洲铁路模组服务器 <small>线路车站录入系统</small> <span class="version-tag">V3.0_RELEASE</span></h1>
             <div class="header-actions">
                 <button id="themeToggleBtn" title="切换深色/浅色">🌓 深色</button>
                 <button id="aboutBtn" title="开发者信息 & 主题配色">ℹ️ 关于</button>
@@ -511,6 +508,7 @@
                         <input id="adminPwdInput" type="password" placeholder="请输入管理员密码" style="flex:0 1 180px;">
                         <button id="adminUnlockBtn" class="teal small">解锁</button>
                         <span id="adminLockStatus" style="font-size:12px;color:var(--text-light);">🔒 已锁定</span>
+                        <button id="jumpRepoBtn" class="small" style="background:#24292e;color:#fff;padding:4px 14px;border-radius:6px;border:none;cursor:pointer;">📁 跳转仓库</button>
                     </div>
                 </div>
                 <div id="adminContent" style="display:none;margin-top:12px;">
@@ -557,7 +555,7 @@
                     <span class="sep">&</span>
                     <a href="https://space.bilibili.com/3546698959816732" target="_blank" rel="noopener">五洲社</a>
                 </div>
-                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V3.0_RC</div>
+                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V3.0_RELEASE</div>
             </div>
         </footer>
     </div>
@@ -566,7 +564,7 @@
         <div class="modal-box">
             <h3>ℹ️ 工具信息 & 主题配色</h3>
             <p style="margin:6px 0 2px;"><strong>开发者：</strong>DeepSeek · 豆包 · 陈之自信</p>
-            <p style="margin:2px 0;"><strong>当前版本：</strong>V3.0_RC</p>
+            <p style="margin:2px 0;"><strong>当前版本：</strong>V3.0_RELEASE</p>
             <p style="margin:2px 0 10px;"><strong>版权归属：</strong>© 五洲铁路模组服务器 2026</p>
             <div style="margin:10px 0 12px;">
                 <div style="font-weight:500;font-size:14px;margin-bottom:6px;">🎨 切换主题配色</div>
@@ -580,15 +578,12 @@
                 </div>
             </div>
             <div style="background:var(--card2);border-radius:10px;padding:10px 14px;border:1px solid var(--border);font-size:13px;max-height:180px;overflow-y:auto;">
-                <strong>📌 更新日志 V3.0_RC</strong>
-                <p style="margin:2px 0;">✦ 🗺️ 线路图布局改为基于X/Z坐标映射，站点等距分布，线路自然交汇</p>
-                <p style="margin:2px 0;">✦ 🔄 换乘站位置重合，形成网络拓扑，符合现实地铁图样式</p>
-                <p style="margin:2px 0;">✦ 🎨 保留MTR风格：纯白背景、高饱和色彩、扁平化站点</p>
-                <p style="margin:2px 0;">✦ 🖱️ 拖拽平移、滚轮缩放、图例开关、站点悬浮提示功能保留</p>
-                <p style="margin:2px 0;">✦ 🧹 移除网格线，固定文字颜色，提升视觉清晰度</p>
-                <p style="margin:2px 0;">✦ 🔗 地名生成器按钮跳转至 wrmspng.github.io 外部站点</p>
-                <p style="margin:2px 0;">✦ 🏷️ 线路图状态标记为 Beta（稳定测试版）</p>
-                <p style="margin:2px 0;">✦ 📝 版本号升级至 V3.0_RC（Release Candidate）</p>
+                <strong>📌 更新日志 V3.0_RELEASE</strong>
+                <p style="margin:2px 0;">✦ 🖼️ 线路图适配高DPI屏幕，画质清晰度大幅提升</p>
+                <p style="margin:2px 0;">✦ 🧭 修正Z轴方向：Z坐标越大（南方）显示在画布上方，符合常规地图习惯</p>
+                <p style="margin:2px 0;">✦ 🔓 管理员工具解锁状态持久化，无需重复输入密码</p>
+                <p style="margin:2px 0;">✦ 🚀 版本号正式升级为 V3.0_RELEASE（稳定发布版）</p>
+                <p style="margin:2px 0;">✦ ✨ 所有核心功能稳定，线路图拖拽、缩放、图例交互流畅</p>
             </div>
             <button class="modal-close-btn" id="closeAbout">关闭</button>
         </div>
@@ -621,7 +616,7 @@
     let localList = [];
     let allList = [];
     let currentUserId = '';
-    let adminUnlocked = false;
+    let adminUnlocked = false; // 默认锁定
 
     let mapZoom = 1;
     let mapOffsetX = 0;
@@ -667,6 +662,7 @@
     const adminImportText = $('adminImportText');
     const parseImportBtn = $('parseImportBtn');
     const toggleAdminBtn = $('toggleAdminBtn');
+    const jumpRepoBtn = $('jumpRepoBtn');
     const showMapBtn = $('showMapBtn');
     const mapModal = $('mapModal');
     const closeMapBtn = $('closeMapBtn');
@@ -698,6 +694,12 @@
         const savedId = localStorage.getItem('wrms_user_id');
         if (savedId) {
             entryIdInput.value = savedId;
+        }
+        // 恢复管理员解锁状态
+        const savedUnlock = localStorage.getItem('wrms_admin_unlocked');
+        if (savedUnlock === 'true') {
+            adminUnlocked = true;
+            updateAdminUI();
         }
     });
 
@@ -1022,6 +1024,7 @@
             adminContent.style.display = 'block';
             adminLockStatus.textContent = '🔓 已解锁';
             adminLockStatus.style.color = 'var(--status-done)';
+            // 隐藏密码输入框和按钮，或者保持但禁用，我们保留但不影响
         } else {
             adminContent.style.display = 'none';
             adminLockStatus.textContent = '🔒 已锁定';
@@ -1035,8 +1038,9 @@
 
         if (pwd === ADMIN_PWD) {
             adminUnlocked = true;
+            localStorage.setItem('wrms_admin_unlocked', 'true');
             updateAdminUI();
-            showMsg('🔓 管理员已解锁');
+            showMsg('🔓 管理员已解锁（状态已保存）');
         } else {
             showMsg('⚠️ 密码错误', true);
             adminPwdInput.value = '';
@@ -1048,17 +1052,17 @@
         if (e.key === 'Enter') adminUnlockBtn.click();
     });
 
-    let adminOpen = false;
+    // 跳转仓库
+    jumpRepoBtn.onclick = () => {
+        window.open('https://github.com/chenzhizixin2010/WRMS_stations', '_blank');
+    };
 
+    let adminOpen = false;
     toggleAdminBtn.onclick = () => {
         adminOpen = !adminOpen;
         adminPanel.classList.toggle('open', adminOpen);
         toggleAdminBtn.textContent = adminOpen ? '🔒 收起' : '🔓 展开 / 折叠';
-
-        if (!adminOpen) {
-            adminUnlocked = false;
-            updateAdminUI();
-        }
+        // 如果折叠，不改变解锁状态
     };
 
     parseImportBtn.onclick = () => {
@@ -1169,12 +1173,21 @@
     // ===== 核心：基于坐标的等距拓扑布局 =====
     function drawLineChart() {
         const rect = canvasWrap.getBoundingClientRect();
-        mapCanvas.width = rect.width;
-        mapCanvas.height = rect.height;
+        const dpr = window.devicePixelRatio || 1;
+        const cssW = rect.width;
+        const cssH = rect.height;
 
-        const w = mapCanvas.width;
-        const h = mapCanvas.height;
+        // 物理像素尺寸
+        mapCanvas.width = cssW * dpr;
+        mapCanvas.height = cssH * dpr;
+        mapCanvas.style.width = cssW + 'px';
+        mapCanvas.style.height = cssH + 'px';
+
         const ctx = mapCanvas.getContext('2d');
+        ctx.scale(dpr, dpr); // 所有绘制坐标按CSS像素处理
+
+        const w = cssW;
+        const h = cssH;
 
         // MTR 风格：纯白背景
         ctx.fillStyle = '#fcfcfd';
@@ -1241,9 +1254,9 @@
         const padding = 50;
         const scale = Math.min((w - padding * 2) / rangeX, (h - padding * 2) / rangeZ) * 0.9;
 
-        // 映射函数：将XZ映射到画布坐标（居中）
+        // 映射函数：X 保持不变，Z 反转使得 Z 越大越靠上
         const mapX = (x) => (x - (minX + maxX) / 2) * scale + w / 2;
-        const mapY = (z) => (z - (minZ + maxZ) / 2) * scale + h / 2;
+        const mapZ = (z) => ((minZ + maxZ) / 2 - z) * scale + h / 2;  // 反转Z
 
         // 为每条线路生成初始坐标
         const linePositions = {};
@@ -1252,7 +1265,7 @@
             linePositions[line] = stations.map(s => ({
                 station: s,
                 x: mapX(parseFloat(s.x)),
-                y: mapY(parseFloat(s.z))
+                y: mapZ(parseFloat(s.z))
             }));
         });
 
