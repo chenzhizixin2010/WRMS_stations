@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>五洲铁路模组服务器线路车站录入系统 V3.0_BETA2</title>
+    <title>五洲铁路模组服务器线路车站录入系统 V3.0_BETA4</title>
     <style>
         /* ===== CSS 变量 & 主题 ===== */
         :root {
@@ -32,1038 +32,220 @@
             --footer-bg: #1a2a4a;
             --footer-text: #c8d6e5;
         }
-        /* 深色 */
-        .theme-dark {
-            --bg: #16181f;
-            --text: #e8edf5;
-            --card: #21262e;
-            --card2: #1c2128;
-            --border: #30363d;
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-            --header-bg: linear-gradient(135deg, #0d1117, #1a2332);
-            --text-light: #8b949e;
-            --tag-bg: #2d333b;
-            --input-bg: #1c2128;
-            --modal-overlay: rgba(0, 0, 0, 0.75);
-            --footer-bg: #0d1117;
-            --footer-text: #8b949e;
-            --status-plan: #58a6ff;
-            --status-build: #f0883e;
-            --status-done: #3fb950;
-            --status-stop: #f85149;
-            --status-remove: #8b949e;
-        }
-        /* 海洋蓝 */
-        .theme-ocean {
-            --bg: #e8f0fe;
-            --text: #0a2540;
-            --card: #ffffff;
-            --card2: #f2f7ff;
-            --border: #b8d0e8;
-            --accent: #0066cc;
-            --accent-hover: #004d99;
-            --header-bg: linear-gradient(135deg, #003366, #0066cc);
-            --text-light: #4a6a8a;
-            --tag-bg: #e0edfa;
-            --input-bg: #ffffff;
-            --status-plan: #0066cc;
-            --status-build: #cc7a00;
-            --status-done: #008844;
-            --status-stop: #cc2233;
-            --status-remove: #7a8a9a;
-            --footer-bg: #003366;
-            --footer-text: #c0d8f0;
-            --modal-overlay: rgba(0, 30, 60, 0.65);
-        }
-        /* 森林绿 */
-        .theme-forest {
-            --bg: #ecf5ec;
-            --text: #1a3a1a;
-            --card: #ffffff;
-            --card2: #f2faf2;
-            --border: #b8d0b8;
-            --accent: #2d7a2d;
-            --accent-hover: #1e5f1e;
-            --header-bg: linear-gradient(135deg, #1a3a1a, #2d7a2d);
-            --text-light: #4a6a4a;
-            --tag-bg: #dcecdc;
-            --input-bg: #ffffff;
-            --status-plan: #2d7a2d;
-            --status-build: #cc7a00;
-            --status-done: #1a8a1a;
-            --status-stop: #cc3333;
-            --status-remove: #6a8a6a;
-            --footer-bg: #1a3a1a;
-            --footer-text: #c0e0c0;
-            --modal-overlay: rgba(20, 50, 20, 0.65);
-        }
-        /* 浪漫紫 */
-        .theme-purple {
-            --bg: #f5effa;
-            --text: #2a1a3a;
-            --card: #ffffff;
-            --card2: #f8f2fc;
-            --border: #d8c8e8;
-            --accent: #7a3da8;
-            --accent-hover: #5f2d8a;
-            --header-bg: linear-gradient(135deg, #2a1a3a, #7a3da8);
-            --text-light: #6a4a7a;
-            --tag-bg: #ece0f8;
-            --input-bg: #ffffff;
-            --status-plan: #7a3da8;
-            --status-build: #cc7a00;
-            --status-done: #2d8a5a;
-            --status-stop: #cc2244;
-            --status-remove: #8a7a9a;
-            --footer-bg: #2a1a3a;
-            --footer-text: #d0c0e0;
-            --modal-overlay: rgba(40, 20, 60, 0.65);
-        }
-        /* 活力橙 */
-        .theme-orange {
-            --bg: #faf3ec;
-            --text: #3a2a1a;
-            --card: #ffffff;
-            --card2: #fcf7f0;
-            --border: #e8d8c8;
-            --accent: #cc6a1a;
-            --accent-hover: #aa5515;
-            --header-bg: linear-gradient(135deg, #3a2a1a, #cc6a1a);
-            --text-light: #7a6a4a;
-            --tag-bg: #f8ece0;
-            --input-bg: #ffffff;
-            --status-plan: #cc6a1a;
-            --status-build: #cc7a00;
-            --status-done: #2d8a4a;
-            --status-stop: #cc2233;
-            --status-remove: #8a7a6a;
-            --footer-bg: #3a2a1a;
-            --footer-text: #e0d0c0;
-            --modal-overlay: rgba(60, 40, 20, 0.65);
-        }
+        /* 深色等主题 (与之前一致) */
+        .theme-dark { --bg: #16181f; --text: #e8edf5; --card: #21262e; --card2: #1c2128; --border: #30363d; --shadow: 0 8px 30px rgba(0,0,0,0.4); --header-bg: linear-gradient(135deg,#0d1117,#1a2332); --text-light: #8b949e; --tag-bg: #2d333b; --input-bg: #1c2128; --modal-overlay: rgba(0,0,0,0.75); --footer-bg: #0d1117; --footer-text: #8b949e; --status-plan: #58a6ff; --status-build: #f0883e; --status-done: #3fb950; --status-stop: #f85149; --status-remove: #8b949e; }
+        .theme-ocean { --bg: #e8f0fe; --text: #0a2540; --card: #ffffff; --card2: #f2f7ff; --border: #b8d0e8; --accent: #0066cc; --accent-hover: #004d99; --header-bg: linear-gradient(135deg,#003366,#0066cc); --text-light: #4a6a8a; --tag-bg: #e0edfa; --input-bg: #ffffff; --status-plan: #0066cc; --status-build: #cc7a00; --status-done: #008844; --status-stop: #cc2233; --status-remove: #7a8a9a; --footer-bg: #003366; --footer-text: #c0d8f0; --modal-overlay: rgba(0,30,60,0.65); }
+        .theme-forest { --bg: #ecf5ec; --text: #1a3a1a; --card: #ffffff; --card2: #f2faf2; --border: #b8d0b8; --accent: #2d7a2d; --accent-hover: #1e5f1e; --header-bg: linear-gradient(135deg,#1a3a1a,#2d7a2d); --text-light: #4a6a4a; --tag-bg: #dcecdc; --input-bg: #ffffff; --status-plan: #2d7a2d; --status-build: #cc7a00; --status-done: #1a8a1a; --status-stop: #cc3333; --status-remove: #6a8a6a; --footer-bg: #1a3a1a; --footer-text: #c0e0c0; --modal-overlay: rgba(20,50,20,0.65); }
+        .theme-purple { --bg: #f5effa; --text: #2a1a3a; --card: #ffffff; --card2: #f8f2fc; --border: #d8c8e8; --accent: #7a3da8; --accent-hover: #5f2d8a; --header-bg: linear-gradient(135deg,#2a1a3a,#7a3da8); --text-light: #6a4a7a; --tag-bg: #ece0f8; --input-bg: #ffffff; --status-plan: #7a3da8; --status-build: #cc7a00; --status-done: #2d8a5a; --status-stop: #cc2244; --status-remove: #8a7a9a; --footer-bg: #2a1a3a; --footer-text: #d0c0e0; --modal-overlay: rgba(40,20,60,0.65); }
+        .theme-orange { --bg: #faf3ec; --text: #3a2a1a; --card: #ffffff; --card2: #fcf7f0; --border: #e8d8c8; --accent: #cc6a1a; --accent-hover: #aa5515; --header-bg: linear-gradient(135deg,#3a2a1a,#cc6a1a); --text-light: #7a6a4a; --tag-bg: #f8ece0; --input-bg: #ffffff; --status-plan: #cc6a1a; --status-build: #cc7a00; --status-done: #2d8a4a; --status-stop: #cc2233; --status-remove: #8a7a6a; --footer-bg: #3a2a1a; --footer-text: #e0d0c0; --modal-overlay: rgba(60,40,20,0.65); }
 
         /* ===== 全局重置 ===== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-        }
-        body {
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            transition: background var(--transition), color var(--transition);
-            padding: 0 12px 20px;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding-top: 16px;
-        }
-
-        /* ===== 动画 ===== */
-        @keyframes fadeSlideUp {
-            0% {
-                opacity: 0;
-                transform: translateY(28px) scale(0.97);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        .animate-in {
-            animation: fadeSlideUp 0.5s ease forwards;
-        }
-        .animate-in-d1 {
-            animation-delay: 0.05s;
-            opacity: 0;
-        }
-        .animate-in-d2 {
-            animation-delay: 0.12s;
-            opacity: 0;
-        }
-        .animate-in-d3 {
-            animation-delay: 0.20s;
-            opacity: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; transition: background var(--transition), color var(--transition); padding: 0 12px 20px; }
+        .container { max-width: 1100px; margin: 0 auto; padding-top: 16px; }
+        @keyframes fadeSlideUp { 0% { opacity: 0; transform: translateY(28px) scale(0.97); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+        .animate-in { animation: fadeSlideUp 0.5s ease forwards; }
+        .animate-in-d1 { animation-delay: 0.05s; opacity: 0; }
+        .animate-in-d2 { animation-delay: 0.12s; opacity: 0; }
+        .animate-in-d3 { animation-delay: 0.20s; opacity: 0; }
 
         /* ===== 头部 ===== */
-        .header {
-            background: var(--header-bg);
-            border-radius: var(--radius);
-            padding: 20px 24px 18px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: background var(--transition);
-        }
-        .header h1 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .header h1 small {
-            font-size: 14px;
-            font-weight: 400;
-            opacity: 0.7;
-            letter-spacing: 0;
-        }
-        .header .version-tag {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 4px 14px;
-            border-radius: 40px;
-            font-size: 13px;
-            color: #fff;
-            font-weight: 500;
-            backdrop-filter: blur(4px);
-        }
-        .header-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .header-actions button {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.25s;
-            backdrop-filter: blur(4px);
-        }
-        .header-actions button:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-1px);
-        }
-        .header-actions button:active {
-            transform: scale(0.96);
-        }
+        .header { background: var(--header-bg); border-radius: var(--radius); padding: 20px 24px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: background var(--transition); }
+        .header h1 { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .header h1 small { font-size: 14px; font-weight: 400; opacity: 0.7; letter-spacing: 0; }
+        .header .version-tag { background: rgba(255,255,255,0.15); padding: 4px 14px; border-radius: 40px; font-size: 13px; color: #fff; font-weight: 500; backdrop-filter: blur(4px); }
+        .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .header-actions button { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 14px; border-radius: 30px; font-size: 13px; cursor: pointer; transition: all 0.25s; backdrop-filter: blur(4px); }
+        .header-actions button:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
+        .header-actions button:active { transform: scale(0.96); }
 
         /* ===== 卡片 ===== */
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 18px 20px 20px;
-            margin-bottom: 18px;
-            box-shadow: var(--shadow);
-            transition: background var(--transition), border var(--transition), box-shadow var(--transition);
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
-        }
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text);
-            flex-wrap: wrap;
-        }
-        .card-title .badge {
-            background: var(--tag-bg);
-            padding: 2px 12px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 400;
-            color: var(--text-light);
-        }
-        .card-sub {
-            font-size: 14px;
-            color: var(--text-light);
-            margin-bottom: 12px;
-        }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px 20px; margin-bottom: 18px; box-shadow: var(--shadow); transition: background var(--transition), border var(--transition), box-shadow var(--transition); animation: fadeSlideUp 0.5s ease forwards; opacity: 0; }
+        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; color: var(--text); flex-wrap: wrap; }
+        .card-title .badge { background: var(--tag-bg); padding: 2px 12px; border-radius: 30px; font-size: 12px; font-weight: 400; color: var(--text-light); }
+        .card-sub { font-size: 14px; color: var(--text-light); margin-bottom: 12px; }
 
         /* ===== 表单 ===== */
-        .row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-            margin: 6px 0;
-        }
-        .row-gap {
-            gap: 12px;
-        }
-        input,
-        select {
-            padding: 9px 14px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: var(--input-bg);
-            color: var(--text);
-            outline: none;
-            font-size: 14px;
-            transition: border 0.2s, box-shadow 0.2s, background var(--transition), color var(--transition);
-            flex: 1;
-            min-width: 100px;
-        }
-        input:focus,
-        select:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(45, 111, 219, 0.15);
-        }
-        input::placeholder {
-            color: var(--text-light);
-            opacity: 0.6;
-        }
-        select {
-            flex: 0 1 auto;
-            min-width: 110px;
-            cursor: pointer;
-        }
-        button {
-            padding: 9px 18px;
-            border: none;
-            border-radius: 10px;
-            background: var(--btn);
-            color: var(--btntext);
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.25s;
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
-        }
-        button:active {
-            transform: scale(0.96);
-        }
-        button.gray {
-            background: #7a8a9e;
-        }
-        button.gray:hover {
-            background: #6a7a8e;
-        }
-        button.green {
-            background: #23a959;
-        }
-        button.green:hover {
-            background: #1d914a;
-        }
-        button.orange {
-            background: #e67e22;
-        }
-        button.orange:hover {
-            background: #cf6d17;
-        }
-        button.purple {
-            background: #7a3da8;
-        }
-        button.purple:hover {
-            background: #66308a;
-        }
-        button.red {
-            background: #c0392b;
-        }
-        button.red:hover {
-            background: #a93226;
-        }
-        button.teal {
-            background: #16a085;
-        }
-        button.teal:hover {
-            background: #138a72;
-        }
-        button.outline {
-            background: transparent;
-            color: var(--accent);
-            border: 1.5px solid var(--accent);
-            box-shadow: none;
-        }
-        button.outline:hover {
-            background: var(--accent);
-            color: #fff;
-        }
-        button.small {
-            padding: 5px 12px;
-            font-size: 12px;
-        }
-        button.map-btn {
-            background: #8e44ad;
-        }
-        button.map-btn:hover {
-            background: #7d3c98;
-        }
+        .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 6px 0; }
+        .row-gap { gap: 12px; }
+        input, select { padding: 9px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--input-bg); color: var(--text); outline: none; font-size: 14px; transition: border 0.2s, box-shadow 0.2s, background var(--transition), color var(--transition); flex: 1; min-width: 100px; }
+        input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,111,219,0.15); }
+        input::placeholder { color: var(--text-light); opacity: 0.6; }
+        select { flex: 0 1 auto; min-width: 110px; cursor: pointer; }
+        button { padding: 9px 18px; border: none; border-radius: 10px; background: var(--btn); color: var(--btntext); cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.25s; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.10); }
+        button:active { transform: scale(0.96); }
+        button.gray { background: #7a8a9e; }
+        button.green { background: #23a959; }
+        button.orange { background: #e67e22; }
+        button.purple { background: #7a3da8; }
+        button.red { background: #c0392b; }
+        button.teal { background: #16a085; }
+        button.outline { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); box-shadow: none; }
+        button.outline:hover { background: var(--accent); color: #fff; }
+        button.small { padding: 5px 12px; font-size: 12px; }
+        button.map-btn { background: #8e44ad; }
 
         /* ===== 表格 ===== */
-        .table-wrap {
-            overflow-x: auto;
-            margin: 10px 0 4px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: var(--card2);
-            transition: background var(--transition), border var(--transition);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            min-width: 500px;
-        }
-        th,
-        td {
-            padding: 8px 10px;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-            transition: border var(--transition);
-        }
-        th {
-            background: var(--tag-bg);
-            font-weight: 600;
-            color: var(--text);
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            position: sticky;
-            top: 0;
-            z-index: 2;
-        }
-        tr:last-child td {
-            border-bottom: none;
-        }
-        tr:hover td {
-            background: rgba(45, 111, 219, 0.04);
-        }
-        .status-plan {
-            color: var(--status-plan);
-            font-weight: 600;
-        }
-        .status-build {
-            color: var(--status-build);
-            font-weight: 600;
-        }
-        .status-done {
-            color: var(--status-done);
-            font-weight: 600;
-        }
-        .status-stop {
-            color: var(--status-stop);
-            font-weight: 600;
-        }
-        .status-remove {
-            color: var(--status-remove);
-            font-weight: 600;
-        }
+        .table-wrap { overflow-x: auto; margin: 10px 0 4px; border-radius: 12px; border: 1px solid var(--border); background: var(--card2); transition: background var(--transition), border var(--transition); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 500px; }
+        th, td { padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--border); transition: border var(--transition); }
+        th { background: var(--tag-bg); font-weight: 600; color: var(--text); font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px; position: sticky; top: 0; z-index: 2; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(45,111,219,0.04); }
+        .status-plan { color: var(--status-plan); font-weight: 600; }
+        .status-build { color: var(--status-build); font-weight: 600; }
+        .status-done { color: var(--status-done); font-weight: 600; }
+        .status-stop { color: var(--status-stop); font-weight: 600; }
+        .status-remove { color: var(--status-remove); font-weight: 600; }
 
         /* ===== 文本域 ===== */
-        textarea {
-            width: 100%;
-            height: 100px;
-            padding: 12px;
-            background: var(--input-bg);
-            color: var(--text);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 14px;
-            resize: vertical;
-            transition: background var(--transition), color var(--transition), border var(--transition);
-            font-family: 'JetBrains Mono', 'Fira Code', monospace, system-ui;
-        }
-        textarea:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(45, 111, 219, 0.12);
-            outline: none;
-        }
+        textarea { width: 100%; height: 100px; padding: 12px; background: var(--input-bg); color: var(--text); border: 1px solid var(--border); border-radius: 12px; font-size: 14px; resize: vertical; transition: background var(--transition), color var(--transition), border var(--transition); font-family: 'JetBrains Mono', 'Fira Code', monospace, system-ui; }
+        textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,111,219,0.12); outline: none; }
 
         /* ===== 消息 ===== */
-        #msg {
-            margin-top: 8px;
-            min-height: 24px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .msg-success {
-            color: var(--status-done);
-        }
-        .msg-error {
-            color: var(--status-stop);
-        }
+        #msg { margin-top: 8px; min-height: 24px; font-size: 14px; font-weight: 500; }
+        .msg-success { color: var(--status-done); }
+        .msg-error { color: var(--status-stop); }
 
         /* ===== 弹窗 ===== */
-        .modal-mask {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--modal-overlay);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            padding: 16px;
-            backdrop-filter: blur(6px);
-            animation: fadeSlideUp 0.35s ease;
-        }
-        .modal-mask.active {
-            display: flex;
-        }
-        .modal-box {
-            width: 100%;
-            max-width: 520px;
-            max-height: 92vh;
-            overflow-y: auto;
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 24px 26px 28px;
-            border: 1px solid var(--border);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
-            animation: fadeSlideUp 0.4s ease;
-            transition: background var(--transition), border var(--transition);
-        }
-        .modal-box h2 {
-            font-size: 20px;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .modal-box .sub {
-            color: var(--text-light);
-            font-size: 13px;
-            margin-bottom: 16px;
-        }
-        .modal-box .log-area {
-            background: var(--card2);
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin: 12px 0 16px;
-            max-height: 240px;
-            overflow-y: auto;
-            border: 1px solid var(--border);
-            font-size: 13px;
-            line-height: 1.7;
-            transition: background var(--transition), border var(--transition);
-        }
-        .modal-box .log-area strong {
-            display: block;
-            margin-bottom: 4px;
-            font-size: 14px;
-        }
-        .modal-box .log-area p {
-            margin: 2px 0;
-            padding-left: 6px;
-        }
-        .modal-box .id-input-wrap {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-top: 6px;
-        }
-        .modal-box .id-input-wrap input {
-            flex: 1;
-            min-width: 160px;
-        }
-        .modal-box .id-input-wrap button {
-            flex-shrink: 0;
-            padding: 9px 28px;
-        }
-        .modal-close-btn {
-            margin-top: 16px;
-            width: 100%;
-            padding: 12px;
-            font-size: 15px;
-        }
+        .modal-mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; align-items: center; justify-content: center; z-index: 999; padding: 16px; backdrop-filter: blur(6px); animation: fadeSlideUp 0.35s ease; }
+        .modal-mask.active { display: flex; }
+        .modal-box { width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto; background: var(--card); border-radius: var(--radius); padding: 24px 26px 28px; border: 1px solid var(--border); box-shadow: 0 30px 80px rgba(0,0,0,0.25); animation: fadeSlideUp 0.4s ease; transition: background var(--transition), border var(--transition); }
+        .modal-box h2 { font-size: 20px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .modal-box .sub { color: var(--text-light); font-size: 13px; margin-bottom: 16px; }
+        .modal-box .log-area { background: var(--card2); border-radius: 12px; padding: 14px 16px; margin: 12px 0 16px; max-height: 240px; overflow-y: auto; border: 1px solid var(--border); font-size: 13px; line-height: 1.7; transition: background var(--transition), border var(--transition); }
+        .modal-box .log-area strong { display: block; margin-bottom: 4px; font-size: 14px; }
+        .modal-box .log-area p { margin: 2px 0; padding-left: 6px; }
+        .modal-box .id-input-wrap { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+        .modal-box .id-input-wrap input { flex: 1; min-width: 160px; }
+        .modal-box .id-input-wrap button { flex-shrink: 0; padding: 9px 28px; }
+        .modal-close-btn { margin-top: 16px; width: 100%; padding: 12px; font-size: 15px; }
 
         /* ===== 线路图模态框 ===== */
-        .map-modal-mask {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--modal-overlay);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 16px;
-            backdrop-filter: blur(8px);
-            animation: fadeSlideUp 0.4s ease;
-        }
-        .map-modal-mask.active {
-            display: flex;
-        }
-        .map-modal-box {
-            width: 100%;
-            max-width: 1100px;
-            max-height: 92vh;
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 20px 24px 24px;
-            border: 1px solid var(--border);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            transition: background var(--transition), border var(--transition);
-            overflow: hidden;
-        }
-        .map-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            flex-shrink: 0;
-        }
-        .map-modal-header h2 {
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text);
-        }
-        .map-modal-header .close-btn {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--text-light);
-            padding: 4px 10px;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-        .map-modal-header .close-btn:hover {
-            background: var(--tag-bg);
-        }
-        .map-canvas-wrap {
-            flex: 1;
-            min-height: 400px;
-            background: var(--card2);
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            overflow: hidden;
-            position: relative;
-            transition: background var(--transition), border var(--transition);
-        }
-        .map-canvas-wrap canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-        .map-controls {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 12px 0 4px;
-            flex-shrink: 0;
-            flex-wrap: wrap;
-        }
-        .map-controls label {
-            font-size: 13px;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .map-controls input[type="range"] {
-            width: 160px;
-            accent-color: var(--accent);
-            cursor: pointer;
-        }
-        .map-controls .zoom-val {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text);
-            min-width: 44px;
-            text-align: center;
-        }
-        .map-legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px 14px;
-            padding: 6px 0 2px;
-            flex-shrink: 0;
-            border-top: 1px solid var(--border);
-            margin-top: 4px;
-            font-size: 12px;
-            color: var(--text-light);
-        }
-        .map-legend .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .map-legend .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-        }
-        .map-legend .legend-label {
-            font-size: 12px;
-            color: var(--text);
-            white-space: nowrap;
-        }
-        .map-legend .legend-highlight {
-            background: #ffdd44;
-            color: #333;
-            padding: 1px 8px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 11px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
+        .map-modal-mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; backdrop-filter: blur(8px); animation: fadeSlideUp 0.4s ease; }
+        .map-modal-mask.active { display: flex; }
+        .map-modal-box { width: 100%; max-width: 1100px; max-height: 92vh; background: var(--card); border-radius: var(--radius); padding: 20px 24px 24px; border: 1px solid var(--border); box-shadow: 0 30px 80px rgba(0,0,0,0.3); display: flex; flex-direction: column; transition: background var(--transition), border var(--transition); overflow: hidden; }
+        .map-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-shrink: 0; }
+        .map-modal-header h2 { font-size: 20px; display: flex; align-items: center; gap: 10px; color: var(--text); }
+        .map-modal-header .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-light); padding: 4px 10px; border-radius: 8px; transition: background 0.2s; }
+        .map-modal-header .close-btn:hover { background: var(--tag-bg); }
+        .map-canvas-wrap { flex: 1; min-height: 400px; background: var(--card2); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; position: relative; transition: background var(--transition), border var(--transition); }
+        .map-canvas-wrap canvas { width: 100%; height: 100%; display: block; }
+        .map-controls { display: flex; align-items: center; gap: 16px; padding: 12px 0 4px; flex-shrink: 0; flex-wrap: wrap; }
+        .map-controls label { font-size: 13px; color: var(--text-light); display: flex; align-items: center; gap: 8px; }
+        .map-controls input[type="range"] { width: 160px; accent-color: var(--accent); cursor: pointer; }
+        .map-controls .zoom-val { font-size: 14px; font-weight: 600; color: var(--text); min-width: 44px; text-align: center; }
+        .map-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 6px 0 2px; flex-shrink: 0; border-top: 1px solid var(--border); margin-top: 4px; font-size: 12px; color: var(--text-light); }
+        .map-legend .legend-item { display: flex; align-items: center; gap: 4px; }
+        .map-legend .legend-color { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); flex-shrink: 0; }
+        .map-legend .legend-label { font-size: 12px; color: var(--text); white-space: nowrap; }
+        .map-legend .legend-highlight { background: #ffdd44; color: #333; padding: 1px 8px; border-radius: 12px; font-weight: 600; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; }
 
         /* ===== 管理员工具 ===== */
-        .admin-area {
-            display: none;
-            margin-top: 14px;
-            padding: 16px 18px 18px;
-            border: 1.5px dashed var(--border);
-            border-radius: var(--radius);
-            background: var(--card2);
-            transition: all var(--transition);
-        }
-        .admin-area.open {
-            display: block;
-            animation: fadeSlideUp 0.35s ease;
-        }
-        .admin-area .admin-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        .admin-area .admin-header h4 {
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .admin-pwd-wrap {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .admin-pwd-wrap input {
-            flex: 0 1 160px;
-            min-width: 120px;
-        }
+        .admin-area { display: none; margin-top: 14px; padding: 16px 18px 18px; border: 1.5px dashed var(--border); border-radius: var(--radius); background: var(--card2); transition: all var(--transition); }
+        .admin-area.open { display: block; animation: fadeSlideUp 0.35s ease; }
+        .admin-area .admin-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+        .admin-area .admin-header h4 { font-size: 16px; display: flex; align-items: center; gap: 8px; }
+        .admin-pwd-wrap { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .admin-pwd-wrap input { flex: 0 1 160px; min-width: 120px; }
 
         /* ===== 底部 ===== */
-        .footer {
-            margin-top: 32px;
-            padding: 24px 20px 20px;
-            background: var(--footer-bg);
-            border-radius: var(--radius);
-            color: var(--footer-text);
-            transition: background var(--transition), color var(--transition);
-            text-align: center;
-        }
-        .footer .footer-inner {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        .footer h3 {
-            font-size: 18px;
-            color: #fff;
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
-        }
-        .footer p {
-            font-size: 14px;
-            line-height: 1.7;
-            opacity: 0.85;
-            margin: 6px 0;
-        }
-        .footer .footer-divider {
-            width: 60px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.2);
-            margin: 10px auto 12px;
-            border-radius: 4px;
-        }
-        .footer .footer-meta {
-            font-size: 12px;
-            opacity: 0.55;
-            margin-top: 10px;
-            letter-spacing: 0.3px;
-        }
-        .footer .bili-links {
-            margin-top: 8px;
-            font-size: 13px;
-            letter-spacing: 1px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 4px 10px;
-            opacity: 0.85;
-        }
-        .footer .bili-links a {
-            color: #f0e8e0;
-            text-decoration: none;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
-            transition: color 0.2s, border-color 0.2s;
-        }
-        .footer .bili-links a:hover {
-            color: #fff;
-            border-bottom-color: rgba(255, 255, 255, 0.5);
-        }
-        .footer .bili-links .sep {
-            opacity: 0.3;
-        }
+        .footer { margin-top: 32px; padding: 24px 20px 20px; background: var(--footer-bg); border-radius: var(--radius); color: var(--footer-text); transition: background var(--transition), color var(--transition); text-align: center; }
+        .footer .footer-inner { max-width: 700px; margin: 0 auto; }
+        .footer h3 { font-size: 18px; color: #fff; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .footer p { font-size: 14px; line-height: 1.7; opacity: 0.85; margin: 6px 0; }
+        .footer .footer-divider { width: 60px; height: 2px; background: rgba(255,255,255,0.2); margin: 10px auto 12px; border-radius: 4px; }
+        .footer .footer-meta { font-size: 12px; opacity: 0.55; margin-top: 10px; letter-spacing: 0.3px; }
+        .footer .bili-links { margin-top: 8px; font-size: 13px; letter-spacing: 1px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 10px; opacity: 0.85; }
+        .footer .bili-links a { color: #f0e8e0; text-decoration: none; border-bottom: 1px dashed rgba(255,255,255,0.2); transition: color 0.2s, border-color 0.2s; }
+        .footer .bili-links a:hover { color: #fff; border-bottom-color: rgba(255,255,255,0.5); }
+        .footer .bili-links .sep { opacity: 0.3; }
 
         /* ===== 响应式 ===== */
         @media (max-width: 768px) {
-            .header {
-                padding: 14px 16px;
-            }
-            .header h1 {
-                font-size: 18px;
-                gap: 6px;
-            }
-            .header h1 small {
-                font-size: 12px;
-                display: block;
-                width: 100%;
-            }
-            .header .version-tag {
-                font-size: 10px;
-                padding: 2px 10px;
-            }
-            .card {
-                padding: 12px 12px 14px;
-            }
-            .row {
-                gap: 6px;
-            }
-            .row-gap {
-                gap: 8px;
-            }
-            input,
-            select {
-                font-size: 13px;
-                padding: 8px 10px;
-                min-width: 60px;
-                flex: 1 1 100%;
-            }
-            select {
-                flex: 1 1 100%;
-            }
-            button {
-                font-size: 12px;
-                padding: 6px 12px;
-                flex: 1 1 auto;
-            }
-            .card-title {
-                font-size: 15px;
-                flex-wrap: wrap;
-            }
-            .card-title .badge {
-                font-size: 10px;
-            }
-            table {
-                font-size: 12px;
-                min-width: 360px;
-            }
-            th,
-            td {
-                padding: 5px 4px;
-            }
-            .modal-box {
-                padding: 16px 14px 18px;
-            }
-            .footer {
-                padding: 16px 12px;
-            }
-            .footer h3 {
-                font-size: 15px;
-            }
-            .footer p {
-                font-size: 13px;
-            }
-            .footer .bili-links {
-                font-size: 12px;
-                gap: 2px 6px;
-            }
-            .map-modal-box {
-                padding: 12px 12px 16px;
-                max-height: 95vh;
-                max-width: 100%;
-                border-radius: 12px;
-            }
-            .map-canvas-wrap {
-                min-height: 280px;
-            }
-            .map-controls {
-                gap: 8px;
-                padding: 8px 0 4px;
-            }
-            .map-controls input[type="range"] {
-                width: 100px;
-            }
-            .map-legend {
-                font-size: 10px;
-                gap: 4px 8px;
-            }
-            .map-legend .legend-label {
-                font-size: 10px;
-            }
-            .map-modal-header h2 {
-                font-size: 17px;
-            }
-            .header-actions button {
-                padding: 4px 10px;
-                font-size: 11px;
-            }
-            .admin-pwd-wrap {
-                flex-wrap: wrap;
-                width: 100%;
-            }
-            .admin-pwd-wrap input {
-                flex: 1 1 100%;
-            }
-            .admin-pwd-wrap button {
-                flex: 0 1 auto;
-            }
-            .admin-area .admin-header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 6px;
-            }
-            .admin-area .admin-header h4 {
-                font-size: 14px;
-            }
+            .header { padding: 14px 16px; }
+            .header h1 { font-size: 18px; gap: 6px; }
+            .header h1 small { font-size: 12px; display: block; width: 100%; }
+            .header .version-tag { font-size: 10px; padding: 2px 10px; }
+            .card { padding: 12px 12px 14px; }
+            .row { gap: 6px; }
+            .row-gap { gap: 8px; }
+            input, select { font-size: 13px; padding: 8px 10px; min-width: 60px; flex: 1 1 100%; }
+            select { flex: 1 1 100%; }
+            button { font-size: 12px; padding: 6px 12px; flex: 1 1 auto; }
+            .card-title { font-size: 15px; flex-wrap: wrap; }
+            .card-title .badge { font-size: 10px; }
+            table { font-size: 12px; min-width: 360px; }
+            th, td { padding: 5px 4px; }
+            .modal-box { padding: 16px 14px 18px; }
+            .footer { padding: 16px 12px; }
+            .footer h3 { font-size: 15px; }
+            .footer p { font-size: 13px; }
+            .footer .bili-links { font-size: 12px; gap: 2px 6px; }
+            .map-modal-box { padding: 12px 12px 16px; max-height: 95vh; max-width: 100%; border-radius: 12px; }
+            .map-canvas-wrap { min-height: 280px; }
+            .map-controls { gap: 8px; padding: 8px 0 4px; }
+            .map-controls input[type="range"] { width: 100px; }
+            .map-legend { font-size: 10px; gap: 4px 8px; }
+            .map-legend .legend-label { font-size: 10px; }
+            .map-modal-header h2 { font-size: 17px; }
+            .header-actions button { padding: 4px 10px; font-size: 11px; }
+            .admin-pwd-wrap { flex-wrap: wrap; width: 100%; }
+            .admin-pwd-wrap input { flex: 1 1 100%; }
+            .admin-pwd-wrap button { flex: 0 1 auto; }
+            .admin-area .admin-header { flex-direction: column; align-items: stretch; gap: 6px; }
+            .admin-area .admin-header h4 { font-size: 14px; }
         }
         @media (max-width: 400px) {
-            .header h1 {
-                font-size: 15px;
-            }
-            .header .version-tag {
-                font-size: 9px;
-                padding: 1px 8px;
-            }
-            .card-title {
-                font-size: 13px;
-            }
-            .map-canvas-wrap {
-                min-height: 180px;
-            }
-            .map-controls input[type="range"] {
-                width: 60px;
-            }
-            .map-controls label {
-                font-size: 11px;
-            }
-            table {
-                font-size: 10px;
-                min-width: 280px;
-            }
-            th,
-            td {
-                padding: 3px 2px;
-            }
+            .header h1 { font-size: 15px; }
+            .header .version-tag { font-size: 9px; padding: 1px 8px; }
+            .card-title { font-size: 13px; }
+            .map-canvas-wrap { min-height: 180px; }
+            .map-controls input[type="range"] { width: 60px; }
+            .map-controls label { font-size: 11px; }
+            table { font-size: 10px; min-width: 280px; }
+            th, td { padding: 3px 2px; }
         }
 
-        /* ===== scrollbar 美化 ===== */
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--card2);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-light);
-        }
+        /* ===== scrollbar ===== */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: var(--card2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-light); }
 
         /* ===== 辅助 ===== */
-        .flex-between {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .mt-8 {
-            margin-top: 8px;
-        }
-        .mb-8 {
-            margin-bottom: 8px;
-        }
-        .gap-6 {
-            gap: 6px;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .hidden {
-            display: none !important;
-        }
-        .w-full {
-            width: 100%;
-        }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .mt-8 { margin-top: 8px; }
+        .mb-8 { margin-bottom: 8px; }
+        .gap-6 { gap: 6px; }
+        .text-center { text-align: center; }
+        .hidden { display: none !important; }
+        .w-full { width: 100%; }
 
-        /* 主题选择器在弹窗中 */
-        .theme-selector {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 8px 0 4px;
-        }
-        .theme-selector .theme-dot {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            border: 2.5px solid var(--border);
-            cursor: pointer;
-            transition: all 0.25s;
-            position: relative;
-        }
-        .theme-selector .theme-dot:hover {
-            transform: scale(1.12);
-        }
-        .theme-selector .theme-dot.active {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(45, 111, 219, 0.25);
-        }
-        .theme-selector .theme-dot .check {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 16px;
+        .theme-selector { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0 4px; }
+        .theme-selector .theme-dot { width: 34px; height: 34px; border-radius: 50%; border: 2.5px solid var(--border); cursor: pointer; transition: all 0.25s; position: relative; }
+        .theme-selector .theme-dot:hover { transform: scale(1.12); }
+        .theme-selector .theme-dot.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,111,219,0.25); }
+        .theme-selector .theme-dot .check { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 16px; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.4); display: none; }
+        .theme-selector .theme-dot.active .check { display: block; }
+
+        /* Beta 标签 */
+        .beta-tag {
+            display: inline-block;
+            background: #f39c12;
             color: #fff;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-            display: none;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 8px;
+            border-radius: 12px;
+            margin-left: 6px;
+            vertical-align: middle;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
-        .theme-selector .theme-dot.active .check {
-            display: block;
+        .beta-tag.warning {
+            background: #e67e22;
         }
     </style>
 </head>
@@ -1076,18 +258,18 @@
             <div class="sub">欢迎使用五洲铁路模组服务器官方线路车站管理平台！</div>
             <div class="log-area">
                 <strong>📖 使用说明</strong>
-                <p>🔍 <b>查询区</b> — 搜索站点/线路/状态，浏览全部车站数据，点击「显示线路图」查看基于XZ坐标的线路图</p>
+                <p>🔍 <b>查询区</b> — 搜索站点/线路/状态，浏览全部车站数据，点击「显示线路图 <span class="beta-tag">Beta</span>」查看拓扑线路图</p>
                 <p>✏️ <b>录入区</b> — 每次只添加一条线路，换乘站需多次录入（同一站名和坐标，不同线路）</p>
                 <p>⚙️ <b>管理员工具</b> — 批量导入、导出JSON、管理本地数据（需密码）</p>
                 <p>💡 本地新增站点仅保存在浏览器，提交文本发给管理员即可</p>
-                <p>🗺️ <b>线路图</b> — 基于XZ坐标映射，保留真实方位，换乘站显示并排多环</p>
+                <p>🗺️ <b>线路图</b> — 等距拓扑布局，换乘站并排多环，Beta版功能可能不稳定</p>
                 <br>
-                <strong>📌 更新日志 V3.0_BETA2</strong>
-                <p>✦ 🔍 修复搜索功能，确保所有站点（包括“城西枢纽”）可被检索</p>
-                <p>✦ 🔄 换乘站录入改为单线路多次添加，自动合并线路列表</p>
-                <p>✦ 🎨 换乘站标识为并排多环，环数与线路数一致</p>
-                <p>✦ 🗺️ 线路图基于XZ坐标直接映射，保留地理方位</p>
-                <p>✦ 📝 版本号升级至 V3.0_BETA2</p>
+                <strong>📌 更新日志 V3.0_BETA4</strong>
+                <p>✦ 📦 导出JSON优化为GitHub直接替换格式（与公共库完全兼容）</p>
+                <p>✦ 🔗 公共库数据源切换为 GitHub 直连，实时获取最新数据</p>
+                <p>✦ 🧪 线路图功能标记为 Beta 版（不稳定），增加醒目提示</p>
+                <p>✦ 🐛 修复缩放滑杆导致窗口异常放大的问题</p>
+                <p>✦ 📝 版本号升级至 V3.0_BETA4</p>
             </div>
             <div class="id-input-wrap">
                 <input id="entryIdInput" placeholder="请输入你的游戏ID / 昵称" autofocus>
@@ -1104,7 +286,7 @@
         <header class="header">
             <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
                 <h1>🚆 五洲铁路模组服务器 <small>线路车站录入系统</small></h1>
-                <span class="version-tag">V3.0_BETA2</span>
+                <span class="version-tag">V3.0_BETA4</span>
             </div>
             <div class="header-actions">
                 <button id="themeToggleBtn" title="切换深色/浅色">🌓 深色</button>
@@ -1119,7 +301,7 @@
                 🔍 查询区
                 <span class="badge">公共 + 本地</span>
                 <span style="flex:1;"></span>
-                <button id="showMapBtn" class="map-btn small">🗺️ 显示线路图</button>
+                <button id="showMapBtn" class="map-btn small">🗺️ 显示线路图 <span class="beta-tag">Beta</span></button>
                 <button id="refreshPublic" class="small" style="background:var(--accent);">🔄 刷新公共库</button>
                 <button id="deduplicateBtn" class="small orange">🔁 去重本地</button>
             </div>
@@ -1129,14 +311,7 @@
             <div class="table-wrap">
                 <table>
                     <thead>
-                        <tr>
-                            <th>站点名称</th>
-                            <th>线路</th>
-                            <th>X</th>
-                            <th>Z</th>
-                            <th>建设状态</th>
-                            <th>操作</th>
-                        </tr>
+                        <tr><th>站点名称</th><th>线路</th><th>X</th><th>Z</th><th>建设状态</th><th>操作</th></tr>
                     </thead>
                     <tbody id="queryTableBody"></tbody>
                 </table>
@@ -1207,24 +382,16 @@
                     <div style="margin-bottom:14px;border-top:1px solid var(--border);padding-top:14px;">
                         <div style="font-weight:500;font-size:14px;margin-bottom:6px;">📦 数据导出</div>
                         <div class="row">
-                            <button id="exportFullJsonBtn" class="orange">📄 导出完整JSON (GitHub)</button>
+                            <button id="exportFullJsonBtn" class="orange">📄 导出完整JSON（GitHub替换）</button>
                             <button id="exportTextBtn" class="gray">📃 导出文本清单</button>
                         </div>
+                        <div style="font-size:12px;color:var(--text-light);margin-top:4px;">💡 导出的JSON格式与公共库完全兼容，可直接替换仓库中的 station.json</div>
                     </div>
                     <div style="border-top:1px solid var(--border);padding-top:14px;">
                         <div style="font-weight:500;font-size:14px;margin-bottom:6px;">📊 全站数据表（同步查询区）</div>
                         <div class="table-wrap">
                             <table>
-                                <thead>
-                                    <tr>
-                                        <th>站点名称</th>
-                                        <th>线路</th>
-                                        <th>X</th>
-                                        <th>Z</th>
-                                        <th>建设状态</th>
-                                        <th>操作</th>
-                                    </tr>
-                                </thead>
+                                <thead><tr><th>站点名称</th><th>线路</th><th>X</th><th>Z</th><th>建设状态</th><th>操作</th></tr></thead>
                                 <tbody id="adminTableBody"></tbody>
                             </table>
                         </div>
@@ -1233,7 +400,7 @@
             </div>
         </section>
 
-        <!-- ===== 底部 了解我们 ===== -->
+        <!-- ===== 底部 ===== -->
         <footer class="footer animate-in animate-in-d3">
             <div class="footer-inner">
                 <h3>🚆 了解我们 · 五洲铁路模组服务器</h3>
@@ -1249,7 +416,7 @@
                     <span class="sep">&</span>
                     <a href="https://space.bilibili.com/3546698959816732" target="_blank" rel="noopener">五洲社</a>
                 </div>
-                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V3.0_BETA2</div>
+                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V3.0_BETA4</div>
             </div>
         </footer>
     </div>
@@ -1259,7 +426,7 @@
         <div class="modal-box">
             <h3>ℹ️ 工具信息 & 主题配色</h3>
             <p style="margin:6px 0 2px;"><strong>开发者：</strong>DeepSeek · 豆包 · 陈之自信</p>
-            <p style="margin:2px 0;"><strong>当前版本：</strong>V3.0_BETA2</p>
+            <p style="margin:2px 0;"><strong>当前版本：</strong>V3.0_BETA4</p>
             <p style="margin:2px 0 10px;"><strong>版权归属：</strong>© 五洲铁路模组服务器 2026</p>
             <div style="margin:10px 0 12px;">
                 <div style="font-weight:500;font-size:14px;margin-bottom:6px;">🎨 切换主题配色</div>
@@ -1273,12 +440,12 @@
                 </div>
             </div>
             <div style="background:var(--card2);border-radius:10px;padding:10px 14px;border:1px solid var(--border);font-size:13px;max-height:180px;overflow-y:auto;">
-                <strong>📌 更新日志 V3.0_BETA2</strong>
-                <p style="margin:2px 0;">✦ 🔍 修复搜索功能，确保所有站点（包括“城西枢纽”）可被检索</p>
-                <p style="margin:2px 0;">✦ 🔄 换乘站录入改为单线路多次添加，自动合并线路列表</p>
-                <p style="margin:2px 0;">✦ 🎨 换乘站标识为并排多环，环数与线路数一致</p>
-                <p style="margin:2px 0;">✦ 🗺️ 线路图基于XZ坐标直接映射，保留地理方位</p>
-                <p style="margin:2px 0;">✦ 📝 版本号升级至 V3.0_BETA2</p>
+                <strong>📌 更新日志 V3.0_BETA4</strong>
+                <p style="margin:2px 0;">✦ 📦 导出JSON优化为GitHub直接替换格式（与公共库完全兼容）</p>
+                <p style="margin:2px 0;">✦ 🔗 公共库数据源切换为 GitHub 直连，实时获取最新数据</p>
+                <p style="margin:2px 0;">✦ 🧪 线路图功能标记为 Beta 版（不稳定），增加醒目提示</p>
+                <p style="margin:2px 0;">✦ 🐛 修复缩放滑杆导致窗口异常放大的问题</p>
+                <p style="margin:2px 0;">✦ 📝 版本号升级至 V3.0_BETA4</p>
             </div>
             <button class="modal-close-btn" id="closeAbout">关闭</button>
         </div>
@@ -1288,7 +455,7 @@
     <div class="map-modal-mask" id="mapModal">
         <div class="map-modal-box">
             <div class="map-modal-header">
-                <h2>🚇 线路图 <span style="font-size:14px;font-weight:400;color:var(--text-light);">— 基于XZ坐标，保留方位</span></h2>
+                <h2>🚇 线路图 <span style="font-size:14px;font-weight:400;color:var(--text-light);">— 等距拓扑 <span class="beta-tag warning">Beta</span></span></h2>
                 <button class="close-btn" id="closeMapBtn">✕</button>
             </div>
             <div class="map-canvas-wrap">
@@ -1301,6 +468,9 @@
                 <span style="font-size:12px;color:var(--text-light);" id="mapStats">站点: 0 | 线路: 0</span>
             </div>
             <div class="map-legend" id="mapLegend"></div>
+            <div style="font-size:12px;color:var(--text-light);padding:4px 0 2px;border-top:1px solid var(--border);margin-top:4px;text-align:center;">
+                ⚠️ 此功能为 Beta 测试版，可能不稳定，请谨慎使用
+            </div>
         </div>
     </div>
 
@@ -1314,41 +484,19 @@
         let currentUserId = '';
         let adminUnlocked = false;
 
-        // DOM 引用
         const $ = id => document.getElementById(id);
-        const sName = $('sName'),
-            sLine = $('sLine'),
-            sX = $('sX'),
-            sZ = $('sZ'),
-            sStatus = $('sStatus');
-        const queryTbody = $('queryTableBody');
-        const adminTbody = $('adminTableBody');
-        const previewText = $('previewText');
-        const previewCount = $('previewCount');
-        const msg = $('msg');
-        const searchInput = $('searchInput');
-        const entryModal = $('entryModal');
-        const entryIdInput = $('entryIdInput');
-        const entryConfirmBtn = $('entryConfirmBtn');
-        const entryError = $('entryError');
-        const mainApp = $('mainApp');
-        const aboutMask = $('aboutMask');
-        const adminPanel = $('adminPanel');
-        const adminPwdInput = $('adminPwdInput');
-        const adminUnlockBtn = $('adminUnlockBtn');
-        const adminLockStatus = $('adminLockStatus');
-        const adminContent = $('adminContent');
-        const adminImportText = $('adminImportText');
-        const parseImportBtn = $('parseImportBtn');
-        const toggleAdminBtn = $('toggleAdminBtn');
-        const showMapBtn = $('showMapBtn');
-        const mapModal = $('mapModal');
-        const closeMapBtn = $('closeMapBtn');
-        const mapCanvas = $('mapCanvas');
-        const zoomSlider = $('zoomSlider');
-        const zoomVal = $('zoomVal');
-        const mapStats = $('mapStats');
-        const mapLegend = $('mapLegend');
+        const sName = $('sName'), sLine = $('sLine'), sX = $('sX'), sZ = $('sZ'), sStatus = $('sStatus');
+        const queryTbody = $('queryTableBody'), adminTbody = $('adminTableBody');
+        const previewText = $('previewText'), previewCount = $('previewCount');
+        const msg = $('msg'), searchInput = $('searchInput');
+        const entryModal = $('entryModal'), entryIdInput = $('entryIdInput'), entryConfirmBtn = $('entryConfirmBtn'), entryError = $('entryError');
+        const mainApp = $('mainApp'), aboutMask = $('aboutMask');
+        const adminPanel = $('adminPanel'), adminPwdInput = $('adminPwdInput'), adminUnlockBtn = $('adminUnlockBtn');
+        const adminLockStatus = $('adminLockStatus'), adminContent = $('adminContent'), adminImportText = $('adminImportText');
+        const parseImportBtn = $('parseImportBtn'), toggleAdminBtn = $('toggleAdminBtn');
+        const showMapBtn = $('showMapBtn'), mapModal = $('mapModal'), closeMapBtn = $('closeMapBtn');
+        const mapCanvas = $('mapCanvas'), zoomSlider = $('zoomSlider'), zoomVal = $('zoomVal');
+        const mapStats = $('mapStats'), mapLegend = $('mapLegend');
 
         // ============================================================
         //  消息
@@ -1357,27 +505,19 @@
             msg.textContent = text;
             msg.className = isError ? 'msg-error' : 'msg-success';
             clearTimeout(msg._timer);
-            msg._timer = setTimeout(() => { msg.textContent = '';
-                msg.className = ''; }, 3000);
+            msg._timer = setTimeout(() => { msg.textContent = ''; msg.className = ''; }, 3000);
         }
 
         // ============================================================
-        //  强制ID弹窗 & 记忆功能
+        //  强制ID弹窗 & 记忆
         // ============================================================
         window.addEventListener('DOMContentLoaded', () => {
             const savedId = localStorage.getItem('wrms_user_id');
-            if (savedId) {
-                entryIdInput.value = savedId;
-            }
+            if (savedId) entryIdInput.value = savedId;
         });
-
         entryConfirmBtn.onclick = () => {
             const id = entryIdInput.value.trim();
-            if (!id) {
-                entryError.textContent = '⚠️ 请填写你的游戏ID / 昵称';
-                entryIdInput.focus();
-                return;
-            }
+            if (!id) { entryError.textContent = '⚠️ 请填写你的游戏ID / 昵称'; entryIdInput.focus(); return; }
             localStorage.setItem('wrms_user_id', id);
             currentUserId = id;
             entryModal.classList.remove('active');
@@ -1389,14 +529,15 @@
         setTimeout(() => entryIdInput.focus(), 300);
 
         // ============================================================
-        //  加载公共数据
+        //  加载公共数据 (改为 GitHub 直连)
         // ============================================================
         async function loadPublicData() {
             try {
-                const res = await fetch('https://cdn.jsdelivr.net/gh/chenzhizixin2010/WRMS_stations@main/station.json');
+                // 使用 GitHub raw 直连，不再使用 CDN
+                const res = await fetch('https://raw.githubusercontent.com/chenzhizixin2010/WRMS_stations/main/station.json');
                 publicList = await res.json();
                 combineData();
-                showMsg('✅ 公共站点加载完成');
+                showMsg('✅ 公共站点加载完成 (GitHub直连)');
             } catch (e) {
                 showMsg('⚠️ 公共库加载失败，请检查网络或仓库地址', true);
                 console.error(e);
@@ -1409,18 +550,14 @@
         //  合并 & 渲染
         // ============================================================
         function combineData() {
-            // 合并公共和本地，本地覆盖公共（如有冲突，以本地为准）
             const merged = [...publicList];
             localList.forEach(localItem => {
-                const idx = merged.findIndex(p => p.name === localItem.name && p.x === localItem.x && p.z === localItem
-                    .z);
+                const idx = merged.findIndex(p => p.name === localItem.name && p.x === localItem.x && p.z === localItem.z);
                 if (idx >= 0) {
-                    // 合并线路（去重）
                     const existingLines = merged[idx].lines || [];
                     const newLines = localItem.lines || [];
                     const combined = [...new Set([...existingLines, ...newLines])];
                     merged[idx].lines = combined;
-                    // 状态以本地为准
                     merged[idx].status = localItem.status;
                 } else {
                     merged.push({ ...localItem });
@@ -1432,13 +569,7 @@
         }
 
         function getStatusClass(status) {
-            const map = {
-                '规划中': 'status-plan',
-                '在建中': 'status-build',
-                '已建成': 'status-done',
-                '停运': 'status-stop',
-                '已废弃': 'status-remove'
-            };
+            const map = { '规划中': 'status-plan', '在建中': 'status-build', '已建成': 'status-done', '停运': 'status-stop', '已废弃': 'status-remove' };
             return map[status] || '';
         }
 
@@ -1458,20 +589,19 @@
                 let opHtml = '';
                 if (isLocal && showDelete) {
                     const li = localList.findIndex(v => v.name === item.name && v.x === item.x && v.z === item.z);
-                    opHtml =
-                        `<button class="small red delLocal" data-li="${li}">删除本地</button>`;
+                    opHtml = `<button class="small red delLocal" data-li="${li}">删除本地</button>`;
                 } else {
                     opHtml = `<span style="color:var(--text-light);font-size:12px;">${isLocal ? '本地' : '公共'}</span>`;
                 }
                 const lineDisplay = (item.lines || []).join(', ') || '未定';
                 tr.innerHTML = `
-              <td>${item.name || ''}</td>
-              <td>${lineDisplay}</td>
-              <td>${item.x || ''}</td>
-              <td>${item.z || ''}</td>
-              <td class="${cls}">${item.status || '规划中'}</td>
-              <td>${opHtml}</td>
-            `;
+                    <td>${item.name || ''}</td>
+                    <td>${lineDisplay}</td>
+                    <td>${item.x || ''}</td>
+                    <td>${item.z || ''}</td>
+                    <td class="${cls}">${item.status || '规划中'}</td>
+                    <td>${opHtml}</td>
+                `;
                 tbody.appendChild(tr);
             });
             tbody.querySelectorAll('.delLocal').forEach(btn => {
@@ -1493,13 +623,11 @@
 
         function updatePreview() {
             let str = '===== 本地新增站点清单 =====\n';
-            if (localList.length === 0) {
-                str += '（暂无本地新增站点）\n';
-            } else {
+            if (localList.length === 0) str += '（暂无本地新增站点）\n';
+            else {
                 localList.forEach(s => {
                     const lineDisplay = (s.lines || []).join(', ') || '未定';
-                    str +=
-                        `【${lineDisplay}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || '规划中'}\n`;
+                    str += `【${lineDisplay}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || '规划中'}\n`;
                 });
             }
             previewText.value = str;
@@ -1524,33 +652,26 @@
                 showMsg('⚠️ 站点名称、线路、X、Z坐标均不能为空', true);
                 return;
             }
-            // 查找是否已存在相同名称和坐标的本地记录
             let existing = localList.find(v => v.name === name && v.x === x && v.z === z);
             if (existing) {
-                // 追加线路（去重）
                 if (!existing.lines) existing.lines = [];
                 if (!existing.lines.includes(line)) {
                     existing.lines.push(line);
-                    // 更新状态（以最新添加为准）
                     existing.status = status;
                     showMsg(`✅ 已为「${name}」追加线路「${line}」`);
                 } else {
                     showMsg(`⚠️ 该站点已包含线路「${line}」`, true);
                 }
             } else {
-                // 新建
                 localList.push({ name, lines: [line], x, z, status });
                 showMsg(`✅ 已添加「${name}」至本地列表`);
             }
-            sName.value = '';
-            sLine.value = '';
-            sX.value = '';
-            sZ.value = '';
+            sName.value = ''; sLine.value = ''; sX.value = ''; sZ.value = '';
             combineData();
         };
 
         // ============================================================
-        //  去重本地（按名称+坐标合并，线路取并集）
+        //  去重本地
         // ============================================================
         $('deduplicateBtn').onclick = () => {
             const map = new Map();
@@ -1560,7 +681,6 @@
                     const existing = map.get(key);
                     const combined = [...new Set([...existing.lines, ...item.lines])];
                     existing.lines = combined;
-                    // 状态取最新的（以先出现的为准，可优化）
                 } else {
                     map.set(key, { ...item });
                 }
@@ -1576,7 +696,7 @@
         $('refreshPublic').onclick = loadPublicData;
 
         // ============================================================
-        //  导出文本清单（管理员工具保留）
+        //  导出文本清单（管理员工具）
         // ============================================================
         $('exportTextBtn').onclick = () => {
             let str = '===== 全部站点清单 =====\n';
@@ -1584,9 +704,7 @@
                 const lineDisplay = (s.lines || []).join(', ') || '未定';
                 str += `【${lineDisplay}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || '规划中'}\n`;
             });
-            navigator.clipboard.writeText(str).then(() => {
-                showMsg('✅ 文本清单已复制');
-            }).catch(() => {
+            navigator.clipboard.writeText(str).then(() => showMsg('✅ 文本清单已复制')).catch(() => {
                 const ta = document.createElement('textarea');
                 ta.value = str;
                 document.body.appendChild(ta);
@@ -1598,23 +716,17 @@
         };
 
         // ============================================================
-        //  复制提交文本（移至录入区）
+        //  复制提交文本
         // ============================================================
         $('copySubmitBtn').onclick = () => {
-            if (localList.length === 0) {
-                showMsg('⚠️ 暂无本地新增站点', true);
-                return;
-            }
+            if (localList.length === 0) { showMsg('⚠️ 暂无本地新增站点', true); return; }
             const uid = currentUserId || '未填写ID';
             let text = `【站点提交清单 | 提交人：${uid}】\n`;
             localList.forEach(item => {
                 const lineDisplay = (item.lines || []).join(', ') || '未定';
-                text +=
-                    `${item.name} | ${lineDisplay} | X:${item.x} Z:${item.z} | ${item.status || '规划中'}\n`;
+                text += `${item.name} | ${lineDisplay} | X:${item.x} Z:${item.z} | ${item.status || '规划中'}\n`;
             });
-            navigator.clipboard.writeText(text).then(() => {
-                showMsg('✅ 提交文本已复制，可直接发送管理员');
-            }).catch(() => {
+            navigator.clipboard.writeText(text).then(() => showMsg('✅ 提交文本已复制，可直接发送管理员')).catch(() => {
                 const ta = document.createElement('textarea');
                 ta.value = text;
                 document.body.appendChild(ta);
@@ -1626,13 +738,10 @@
         };
 
         // ============================================================
-        //  清空本地新增（移至录入区）
+        //  清空本地新增
         // ============================================================
         $('clearLocalBtn').onclick = () => {
-            if (localList.length === 0) {
-                showMsg('⚠️ 本地无新增站点', true);
-                return;
-            }
+            if (localList.length === 0) { showMsg('⚠️ 本地无新增站点', true); return; }
             if (confirm('确认清空所有本地新增站点？')) {
                 localList = [];
                 combineData();
@@ -1641,10 +750,10 @@
         };
 
         // ============================================================
-        //  导出完整JSON（管理员工具保留）
+        //  导出完整JSON（GitHub替换格式）
         // ============================================================
         $('exportFullJsonBtn').onclick = () => {
-            // 导出全部站点（合并后的）
+            // 导出全部站点（合并后的），格式与公共库完全一致
             const exportData = allList.map(item => ({
                 name: item.name,
                 lines: item.lines || [],
@@ -1653,9 +762,7 @@
                 status: item.status || '规划中'
             }));
             const json = JSON.stringify(exportData, null, 2);
-            navigator.clipboard.writeText(json).then(() => {
-                showMsg('✅ 完整JSON已复制，可直接替换 station.json');
-            }).catch(() => {
+            navigator.clipboard.writeText(json).then(() => showMsg('✅ 完整JSON已复制，可直接替换 station.json')).catch(() => {
                 const ta = document.createElement('textarea');
                 ta.value = json;
                 document.body.appendChild(ta);
@@ -1670,7 +777,6 @@
         //  管理员工具 — 密码解锁
         // ============================================================
         const ADMIN_PWD = 'WRMS2026';
-
         function updateAdminUI() {
             if (adminUnlocked) {
                 adminContent.style.display = 'block';
@@ -1683,82 +789,51 @@
                 adminLockStatus.style.color = 'var(--text-light)';
             }
         }
-
         adminUnlockBtn.onclick = () => {
             const pwd = adminPwdInput.value.trim();
-            if (pwd === ADMIN_PWD) {
-                adminUnlocked = true;
-                updateAdminUI();
-                showMsg('🔓 管理员已解锁');
-            } else {
-                showMsg('⚠️ 密码错误', true);
-                adminPwdInput.value = '';
-                adminPwdInput.focus();
-            }
+            if (pwd === ADMIN_PWD) { adminUnlocked = true; updateAdminUI(); showMsg('🔓 管理员已解锁'); }
+            else { showMsg('⚠️ 密码错误', true); adminPwdInput.value = ''; adminPwdInput.focus(); }
         };
         adminPwdInput.addEventListener('keydown', e => { if (e.key === 'Enter') adminUnlockBtn.click(); });
-
         let adminOpen = false;
         toggleAdminBtn.onclick = () => {
             adminOpen = !adminOpen;
             adminPanel.classList.toggle('open', adminOpen);
             toggleAdminBtn.textContent = adminOpen ? '🔒 收起' : '🔓 展开 / 折叠';
-            if (!adminOpen) {
-                adminUnlocked = false;
-                updateAdminUI();
-            }
+            if (!adminOpen) { adminUnlocked = false; updateAdminUI(); }
         };
 
         // ============================================================
         //  管理员批量导入解析
         // ============================================================
         parseImportBtn.onclick = () => {
-            if (!adminUnlocked) {
-                showMsg('⚠️ 请先解锁管理员工具', true);
-                return;
-            }
+            if (!adminUnlocked) { showMsg('⚠️ 请先解锁管理员工具', true); return; }
             const raw = adminImportText.value.trim();
-            if (!raw) {
-                showMsg('⚠️ 请粘贴玩家提交的站点文本', true);
-                return;
-            }
+            if (!raw) { showMsg('⚠️ 请粘贴玩家提交的站点文本', true); return; }
             const lines = raw.split('\n');
-            let addCount = 0,
-                updateCount = 0;
+            let addCount = 0, updateCount = 0;
             lines.forEach(line => {
                 const l = line.trim();
                 if (!l || l.startsWith('【')) return;
                 const parts = l.split('|').map(p => p.trim());
                 if (parts.length < 4) return;
-                const name = parts[0];
-                const lineName = parts[1];
-                const xzRaw = parts[2];
-                const status = parts[3];
-                const xMatch = xzRaw.match(/X:([\d\-]+)/);
-                const zMatch = xzRaw.match(/Z:([\d\-]+)/);
+                const name = parts[0], lineName = parts[1], xzRaw = parts[2], status = parts[3];
+                const xMatch = xzRaw.match(/X:([\d\-]+)/), zMatch = xzRaw.match(/Z:([\d\-]+)/);
                 if (!xMatch || !zMatch) return;
-                const x = xMatch[1];
-                const z = zMatch[1];
-                // 查找公共库中是否存在
+                const x = xMatch[1], z = zMatch[1];
                 const targetKey = `${name}|${x}|${z}`;
                 const existIdx = publicList.findIndex(item => `${item.name}|${item.x}|${item.z}` === targetKey);
                 if (existIdx > -1) {
-                    // 更新状态和线路（追加）
                     const existing = publicList[existIdx];
                     if (!existing.lines) existing.lines = [];
-                    if (!existing.lines.includes(lineName)) {
-                        existing.lines.push(lineName);
-                    }
+                    if (!existing.lines.includes(lineName)) existing.lines.push(lineName);
                     existing.status = status;
                     updateCount++;
                 } else {
-                    // 新增到本地
                     const localExist = localList.find(v => v.name === name && v.x === x && v.z === z);
                     if (localExist) {
                         if (!localExist.lines) localExist.lines = [];
-                        if (!localExist.lines.includes(lineName)) {
-                            localExist.lines.push(lineName);
-                        }
+                        if (!localExist.lines.includes(lineName)) localExist.lines.push(lineName);
                         localExist.status = status;
                     } else {
                         localList.push({ name, lines: [lineName], x, z, status });
@@ -1766,7 +841,6 @@
                     addCount++;
                 }
             });
-            // 去重本地
             const map = new Map();
             localList.forEach(item => {
                 const key = `${item.name}|${item.x}|${item.z}`;
@@ -1788,45 +862,21 @@
         //  主题切换
         // ============================================================
         let currentTheme = 'default';
-
         function applyTheme(theme) {
-            document.body.className = document.body.className
-                .split(' ')
-                .filter(c => !c.startsWith('theme-'))
-                .join(' ');
-            if (theme !== 'default') {
-                document.body.classList.add(`theme-${theme}`);
-            }
+            document.body.className = document.body.className.split(' ').filter(c => !c.startsWith('theme-')).join(' ');
+            if (theme !== 'default') document.body.classList.add(`theme-${theme}`);
             currentTheme = theme;
-            document.querySelectorAll('.theme-dot').forEach(dot => {
-                dot.classList.toggle('active', dot.dataset.theme === theme);
-            });
+            document.querySelectorAll('.theme-dot').forEach(dot => dot.classList.toggle('active', dot.dataset.theme === theme));
             const btn = $('themeToggleBtn');
-            if (theme === 'dark') {
-                btn.innerHTML = '☀️ 浅色';
-            } else {
-                btn.innerHTML = '🌓 深色';
-            }
+            btn.innerHTML = theme === 'dark' ? '☀️ 浅色' : '🌓 深色';
             localStorage.setItem('wrms_theme', theme);
         }
-
-        $('themeToggleBtn').onclick = () => {
-            const next = currentTheme === 'dark' ? 'default' : 'dark';
-            applyTheme(next);
-        };
-
+        $('themeToggleBtn').onclick = () => { const next = currentTheme === 'dark' ? 'default' : 'dark'; applyTheme(next); };
         document.querySelectorAll('.theme-dot').forEach(dot => {
-            dot.onclick = () => {
-                const theme = dot.dataset.theme;
-                applyTheme(theme);
-                showMsg(`🎨 已切换至 ${dot.title || theme}`);
-            };
+            dot.onclick = () => { const theme = dot.dataset.theme; applyTheme(theme); showMsg(`🎨 已切换至 ${dot.title || theme}`); };
         });
-
         const savedTheme = localStorage.getItem('wrms_theme');
-        if (savedTheme && savedTheme !== 'default') {
-            applyTheme(savedTheme);
-        }
+        if (savedTheme && savedTheme !== 'default') applyTheme(savedTheme);
 
         // ============================================================
         //  关于弹窗 & 地名生成器
@@ -1834,13 +884,10 @@
         $('aboutBtn').onclick = () => { aboutMask.style.display = 'flex'; };
         $('closeAbout').onclick = () => { aboutMask.style.display = 'none'; };
         aboutMask.onclick = (e) => { if (e.target === aboutMask) aboutMask.style.display = 'none'; };
-
-        $('mapGenBtn').onclick = () => {
-            window.open('https://wrmspng.github.io', '_blank');
-        };
+        $('mapGenBtn').onclick = () => { window.open('https://wrmspng.github.io', '_blank'); };
 
         // ============================================================
-        //  线路图功能 (基于XZ坐标映射，保留方位，换乘站多环)
+        //  线路图功能 (等距拓扑布局，修复缩放)
         // ============================================================
         const LINE_COLORS = [
             '#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6',
@@ -1851,11 +898,8 @@
 
         function getLineColor(lineName) {
             let hash = 0;
-            for (let i = 0; i < lineName.length; i++) {
-                hash = lineName.charCodeAt(i) + ((hash << 5) - hash);
-            }
-            const idx = Math.abs(hash) % LINE_COLORS.length;
-            return LINE_COLORS[idx];
+            for (let i = 0; i < lineName.length; i++) hash = lineName.charCodeAt(i) + ((hash << 5) - hash);
+            return LINE_COLORS[Math.abs(hash) % LINE_COLORS.length];
         }
 
         function drawLineChart(scale) {
@@ -1879,218 +923,184 @@
             ctx.fillStyle = bg;
             ctx.fillRect(0, 0, w, h);
 
-            // 获取有效数据 (必须有 x, z)
-            const data = allList.filter(s => s.name && s.x !== undefined && s.z !== undefined && !isNaN(parseFloat(s.x)) && !
-                isNaN(parseFloat(s.z)));
+            const data = allList.filter(s => s.name && s.lines && s.lines.length > 0);
             if (data.length === 0) {
                 ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-light').trim() || '#999';
                 ctx.font = '18px sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('暂无有效坐标数据，请添加站点', w / 2, h / 2);
+                ctx.fillText('暂无站点数据，请添加站点', w / 2, h / 2);
                 mapStats.textContent = '站点: 0 | 线路: 0';
                 mapLegend.innerHTML = '';
                 return;
             }
 
-            // 计算XZ范围
-            let minX = Infinity,
-                maxX = -Infinity,
-                minZ = Infinity,
-                maxZ = -Infinity;
+            // 按线路分组
+            const groups = {};
             data.forEach(s => {
-                const x = parseFloat(s.x),
-                    z = parseFloat(s.z);
-                if (!isNaN(x) && !isNaN(z)) {
-                    if (x < minX) minX = x;
-                    if (x > maxX) maxX = x;
-                    if (z < minZ) minZ = z;
-                    if (z > maxZ) maxZ = z;
-                }
+                s.lines.forEach(line => {
+                    if (!groups[line]) groups[line] = [];
+                    groups[line].push(s);
+                });
             });
-            if (!isFinite(minX) || !isFinite(maxX) || !isFinite(minZ) || !isFinite(maxZ)) {
+            Object.keys(groups).forEach(line => {
+                groups[line].sort((a, b) => a.name.localeCompare(b.name));
+            });
+
+            const lines = Object.keys(groups);
+            const lineCount = lines.length;
+            if (lineCount === 0) {
                 mapStats.textContent = '站点: 0 | 线路: 0';
                 mapLegend.innerHTML = '';
                 return;
             }
 
-            const rangeX = maxX - minX || 1;
-            const rangeZ = maxZ - minZ || 1;
-            const padX = rangeX * 0.1;
-            const padZ = rangeZ * 0.1;
-            minX -= padX;
-            maxX += padX;
-            minZ -= padZ;
-            maxZ += padZ;
+            // 计算每个站点参与的线路数
+            const stationLinesSet = {};
+            data.forEach(s => {
+                const key = s.name;
+                if (!stationLinesSet[key]) stationLinesSet[key] = new Set();
+                s.lines.forEach(l => stationLinesSet[key].add(l));
+            });
 
             const padding = { top: 40, bottom: 30, left: 60, right: 40 };
             const availableW = w - padding.left - padding.right;
             const availableH = h - padding.top - padding.bottom;
 
+            let maxStations = 0;
+            Object.values(groups).forEach(arr => { if (arr.length > maxStations) maxStations = arr.length; });
+            maxStations = Math.max(maxStations, 2);
+
             const zoom = scale || 1.0;
-            const scaleX = availableW / (maxX - minX);
-            const scaleY = availableH / (maxZ - minZ);
-            const globalScale = Math.min(scaleX, scaleY) * zoom;
+            const spacingX = (availableW / (maxStations + 1)) * zoom;
+            const spacingY = (availableH / (lineCount + 1)) * zoom;
 
-            const midX = (minX + maxX) / 2;
-            const midZ = (minZ + maxZ) / 2;
+            const totalWidth = (maxStations - 1) * spacingX;
+            const totalHeight = (lineCount - 1) * spacingY;
+            const offsetX = padding.left + (availableW - totalWidth) / 2;
+            const offsetY = padding.top + (availableH - totalHeight) / 2;
 
-            const mapX = (x) => padding.left + (x - midX) * globalScale + availableW / 2;
-            const mapZ = (z) => padding.top + (z - midZ) * globalScale + availableH / 2;
-
-            // 绘制网格（极淡）
+            // 网格
             ctx.strokeStyle = 'rgba(200,200,200,0.15)';
             ctx.lineWidth = 0.5;
             for (let i = 0; i <= 10; i++) {
                 const x = padding.left + (i / 10) * availableW;
-                ctx.beginPath();
-                ctx.moveTo(x, padding.top);
-                ctx.lineTo(x, h - padding.bottom);
-                ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(x, padding.top); ctx.lineTo(x, h - padding.bottom); ctx.stroke();
                 const y = padding.top + (i / 10) * availableH;
-                ctx.beginPath();
-                ctx.moveTo(padding.left, y);
-                ctx.lineTo(w - padding.right, y);
-                ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(w - padding.right, y); ctx.stroke();
             }
 
-            // 收集所有线路
-            const allLines = new Set();
-            data.forEach(s => {
-                (s.lines || []).forEach(l => allLines.add(l));
-            });
-            const linesArray = Array.from(allLines);
-
-            // 为每个站点构建线路列表
-            const stationLines = {};
-            data.forEach(s => {
-                const key = s.name;
-                if (!stationLines[key]) stationLines[key] = new Set();
-                (s.lines || []).forEach(l => stationLines[key].add(l));
-            });
-
-            // 绘制线路（先绘制线，再绘制站点）
-            linesArray.forEach(lineName => {
-                const stations = data.filter(s => (s.lines || []).includes(lineName));
-                if (stations.length < 2) return;
-                // 按名称排序，保证一致
-                stations.sort((a, b) => a.name.localeCompare(b.name));
+            // 绘制线路
+            lines.forEach((lineName, li) => {
+                const stations = groups[lineName];
                 const color = getLineColor(lineName);
+                const yPos = offsetY + li * spacingY;
 
                 ctx.beginPath();
                 ctx.strokeStyle = color;
-                ctx.lineWidth = 4;
+                ctx.lineWidth = 5;
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
 
-                stations.forEach((s, idx) => {
-                    const cx = mapX(parseFloat(s.x));
-                    const cy = mapZ(parseFloat(s.z));
-                    if (idx === 0) ctx.moveTo(cx, cy);
-                    else ctx.lineTo(cx, cy);
+                stations.forEach((s, si) => {
+                    const xPos = offsetX + si * spacingX;
+                    if (si === 0) ctx.moveTo(xPos, yPos);
+                    else ctx.lineTo(xPos, yPos);
                 });
                 ctx.stroke();
-            });
 
-            // 绘制站点
-            data.forEach(s => {
-                const cx = mapX(parseFloat(s.x));
-                const cy = mapZ(parseFloat(s.z));
-                const lines = s.lines || [];
-                const count = lines.length;
-                const isTransfer = count > 1;
-                const color = count > 0 ? getLineColor(lines[0]) : '#888';
-                const radius = isTransfer ? 10 : 7;
+                // 站点
+                stations.forEach((s, si) => {
+                    const xPos = offsetX + si * spacingX;
+                    const lineCountForStation = stationLinesSet[s.name] ? stationLinesSet[s.name].size : 1;
+                    const isTransfer = lineCountForStation > 1;
+                    const radius = isTransfer ? 10 : 7;
 
-                // 外发光
-                const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 2.5);
-                grad.addColorStop(0, color + '50');
-                grad.addColorStop(1, color + '00');
-                ctx.fillStyle = grad;
-                ctx.beginPath();
-                ctx.arc(cx, cy, radius * 2.5, 0, Math.PI * 2);
-                ctx.fill();
+                    const grad = ctx.createRadialGradient(xPos, yPos, 0, xPos, yPos, radius * 2.5);
+                    grad.addColorStop(0, color + '50');
+                    grad.addColorStop(1, color + '00');
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(xPos, yPos, radius * 2.5, 0, Math.PI * 2);
+                    ctx.fill();
 
-                // 外圈白色
-                ctx.beginPath();
-                ctx.arc(cx, cy, radius + 2, 0, Math.PI * 2);
-                ctx.fillStyle = '#ffffff';
-                ctx.fill();
-                ctx.strokeStyle = color;
-                ctx.lineWidth = 2;
-                ctx.stroke();
+                    ctx.beginPath();
+                    ctx.arc(xPos, yPos, radius + 2, 0, Math.PI * 2);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fill();
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
 
-                // 内圈彩色
-                ctx.beginPath();
-                ctx.arc(cx, cy, radius - 1, 0, Math.PI * 2);
-                ctx.fillStyle = color;
-                ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(xPos, yPos, radius - 1, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.fill();
 
-                // 换乘站：并排多环
-                if (isTransfer) {
-                    const spacing = 14;
-                    const totalWidth = (count - 1) * spacing;
-                    const startX = cx - totalWidth / 2;
-                    const ringR = 7;
-                    lines.forEach((line, idx) => {
-                        const lColor = getLineColor(line);
-                        const xPos = startX + idx * spacing;
-                        // 外白
-                        ctx.beginPath();
-                        ctx.arc(xPos, cy, ringR + 2, 0, Math.PI * 2);
-                        ctx.strokeStyle = '#ffffff';
-                        ctx.lineWidth = 2.5;
-                        ctx.stroke();
-                        // 内彩
-                        ctx.beginPath();
-                        ctx.arc(xPos, cy, ringR, 0, Math.PI * 2);
-                        ctx.strokeStyle = lColor;
-                        ctx.lineWidth = 2.5;
-                        ctx.stroke();
-                    });
-                }
-
-                // 站点名称
-                const searchTerm = searchInput.value.trim().toLowerCase();
-                const isHighlight = searchTerm && s.name.toLowerCase().includes(searchTerm);
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'bottom';
-                const fontSize = isHighlight ? 12 : 10;
-                ctx.font = (isHighlight ? 'bold ' : '') + fontSize + 'px system-ui, sans-serif';
-
-                const labelY = cy - radius - 6;
-                if (isHighlight) {
-                    const metrics = ctx.measureText(s.name);
-                    const tw = metrics.width;
-                    const th = fontSize * 1.2;
-                    ctx.fillStyle = 'rgba(255, 215, 0, 0.25)';
-                    if (ctx.roundRect) {
-                        ctx.roundRect(cx - tw / 2 - 4, labelY - th - 2, tw + 8, th + 4, 4);
-                        ctx.fill();
-                    } else {
-                        ctx.fillRect(cx - tw / 2 - 4, labelY - th - 2, tw + 8, th + 4);
+                    // 换乘站并排多环
+                    if (isTransfer) {
+                        const linesArr = Array.from(stationLinesSet[s.name]);
+                        const count = linesArr.length;
+                        const spacingRing = 14;
+                        const totalWidthRings = (count - 1) * spacingRing;
+                        const startX = xPos - totalWidthRings / 2;
+                        const ringR = 7;
+                        linesArr.forEach((line, idx) => {
+                            const lColor = getLineColor(line);
+                            const xRing = startX + idx * spacingRing;
+                            ctx.beginPath();
+                            ctx.arc(xRing, yPos, ringR + 2, 0, Math.PI * 2);
+                            ctx.strokeStyle = '#ffffff';
+                            ctx.lineWidth = 2.5;
+                            ctx.stroke();
+                            ctx.beginPath();
+                            ctx.arc(xRing, yPos, ringR, 0, Math.PI * 2);
+                            ctx.strokeStyle = lColor;
+                            ctx.lineWidth = 2.5;
+                            ctx.stroke();
+                        });
                     }
-                    ctx.fillStyle = '#d4a000';
-                    ctx.shadowColor = 'rgba(255,215,0,0.3)';
-                    ctx.shadowBlur = 6;
-                } else {
-                    ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text').trim() || '#1a2332';
+
+                    // 站点名
+                    const searchTerm = searchInput.value.trim().toLowerCase();
+                    const isHighlight = searchTerm && s.name.toLowerCase().includes(searchTerm);
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    const fontSize = isHighlight ? 12 : 10;
+                    ctx.font = (isHighlight ? 'bold ' : '') + fontSize + 'px system-ui, sans-serif';
+
+                    const labelY = yPos - radius - 6;
+                    if (isHighlight) {
+                        const metrics = ctx.measureText(s.name);
+                        const tw = metrics.width;
+                        const th = fontSize * 1.2;
+                        ctx.fillStyle = 'rgba(255, 215, 0, 0.25)';
+                        if (ctx.roundRect) {
+                            ctx.roundRect(xPos - tw / 2 - 4, labelY - th - 2, tw + 8, th + 4, 4);
+                            ctx.fill();
+                        } else {
+                            ctx.fillRect(xPos - tw / 2 - 4, labelY - th - 2, tw + 8, th + 4);
+                        }
+                        ctx.fillStyle = '#d4a000';
+                        ctx.shadowColor = 'rgba(255,215,0,0.3)';
+                        ctx.shadowBlur = 6;
+                    } else {
+                        ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text').trim() || '#1a2332';
+                        ctx.shadowColor = 'transparent';
+                        ctx.shadowBlur = 0;
+                    }
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillText(s.name, xPos, labelY);
                     ctx.shadowColor = 'transparent';
                     ctx.shadowBlur = 0;
-                }
-                ctx.textBaseline = 'bottom';
-                ctx.fillText(s.name, cx, labelY);
-                ctx.shadowColor = 'transparent';
-                ctx.shadowBlur = 0;
+                });
             });
 
-            // 统计
             const totalStations = data.length;
-            const totalLines = linesArray.length;
+            const totalLines = lines.length;
             mapStats.textContent = `站点: ${totalStations} | 线路: ${totalLines}`;
 
-            // 图例
             let legendHtml = '';
-            linesArray.forEach(line => {
+            lines.forEach(line => {
                 const color = getLineColor(line);
                 legendHtml += `
                     <span class="legend-item">
@@ -2126,9 +1136,7 @@
 
         showMapBtn.onclick = openMapModal;
         closeMapBtn.onclick = closeMapModal;
-        mapModal.onclick = (e) => {
-            if (e.target === mapModal) closeMapModal();
-        };
+        mapModal.onclick = (e) => { if (e.target === mapModal) closeMapModal(); };
 
         zoomSlider.oninput = function() {
             mapZoom = parseFloat(this.value);
@@ -2153,7 +1161,6 @@
                 drawLineChart(mapZoom);
             }
         };
-
         searchInput.addEventListener('input', () => {
             if (mapModal.classList.contains('active')) {
                 drawLineChart(mapZoom);
@@ -2168,9 +1175,9 @@
         adminUnlocked = false;
         updateAdminUI();
 
-        console.log('🚆 五洲铁路录入系统 V3.0_BETA2 已加载');
+        console.log('🚆 五洲铁路录入系统 V3.0_BETA4 已加载 (GitHub直连)');
         console.log('👤 当前用户:', localStorage.getItem('wrms_user_id') || '未登录');
-        console.log('🗺️ 线路图功能已启用 (基于XZ坐标，保留方位)');
+        console.log('🗺️ 线路图为等距拓扑布局，Beta版');
     </script>
 </body>
 </html>
