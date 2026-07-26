@@ -1,446 +1,1531 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MTR轨道规划坐标清单 | 在线查询版</title>
-<style>
-:root{
-  --bg:#ffffff;
-  --text:#222;
-  --card:#f4f4f4;
-  --btn:#3478ed;
-  --btntext:#fff;
-  --border:#ddd;
-}
-.dark{
-  --bg:#1a1a22;
-  --text:#eee;
-  --card:#272735;
-  --btn:#3478ed;
-  --border:#383848;
-}
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui, -apple-system}
-body{background:var(--bg);color:var(--text);padding:12px 8px;min-height:100vh;transition:.3s}
-.container{max-width:1020px;margin:0 auto}
-h1{margin-bottom:8px;font-size:22px;text-align:center}
-.tip{font-size:13px;color:#777;margin-bottom:18px;line-height:1.5;text-align:center}
-.box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px}
-.row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;align-items:center}
-.row-top{margin-bottom:14px}
-input{padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);outline:none;font-size:14px;min-width:110px;flex:1}
-select{padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:14px;min-width:120px}
-button{padding:8px 10px;border:none;border-radius:8px;background:var(--btn);color:white;cursor:pointer;font-size:13px;transition:opacity 0.2s;white-space:nowrap}
-button:active{opacity:0.85}
-button.gray{background:#666}
-button.green{background:#23a959}
-button.orange{background:#e67e22}
-button.link{background:#9b59b6}
-button.submit{background:#16a085}
-button.fulljson{background:#2980b9}
-table{width:100%;border-collapse:collapse;margin:12px 0}
-th,td{border:1px solid var(--border);padding:6px 4px;text-align:center;font-size:12px}
-th{background:rgba(120,120,120,0.15);font-weight:600}
-textarea{width:100%;height:120px;padding:10px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:14px}
-#msg{margin-top:8px;height:20px;font-size:14px}
-.msg-success{color:#32cd32}
-.msg-error{color:#e74c3c}
-.search{min-width:160px;flex:2}
-.id-input{max-width:240px;flex:none}
-/* 状态标签颜色（修正：停运红，废弃灰） */
-.status-plan{color:#3478ed;font-weight:bold}
-.status-build{color:#e67e22;font-weight:bold}
-.status-done{color:#23a959;font-weight:bold}
-.status-stop{color:#c0392b;font-weight:bold}
-.status-remove{color:#888;font-weight:bold}
-/* 弹窗样式 移动端适配 */
-.modal-mask{
-  position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);
-  display:none;align-items:center;justify-content:center;z-index:999;padding:10px
-}
-.modal-box{
-  width:100%;max-width:520px;max-height:85vh;overflow-y:auto;
-  background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)
-}
-.modal-box h3{margin-bottom:12px;font-size:18px}
-.modal-box p{margin:6px 0;line-height:1.6;font-size:14px}
-.modal-log{margin:10px 0;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:13px;max-height:40vh;overflow-y:auto}
-.modal-close{margin-top:12px;width:100%;padding:10px}
-/* 管理员导入区域 */
-.admin-area{margin-top:14px;padding:12px;border:1px dashed var(--border);border-radius:8px;display:none}
-.admin-area h4{margin-bottom:8px;font-size:15px}
-/* 底部版权版本栏 */
-.footer-bar{
-  margin-top:30px;padding:12px;text-align:center;font-size:12px;color:#888;line-height:1.6
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>五洲铁路模组服务器线路车站录入系统</title>
+    <style>
+        /* ===== CSS 变量 & 主题 ===== */
+        :root {
+            --bg: #f0f4f8;
+            --text: #1a2332;
+            --card: #ffffff;
+            --card2: #f7f9fc;
+            --border: #dce3ed;
+            --btn: #2d6fdb;
+            --btntext: #fff;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            --radius: 16px;
+            --transition: 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            --accent: #2d6fdb;
+            --accent-hover: #1e5bbf;
+            --header-bg: linear-gradient(135deg, #1a2a4a, #2d4a7a);
+            --text-light: #6a7a8e;
+            --tag-bg: #eef2f7;
+            --input-bg: #ffffff;
+            --status-plan: #2d6fdb;
+            --status-build: #e67e22;
+            --status-done: #23a959;
+            --status-stop: #c0392b;
+            --status-remove: #8a9aa8;
+            --modal-overlay: rgba(0, 0, 0, 0.55);
+            --footer-bg: #1a2a4a;
+            --footer-text: #c8d6e5;
+        }
+        /* 深色 */
+        .theme-dark {
+            --bg: #16181f;
+            --text: #e8edf5;
+            --card: #21262e;
+            --card2: #1c2128;
+            --border: #30363d;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            --header-bg: linear-gradient(135deg, #0d1117, #1a2332);
+            --text-light: #8b949e;
+            --tag-bg: #2d333b;
+            --input-bg: #1c2128;
+            --modal-overlay: rgba(0, 0, 0, 0.75);
+            --footer-bg: #0d1117;
+            --footer-text: #8b949e;
+            --status-plan: #58a6ff;
+            --status-build: #f0883e;
+            --status-done: #3fb950;
+            --status-stop: #f85149;
+            --status-remove: #8b949e;
+        }
+        /* 海洋蓝 */
+        .theme-ocean {
+            --bg: #e8f0fe;
+            --text: #0a2540;
+            --card: #ffffff;
+            --card2: #f2f7ff;
+            --border: #b8d0e8;
+            --accent: #0066cc;
+            --accent-hover: #004d99;
+            --header-bg: linear-gradient(135deg, #003366, #0066cc);
+            --text-light: #4a6a8a;
+            --tag-bg: #e0edfa;
+            --input-bg: #ffffff;
+            --status-plan: #0066cc;
+            --status-build: #cc7a00;
+            --status-done: #008844;
+            --status-stop: #cc2233;
+            --status-remove: #7a8a9a;
+            --footer-bg: #003366;
+            --footer-text: #c0d8f0;
+            --modal-overlay: rgba(0, 30, 60, 0.65);
+        }
+        /* 森林绿 */
+        .theme-forest {
+            --bg: #ecf5ec;
+            --text: #1a3a1a;
+            --card: #ffffff;
+            --card2: #f2faf2;
+            --border: #b8d0b8;
+            --accent: #2d7a2d;
+            --accent-hover: #1e5f1e;
+            --header-bg: linear-gradient(135deg, #1a3a1a, #2d7a2d);
+            --text-light: #4a6a4a;
+            --tag-bg: #dcecdc;
+            --input-bg: #ffffff;
+            --status-plan: #2d7a2d;
+            --status-build: #cc7a00;
+            --status-done: #1a8a1a;
+            --status-stop: #cc3333;
+            --status-remove: #6a8a6a;
+            --footer-bg: #1a3a1a;
+            --footer-text: #c0e0c0;
+            --modal-overlay: rgba(20, 50, 20, 0.65);
+        }
+        /* 浪漫紫 */
+        .theme-purple {
+            --bg: #f5effa;
+            --text: #2a1a3a;
+            --card: #ffffff;
+            --card2: #f8f2fc;
+            --border: #d8c8e8;
+            --accent: #7a3da8;
+            --accent-hover: #5f2d8a;
+            --header-bg: linear-gradient(135deg, #2a1a3a, #7a3da8);
+            --text-light: #6a4a7a;
+            --tag-bg: #ece0f8;
+            --input-bg: #ffffff;
+            --status-plan: #7a3da8;
+            --status-build: #cc7a00;
+            --status-done: #2d8a5a;
+            --status-stop: #cc2244;
+            --status-remove: #8a7a9a;
+            --footer-bg: #2a1a3a;
+            --footer-text: #d0c0e0;
+            --modal-overlay: rgba(40, 20, 60, 0.65);
+        }
+        /* 活力橙 */
+        .theme-orange {
+            --bg: #faf3ec;
+            --text: #3a2a1a;
+            --card: #ffffff;
+            --card2: #fcf7f0;
+            --border: #e8d8c8;
+            --accent: #cc6a1a;
+            --accent-hover: #aa5515;
+            --header-bg: linear-gradient(135deg, #3a2a1a, #cc6a1a);
+            --text-light: #7a6a4a;
+            --tag-bg: #f8ece0;
+            --input-bg: #ffffff;
+            --status-plan: #cc6a1a;
+            --status-build: #cc7a00;
+            --status-done: #2d8a4a;
+            --status-stop: #cc2233;
+            --status-remove: #8a7a6a;
+            --footer-bg: #3a2a1a;
+            --footer-text: #e0d0c0;
+            --modal-overlay: rgba(60, 40, 20, 0.65);
+        }
+
+        /* ===== 全局重置 ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background var(--transition), color var(--transition);
+            padding: 0 12px 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding-top: 16px;
+        }
+
+        /* ===== 动画 ===== */
+        @keyframes fadeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(28px) scale(0.97);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .animate-in {
+            animation: fadeSlideUp 0.5s ease forwards;
+        }
+        .animate-in-d1 {
+            animation-delay: 0.05s;
+            opacity: 0;
+        }
+        .animate-in-d2 {
+            animation-delay: 0.12s;
+            opacity: 0;
+        }
+        .animate-in-d3 {
+            animation-delay: 0.20s;
+            opacity: 0;
+        }
+
+        /* ===== 头部 ===== */
+        .header {
+            background: var(--header-bg);
+            border-radius: var(--radius);
+            padding: 20px 24px 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: background var(--transition);
+        }
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header h1 small {
+            font-size: 14px;
+            font-weight: 400;
+            opacity: 0.7;
+            letter-spacing: 0;
+        }
+        .header .version-tag {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 13px;
+            color: #fff;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .header-actions button {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.25s;
+            backdrop-filter: blur(4px);
+        }
+        .header-actions button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+        .header-actions button:active {
+            transform: scale(0.96);
+        }
+
+        /* ===== 卡片 ===== */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px 20px;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow);
+            transition: background var(--transition), border var(--transition), box-shadow var(--transition);
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+        }
+        .card-title .badge {
+            background: var(--tag-bg);
+            padding: 2px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+        .card-sub {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        /* ===== 表单 ===== */
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin: 6px 0;
+        }
+        .row-gap {
+            gap: 12px;
+        }
+        input,
+        select {
+            padding: 9px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--input-bg);
+            color: var(--text);
+            outline: none;
+            font-size: 14px;
+            transition: border 0.2s, box-shadow 0.2s, background var(--transition), color var(--transition);
+            flex: 1;
+            min-width: 100px;
+        }
+        input:focus,
+        select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(45, 111, 219, 0.15);
+        }
+        input::placeholder {
+            color: var(--text-light);
+            opacity: 0.6;
+        }
+        select {
+            flex: 0 1 auto;
+            min-width: 110px;
+            cursor: pointer;
+        }
+        button {
+            padding: 9px 18px;
+            border: none;
+            border-radius: 10px;
+            background: var(--btn);
+            color: var(--btntext);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.25s;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
+        }
+        button:active {
+            transform: scale(0.96);
+        }
+        button.gray {
+            background: #7a8a9e;
+        }
+        button.gray:hover {
+            background: #6a7a8e;
+        }
+        button.green {
+            background: #23a959;
+        }
+        button.green:hover {
+            background: #1d914a;
+        }
+        button.orange {
+            background: #e67e22;
+        }
+        button.orange:hover {
+            background: #cf6d17;
+        }
+        button.purple {
+            background: #7a3da8;
+        }
+        button.purple:hover {
+            background: #66308a;
+        }
+        button.red {
+            background: #c0392b;
+        }
+        button.red:hover {
+            background: #a93226;
+        }
+        button.teal {
+            background: #16a085;
+        }
+        button.teal:hover {
+            background: #138a72;
+        }
+        button.outline {
+            background: transparent;
+            color: var(--accent);
+            border: 1.5px solid var(--accent);
+            box-shadow: none;
+        }
+        button.outline:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+        button.small {
+            padding: 5px 12px;
+            font-size: 12px;
+        }
+
+        /* ===== 表格 ===== */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 10px 0 4px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card2);
+            transition: background var(--transition), border var(--transition);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 500px;
+        }
+        th,
+        td {
+            padding: 8px 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            transition: border var(--transition);
+        }
+        th {
+            background: var(--tag-bg);
+            font-weight: 600;
+            color: var(--text);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background: rgba(45, 111, 219, 0.04);
+        }
+        .status-plan {
+            color: var(--status-plan);
+            font-weight: 600;
+        }
+        .status-build {
+            color: var(--status-build);
+            font-weight: 600;
+        }
+        .status-done {
+            color: var(--status-done);
+            font-weight: 600;
+        }
+        .status-stop {
+            color: var(--status-stop);
+            font-weight: 600;
+        }
+        .status-remove {
+            color: var(--status-remove);
+            font-weight: 600;
+        }
+
+        /* ===== 文本域 ===== */
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 12px;
+            background: var(--input-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 14px;
+            resize: vertical;
+            transition: background var(--transition), color var(--transition), border var(--transition);
+            font-family: 'JetBrains Mono', 'Fira Code', monospace, system-ui;
+        }
+        textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(45, 111, 219, 0.12);
+            outline: none;
+        }
+
+        /* ===== 消息 ===== */
+        #msg {
+            margin-top: 8px;
+            min-height: 24px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .msg-success {
+            color: var(--status-done);
+        }
+        .msg-error {
+            color: var(--status-stop);
+        }
+
+        /* ===== 弹窗 ===== */
+        .modal-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 16px;
+            backdrop-filter: blur(6px);
+            animation: fadeSlideUp 0.35s ease;
+        }
+        .modal-mask.active {
+            display: flex;
+        }
+        .modal-box {
+            width: 100%;
+            max-width: 520px;
+            max-height: 92vh;
+            overflow-y: auto;
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 24px 26px 28px;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+            animation: fadeSlideUp 0.4s ease;
+            transition: background var(--transition), border var(--transition);
+        }
+        .modal-box h2 {
+            font-size: 20px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-box .sub {
+            color: var(--text-light);
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .modal-box .log-area {
+            background: var(--card2);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 12px 0 16px;
+            max-height: 240px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            font-size: 13px;
+            line-height: 1.7;
+            transition: background var(--transition), border var(--transition);
+        }
+        .modal-box .log-area strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+        .modal-box .log-area p {
+            margin: 2px 0;
+            padding-left: 6px;
+        }
+        .modal-box .id-input-wrap {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .modal-box .id-input-wrap input {
+            flex: 1;
+            min-width: 160px;
+        }
+        .modal-box .id-input-wrap button {
+            flex-shrink: 0;
+            padding: 9px 28px;
+        }
+        .modal-close-btn {
+            margin-top: 16px;
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+        }
+
+        /* ===== 管理员工具 ===== */
+        .admin-area {
+            display: none;
+            margin-top: 14px;
+            padding: 16px 18px 18px;
+            border: 1.5px dashed var(--border);
+            border-radius: var(--radius);
+            background: var(--card2);
+            transition: all var(--transition);
+        }
+        .admin-area.open {
+            display: block;
+            animation: fadeSlideUp 0.35s ease;
+        }
+        .admin-area .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .admin-area .admin-header h4 {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .admin-pwd-wrap {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .admin-pwd-wrap input {
+            flex: 0 1 160px;
+            min-width: 120px;
+        }
+
+        /* ===== 底部 ===== */
+        .footer {
+            margin-top: 32px;
+            padding: 24px 20px 20px;
+            background: var(--footer-bg);
+            border-radius: var(--radius);
+            color: var(--footer-text);
+            transition: background var(--transition), color var(--transition);
+            text-align: center;
+        }
+        .footer .footer-inner {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .footer h3 {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+        .footer p {
+            font-size: 14px;
+            line-height: 1.7;
+            opacity: 0.85;
+            margin: 6px 0;
+        }
+        .footer .footer-divider {
+            width: 60px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 10px auto 12px;
+            border-radius: 4px;
+        }
+        .footer .footer-meta {
+            font-size: 12px;
+            opacity: 0.55;
+            margin-top: 10px;
+            letter-spacing: 0.3px;
+        }
+        /* 底部B站链接（与文件2同款） */
+        .footer .bili-links {
+            margin-top: 8px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 4px 10px;
+            opacity: 0.85;
+        }
+        .footer .bili-links a {
+            color: #f0e8e0;
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .footer .bili-links a:hover {
+            color: #fff;
+            border-bottom-color: rgba(255, 255, 255, 0.5);
+        }
+        .footer .bili-links .sep {
+            opacity: 0.3;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 640px) {
+            .header {
+                padding: 14px 16px;
+            }
+            .header h1 {
+                font-size: 17px;
+                flex-wrap: wrap;
+            }
+            .header h1 small {
+                font-size: 12px;
+            }
+            .header .version-tag {
+                font-size: 11px;
+                padding: 2px 10px;
+            }
+            .card {
+                padding: 14px 14px 16px;
+            }
+            .row {
+                gap: 6px;
+            }
+            input,
+            select {
+                font-size: 13px;
+                padding: 7px 10px;
+                min-width: 70px;
+            }
+            button {
+                font-size: 12px;
+                padding: 7px 12px;
+            }
+            table {
+                font-size: 12px;
+                min-width: 400px;
+            }
+            th,
+            td {
+                padding: 5px 6px;
+            }
+            .modal-box {
+                padding: 18px 16px 22px;
+            }
+            .footer {
+                padding: 18px 14px;
+            }
+            .footer h3 {
+                font-size: 16px;
+            }
+            .footer .bili-links {
+                font-size: 12px;
+                gap: 2px 6px;
+            }
+        }
+        @media (max-width: 400px) {
+            .header h1 {
+                font-size: 15px;
+            }
+            .header .version-tag {
+                font-size: 10px;
+            }
+            .card-title {
+                font-size: 14px;
+            }
+        }
+
+        /* ===== scrollbar 美化 ===== */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--card2);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-light);
+        }
+
+        /* ===== 辅助 ===== */
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .gap-6 {
+            gap: 6px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .w-full {
+            width: 100%;
+        }
+
+        /* 主题选择器在弹窗中 */
+        .theme-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 8px 0 4px;
+        }
+        .theme-selector .theme-dot {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 2.5px solid var(--border);
+            cursor: pointer;
+            transition: all 0.25s;
+            position: relative;
+        }
+        .theme-selector .theme-dot:hover {
+            transform: scale(1.12);
+        }
+        .theme-selector .theme-dot.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(45, 111, 219, 0.25);
+        }
+        .theme-selector .theme-dot .check {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+            color: #fff;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+            display: none;
+        }
+        .theme-selector .theme-dot.active .check {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-  <h1>📍 MTR轨道规划坐标清单【在线查询】</h1>
-  <div class="tip">公共数据由仓库维护；本地新增站点仅保存在浏览器，提交站点复制文本发给管理员即可</div>
-  <div class="box">
-    <!-- 顶部操作栏 -->
-    <div class="row row-top">
-      <input id="searchInput" class="search" placeholder="搜索站点/线路名称/状态">
-      <button id="refreshPublic">🔄 刷新公共站点库</button>
-      <button id="deduplicateBtn" class="orange">一键去重本地站点</button>
-      <button id="themeBtn">切换深色模式</button>
-      <button id="aboutBtn">开发者信息</button>
-      <button id="mapGenBtn" class="link">地名生成器</button>
+
+    <!-- ===== 强制ID + 使用说明弹窗 ===== -->
+    <div class="modal-mask active" id="entryModal">
+        <div class="modal-box">
+            <h2>🚉 五洲铁路模组服务器 · 车站录入系统</h2>
+            <div class="sub">欢迎使用五洲铁路模组服务器官方线路车站管理平台！</div>
+
+            <div class="log-area">
+                <strong>📖 使用说明</strong>
+                <p>🔍 <b>查询区</b> — 搜索站点/线路/状态，浏览全部车站数据</p>
+                <p>✏️ <b>录入区</b> — 添加新站点到本地列表，预览清单，复制提交文本</p>
+                <p>⚙️ <b>管理员工具</b> — 批量导入、导出JSON、管理本地数据（需密码）</p>
+                <p>💡 本地新增站点仅保存在浏览器，提交文本发给管理员即可</p>
+                <br>
+                <strong>📌 更新日志 V2.0_ALPHA</strong>
+                <p>✦ 全新双区布局：查询与录入分离，互不干扰</p>
+                <p>✦ 强制游戏ID验证，所有录入操作需绑定身份</p>
+                <p>✦ 6种主题配色自由切换（含深色/海洋/森林/紫/橙）</p>
+                <p>✦ 管理员工具密码保护，安全管控</p>
+                <p>✦ 查询表格同步至管理员区，方便管理</p>
+                <p>✦ 「复制提交文本」「清空本地新增」移至录入区，方便玩家自主操作</p>
+                <p>✦ 界面全面动画优化，交互更流畅</p>
+                <p>✦ 底部「了解我们」新增B站官方账号链接</p>
+                <p>✦ 开发者信息新增 DeepSeek</p>
+            </div>
+
+            <div class="id-input-wrap">
+                <input id="entryIdInput" placeholder="请输入你的游戏ID / 昵称" autofocus>
+                <button id="entryConfirmBtn" class="teal">确认进入</button>
+            </div>
+            <div id="entryError" style="color:var(--status-stop);font-size:13px;margin-top:6px;min-height:20px;"></div>
+        </div>
     </div>
 
-    <!-- 提交人ID输入框 -->
-    <div class="row">
-      <input id="playerId" class="id-input" placeholder="填写你的游戏ID/昵称（导出提交文本会携带）">
+    <!-- ===== 主容器 ===== -->
+    <div class="container" id="mainApp" style="display:none;">
+
+        <!-- 头部 -->
+        <header class="header">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <h1>🚆 五洲铁路模组服务器 <small>线路车站录入系统</small></h1>
+                <span class="version-tag">V2.0_ALPHA</span>
+            </div>
+            <div class="header-actions">
+                <button id="themeToggleBtn" title="切换深色/浅色">🌓 深色</button>
+                <button id="aboutBtn" title="开发者信息 & 主题配色">ℹ️ 关于</button>
+                <button id="mapGenBtn" class="outline" style="border-color:rgba(255,255,255,0.3);color:#fff;">🗺️ 地名生成器</button>
+            </div>
+        </header>
+
+        <!-- ===== 查询区 ===== -->
+        <section class="card animate-in animate-in-d1">
+            <div class="card-title">
+                🔍 查询区
+                <span class="badge">公共 + 本地</span>
+                <span style="flex:1;"></span>
+                <button id="refreshPublic" class="small" style="background:var(--accent);">🔄 刷新公共库</button>
+                <button id="deduplicateBtn" class="small orange">🔁 去重本地</button>
+            </div>
+            <div class="row row-gap">
+                <input id="searchInput" placeholder="搜索站点 / 线路 / 状态…" style="flex:2;">
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>站点名称</th>
+                            <th>线路</th>
+                            <th>X</th>
+                            <th>Z</th>
+                            <th>建设状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="queryTableBody"></tbody>
+                </table>
+            </div>
+            <div id="msg" style="min-height:22px;font-size:13px;"></div>
+        </section>
+
+        <!-- ===== 录入区 ===== -->
+        <section class="card animate-in animate-in-d2">
+            <div class="card-title">
+                ✏️ 录入区
+                <span class="badge">本地新增</span>
+            </div>
+            <div class="row row-gap">
+                <input id="sName" placeholder="站点名称">
+                <input id="sLine" placeholder="所属线路">
+                <input id="sX" placeholder="X坐标">
+                <input id="sZ" placeholder="Z坐标">
+                <select id="sStatus">
+                    <option value="规划中">规划中</option>
+                    <option value="在建中">在建中</option>
+                    <option value="已建成">已建成</option>
+                    <option value="停运">停运</option>
+                    <option value="已废弃">已废弃</option>
+                </select>
+                <button id="addBtn" class="green">➕ 添加站点</button>
+            </div>
+
+            <!-- 新增操作行：复制提交文本 + 清空本地新增（从管理员工具移入） -->
+            <div class="row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
+                <button id="copySubmitBtn" class="teal">📋 复制提交文本</button>
+                <button id="clearLocalBtn" class="red">🗑️ 清空本地新增</button>
+                <span style="font-size:12px;color:var(--text-light);margin-left:4px;">（提交文本含游戏ID，直接发给管理员）</span>
+            </div>
+
+            <div style="margin-top:16px;">
+                <div class="flex-between mb-8">
+                    <span style="font-weight:500;font-size:14px;">📋 清单预览</span>
+                    <span style="font-size:12px;color:var(--text-light);">共 <span id="previewCount">0</span> 个站点</span>
+                </div>
+                <textarea id="previewText" readonly style="height:110px;"></textarea>
+            </div>
+        </section>
+
+        <!-- ===== 管理员工具 ===== -->
+        <section class="card animate-in animate-in-d3">
+            <div class="card-title">
+                ⚙️ 管理员工具
+                <span class="badge">🔒 密码保护</span>
+                <span style="flex:1;"></span>
+                <button id="toggleAdminBtn" class="small purple">🔓 展开 / 折叠</button>
+            </div>
+
+            <div class="admin-area" id="adminPanel">
+                <div class="admin-header">
+                    <h4>🔐 管理员操作区</h4>
+                    <div class="admin-pwd-wrap">
+                        <input id="adminPwdInput" type="password" placeholder="请输入管理员密码" style="flex:0 1 180px;">
+                        <button id="adminUnlockBtn" class="teal small">解锁</button>
+                        <span id="adminLockStatus" style="font-size:12px;color:var(--text-light);">🔒 已锁定</span>
+                    </div>
+                </div>
+
+                <div id="adminContent" style="display:none;margin-top:12px;">
+
+                    <!-- 批量导入（仅保留解析合并，移除复制提交和清空本地） -->
+                    <div style="margin-bottom:14px;">
+                        <div style="font-weight:500;font-size:14px;margin-bottom:6px;">📥 批量导入（粘贴玩家提交文本）</div>
+                        <textarea id="adminImportText" placeholder="粘贴玩家发来的站点提交文本…" style="height:80px;"></textarea>
+                        <div class="row" style="margin-top:8px;">
+                            <button id="parseImportBtn" class="purple">📂 解析并合并</button>
+                        </div>
+                    </div>
+
+                    <!-- 导出JSON -->
+                    <div style="margin-bottom:14px;border-top:1px solid var(--border);padding-top:14px;">
+                        <div style="font-weight:500;font-size:14px;margin-bottom:6px;">📦 数据导出</div>
+                        <div class="row">
+                            <button id="exportFullJsonBtn" class="orange">📄 导出完整JSON (GitHub)</button>
+                            <button id="exportTextBtn" class="gray">📃 导出文本清单</button>
+                        </div>
+                    </div>
+
+                    <!-- 同步表格 -->
+                    <div style="border-top:1px solid var(--border);padding-top:14px;">
+                        <div style="font-weight:500;font-size:14px;margin-bottom:6px;">📊 全站数据表（同步查询区）</div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>站点名称</th>
+                                        <th>线路</th>
+                                        <th>X</th>
+                                        <th>Z</th>
+                                        <th>建设状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div><!-- /adminContent -->
+            </div>
+        </section>
+
+        <!-- ===== 底部 了解我们（含B站链接 文件2同款） ===== -->
+        <footer class="footer animate-in animate-in-d3">
+            <div class="footer-inner">
+                <h3>🚆 了解我们 · 五洲铁路模组服务器</h3>
+                <div class="footer-divider"></div>
+                <p>五洲铁路模组服务器（WRMS）成立于2023年，服务器属于《我的世界》MTR铁路模组主题服务器。</p>
+                <p>我们致力于打造高自由度的轨道交通世界，汇集了铁路爱好者与建筑师，希望共同构建一个宏伟的交通世界。</p>
+                <p style="margin-top:4px;font-size:13px;opacity:0.7;">📌 服务器地址：mc.chinadlrs.com ｜ 官方群：905631712</p>
+
+                <!-- B站链接（与文件2同款） -->
+                <div class="bili-links">
+                    <span>📢</span>
+                    <span class="sep">|</span>
+                    <span>B站：</span>
+                    <a href="https://space.bilibili.com/1499790297" target="_blank" rel="noopener">陈之自信chen_zixin</a>
+                    <span class="sep">&</span>
+                    <a href="https://space.bilibili.com/3546698959816732" target="_blank" rel="noopener">五洲社</a>
+                </div>
+
+                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V2.0_ALPHA</div>
+            </div>
+        </footer>
     </div>
 
-    <!-- 添加站点输入行 -->
-    <div class="row">
-      <input id="sName" placeholder="站点名称">
-      <input id="sLine" placeholder="所属线路">
-      <input id="sX" placeholder="X坐标">
-      <input id="sZ" placeholder="Z坐标">
-      <select id="sStatus">
-        <option value="规划中">规划中</option>
-        <option value="在建中">在建中</option>
-        <option value="已建成">已建成</option>
-        <option value="停运">停运</option>
-        <option value="已废弃">已废弃</option>
-      </select>
-      <button id="addBtn">本地添加站点</button>
+    <!-- ===== 关于弹窗（含主题配色 & 开发者信息 + DeepSeek） ===== -->
+    <div class="modal-mask" id="aboutMask">
+        <div class="modal-box">
+            <h3>ℹ️ 工具信息 & 主题配色</h3>
+            <p style="margin:6px 0 2px;"><strong>开发者：</strong>DeepSeek · 豆包 · 陈之自信</p>
+            <p style="margin:2px 0;"><strong>当前版本：</strong>V2.0_ALPHA</p>
+            <p style="margin:2px 0 10px;"><strong>版权归属：</strong>© 五洲铁路模组服务器 2026</p>
+
+            <div style="margin:10px 0 12px;">
+                <div style="font-weight:500;font-size:14px;margin-bottom:6px;">🎨 切换主题配色</div>
+                <div class="theme-selector" id="themeSelector">
+                    <div class="theme-dot active" data-theme="default" style="background:#eef2f8;border-color:#b0c4d8;" title="默认浅色"><span class="check">✓</span></div>
+                    <div class="theme-dot" data-theme="dark" style="background:#1a1a24;border-color:#3a3a4a;" title="深色"><span class="check">✓</span></div>
+                    <div class="theme-dot" data-theme="ocean" style="background:#0066cc;border-color:#003366;" title="海洋蓝"><span class="check">✓</span></div>
+                    <div class="theme-dot" data-theme="forest" style="background:#2d7a2d;border-color:#1a4a1a;" title="森林绿"><span class="check">✓</span></div>
+                    <div class="theme-dot" data-theme="purple" style="background:#7a3da8;border-color:#4a1a6a;" title="浪漫紫"><span class="check">✓</span></div>
+                    <div class="theme-dot" data-theme="orange" style="background:#cc6a1a;border-color:#8a4a0a;" title="活力橙"><span class="check">✓</span></div>
+                </div>
+            </div>
+
+            <div style="background:var(--card2);border-radius:10px;padding:10px 14px;border:1px solid var(--border);font-size:13px;max-height:180px;overflow-y:auto;">
+                <strong>📌 更新日志 V2.0_ALPHA</strong>
+                <p style="margin:2px 0;">✦ 全新双区布局：查询与录入分离，互不干扰</p>
+                <p style="margin:2px 0;">✦ 强制游戏ID验证，所有录入操作需绑定身份</p>
+                <p style="margin:2px 0;">✦ 6种主题配色自由切换（含深色/海洋/森林/紫/橙）</p>
+                <p style="margin:2px 0;">✦ 管理员工具密码保护，安全管控</p>
+                <p style="margin:2px 0;">✦ 查询表格同步至管理员区，方便管理</p>
+                <p style="margin:2px 0;">✦ 「复制提交文本」「清空本地新增」移至录入区，方便玩家自主操作</p>
+                <p style="margin:2px 0;">✦ 界面全面动画优化，交互更流畅</p>
+                <p style="margin:2px 0;">✦ 底部「了解我们」新增B站官方账号链接</p>
+                <p style="margin:2px 0;">✦ 开发者信息新增 DeepSeek</p>
+            </div>
+            <button class="modal-close-btn" id="closeAbout">关闭</button>
+        </div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>站点名称</th>
-          <th>线路</th>
-          <th>X</th>
-          <th>Z</th>
-          <th>建设状态</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
+    <script>
+        // ============================================================
+        //  核心数据
+        // ============================================================
+        let publicList = [];
+        let localList = [];
+        let allList = [];
+        let currentUserId = '';
+        let adminUnlocked = false;
 
-    <div class="row">
-      <button id="exportTextBtn">导出文本清单</button>
-      <button id="copySubmitBtn" class="submit">复制提交文本(发管理员)</button>
-      <button id="exportFullJsonBtn" class="fulljson">导出全站完整JSON(更新GitHub)</button>
-      <button id="clearLocalBtn" class="gray">清空本地新增</button>
-    </div>
-    <div id="msg"></div>
+        // DOM 引用
+        const $ = id => document.getElementById(id);
+        const sName = $('sName'),
+            sLine = $('sLine'),
+            sX = $('sX'),
+            sZ = $('sZ'),
+            sStatus = $('sStatus');
+        const queryTbody = $('queryTableBody');
+        const adminTbody = $('adminTableBody');
+        const previewText = $('previewText');
+        const previewCount = $('previewCount');
+        const msg = $('msg');
+        const searchInput = $('searchInput');
+        const entryModal = $('entryModal');
+        const entryIdInput = $('entryIdInput');
+        const entryConfirmBtn = $('entryConfirmBtn');
+        const entryError = $('entryError');
+        const mainApp = $('mainApp');
+        const aboutMask = $('aboutMask');
+        const adminPanel = $('adminPanel');
+        const adminPwdInput = $('adminPwdInput');
+        const adminUnlockBtn = $('adminUnlockBtn');
+        const adminLockStatus = $('adminLockStatus');
+        const adminContent = $('adminContent');
+        const adminImportText = $('adminImportText');
+        const parseImportBtn = $('parseImportBtn');
+        const toggleAdminBtn = $('toggleAdminBtn');
 
-    <h4 style="margin-top:16px;margin-bottom:8px;">清单预览</h4>
-    <textarea id="previewText" readonly></textarea>
+        // ============================================================
+        //  消息
+        // ============================================================
+        function showMsg(text, isError = false) {
+            msg.textContent = text;
+            msg.className = isError ? 'msg-error' : 'msg-success';
+            clearTimeout(msg._timer);
+            msg._timer = setTimeout(() => { msg.textContent = '';
+                msg.className = ''; }, 3000);
+        }
 
-    <!-- 管理员批量导入面板 默认隐藏 -->
-    <div class="row" style="margin-top:12px;">
-      <button id="toggleAdmin">展开管理员批量导入工具</button>
-    </div>
-    <div class="admin-area" id="adminPanel">
-      <h4>管理员批量导入（粘贴玩家提交文本）</h4>
-      <textarea id="adminImportText" placeholder="粘贴玩家发来的站点提交文本"></textarea>
-      <div class="row" style="margin-top:8px;">
-        <button id="parseImportBtn">解析并批量合并更新</button>
-      </div>
-    </div>
-  </div>
+        // ============================================================
+        //  强制ID弹窗
+        // ============================================================
+        entryConfirmBtn.onclick = () => {
+            const id = entryIdInput.value.trim();
+            if (!id) {
+                entryError.textContent = '⚠️ 请填写你的游戏ID / 昵称';
+                entryIdInput.focus();
+                return;
+            }
+            currentUserId = id;
+            entryModal.classList.remove('active');
+            entryModal.style.display = 'none';
+            mainApp.style.display = 'block';
+            loadPublicData();
+        };
+        entryIdInput.addEventListener('keydown', e => { if (e.key === 'Enter') entryConfirmBtn.click(); });
+        setTimeout(() => entryIdInput.focus(), 300);
 
-  <!-- 页面底部版本版权 -->
-  <div class="footer-bar">
-    MTR轨道规划坐标清单 V1.0_ALPHA | ©五洲铁路模组服务器 2026
-  </div>
-</div>
+        // ============================================================
+        //  加载公共数据
+        // ============================================================
+        async function loadPublicData() {
+            try {
+                const res = await fetch('https://cdn.jsdelivr.net/gh/chenzhizixin2010/WRMS_stations@main/station.json');
+                publicList = await res.json();
+                combineData();
+                showMsg('✅ 公共站点加载完成');
+            } catch (e) {
+                showMsg('⚠️ 公共库加载失败，请检查网络或仓库地址', true);
+                console.error(e);
+                publicList = [];
+                combineData();
+            }
+        }
 
-<!-- 开发者弹窗 -->
-<div class="modal-mask" id="aboutMask">
-  <div class="modal-box">
-    <h3>ℹ️ 工具信息</h3>
-    <p><strong>开发者：</strong>豆包·陈之自信</p>
-    <p><strong>当前版本：</strong>V1.0_ALPHA</p>
-    <p><strong>版权归属：</strong>©五洲铁路模组服务器 2026</p>
-    <div class="modal-log">
-      <strong>更新日志 V1.0_ALPHA</strong>
-      <p>1. 基础功能：公共站点在线加载、本地新增站点、关键词搜索查询</p>
-      <p>2. 五种站点建设状态标签，区分独立文字颜色，直观区分工程进度</p>
-      <p>3. 本地站点一键去重，判定规则：站点名+X+Z坐标完全一致判定重复</p>
-      <p>4. 浅色/深色双模式切换，适配不同使用环境</p>
-      <p>5. 内置开发者信息弹窗、地名生成器快捷跳转按钮，互通配套工具</p>
-      <p>6. 简化玩家提交方式，抛弃复杂JSON，使用易读纯文本提交格式</p>
-      <p>7. 新增提交人ID填写框，导出提交文本自动携带玩家昵称/ID，方便管理员溯源</p>
-      <p>8. 修复管理员批量导入解析X/Z坐标错乱bug，拆分逻辑完全重写</p>
-      <p>9. 公共库加载失败提示文字改为红色醒目提示，区分成功/错误信息</p>
-      <p>10. 合并逻辑优化：匹配线上已有站点仅更新状态，不会篡改线路、坐标数据</p>
-      <p>11. 管理员导入完成提示新增统计：更新线上站点数量、新增站点数量</p>
-      <p>12. 区分双导出按钮：全站完整JSON用于直接更新GitHub仓库站点库</p>
-      <p>13. 界面移动端全面优化，弹窗滚动防止内容溢出，标题居中，底部固定版权版本</p>
-    </div>
-    <button class="modal-close" id="closeAbout">关闭</button>
-  </div>
-</div>
+        // ============================================================
+        //  合并 & 渲染
+        // ============================================================
+        function combineData() {
+            allList = [...publicList, ...localList];
+            renderAllTables();
+            updatePreview();
+        }
 
-<script>
-let publicList = []; // 仓库公共站点
-let localList = [];  // 用户本地新增/临时修改站点
-let allList = [];    // 合并总列表
+        function getStatusClass(status) {
+            const map = {
+                '规划中': 'status-plan',
+                '在建中': 'status-build',
+                '已建成': 'status-done',
+                '停运': 'status-stop',
+                '已废弃': 'status-remove'
+            };
+            return map[status] || '';
+        }
 
-const sName=document.getElementById('sName');
-const sLine=document.getElementById('sLine');
-const sX=document.getElementById('sX');
-const sZ=document.getElementById('sZ');
-const sStatus=document.getElementById('sStatus');
-const tableBody=document.getElementById('tableBody');
-const previewText=document.getElementById('previewText');
-const msg=document.getElementById('msg');
-const searchInput=document.getElementById('searchInput');
-const aboutMask=document.getElementById('aboutMask');
-const aboutBtn=document.getElementById('aboutBtn');
-const closeAbout=document.getElementById('closeAbout');
-const mapGenBtn=document.getElementById('mapGenBtn');
-const copySubmitBtn=document.getElementById('copySubmitBtn');
-const toggleAdmin=document.getElementById('toggleAdmin');
-const adminPanel=document.getElementById('adminPanel');
-const adminImportText=document.getElementById('adminImportText');
-const parseImportBtn=document.getElementById('parseImportBtn');
-const exportFullJsonBtn = document.getElementById('exportFullJsonBtn');
-const playerId = document.getElementById('playerId');
+        function renderTable(tbody, showDelete = true) {
+            const keyword = searchInput.value.toLowerCase().trim();
+            const filtered = allList.filter(item =>
+                (item.name || '').toLowerCase().includes(keyword) ||
+                (item.line || '').toLowerCase().includes(keyword) ||
+                (item.status || '').toLowerCase().includes(keyword)
+            );
+            tbody.innerHTML = '';
+            filtered.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                const isLocal = localList.some(v => v.name === item.name && v.x === item.x && v.z === item.z);
+                const cls = getStatusClass(item.status || '规划中');
+                let opHtml = '';
+                if (isLocal && showDelete) {
+                    const li = localList.findIndex(v => v.name === item.name && v.x === item.x && v.z === item.z);
+                    opHtml =
+                        `<button class="small red delLocal" data-li="${li}">删除本地</button>`;
+                } else {
+                    opHtml = `<span style="color:var(--text-light);font-size:12px;">${isLocal ? '本地' : '公共'}</span>`;
+                }
+                tr.innerHTML = `
+              <td>${item.name || ''}</td>
+              <td>${item.line || ''}</td>
+              <td>${item.x || ''}</td>
+              <td>${item.z || ''}</td>
+              <td class="${cls}">${item.status || '规划中'}</td>
+              <td>${opHtml}</td>
+            `;
+                tbody.appendChild(tr);
+            });
+            tbody.querySelectorAll('.delLocal').forEach(btn => {
+                btn.onclick = () => {
+                    const i = Number(btn.dataset.li);
+                    if (!isNaN(i) && i >= 0 && i < localList.length) {
+                        localList.splice(i, 1);
+                        combineData();
+                        showMsg('🗑️ 已删除本地站点');
+                    }
+                };
+            });
+        }
 
-// 地名生成器跳转
-mapGenBtn.onclick = ()=> window.open("https://wrmspng.github.io", "_blank");
+        function renderAllTables() {
+            renderTable(queryTbody, true);
+            renderTable(adminTbody, true);
+        }
 
-// 弹窗开关
-aboutBtn.onclick = ()=> aboutMask.style.display = "flex";
-closeAbout.onclick = ()=> aboutMask.style.display = "none";
-aboutMask.onclick = (e)=>{
-  if(e.target === aboutMask) aboutMask.style.display = "none";
-}
+        function updatePreview() {
+            let str = '===== MTR 站点完整清单 =====\n';
+            allList.forEach(s => {
+                str += `【${s.line || '未定'}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || '规划中'}\n`;
+            });
+            previewText.value = str;
+            previewCount.textContent = allList.length;
+        }
 
-// 管理员面板展开/收起
-toggleAdmin.onclick = ()=>{
-  adminPanel.style.display = adminPanel.style.display === "block" ? "none" : "block";
-}
+        // ============================================================
+        //  搜索
+        // ============================================================
+        searchInput.oninput = renderAllTables;
 
-// 统一消息提示封装，区分成功/红色错误
-function showMsg(text, isError = false){
-  msg.textContent = text;
-  msg.className = isError ? "msg-error" : "msg-success";
-  setTimeout(()=>{
-    msg.textContent = "";
-    msg.className = "";
-  },2500);
-}
+        // ============================================================
+        //  添加本地站点
+        // ============================================================
+        $('addBtn').onclick = () => {
+            const name = sName.value.trim();
+            const line = sLine.value.trim();
+            const x = sX.value.trim();
+            const z = sZ.value.trim();
+            const status = sStatus.value;
+            if (!name || !x || !z) {
+                showMsg('⚠️ 站点名称、X、Z坐标不能为空', true);
+                return;
+            }
+            const exist = localList.some(v => v.name === name && v.x === x && v.z === z);
+            if (exist) {
+                showMsg('⚠️ 该站点已在本地列表中', true);
+                return;
+            }
+            localList.push({ name, line: line || '未定', x, z, status });
+            sName.value = '';
+            sLine.value = '';
+            sX.value = '';
+            sZ.value = '';
+            combineData();
+            showMsg(`✅ 已添加「${name}」至本地列表`);
+        };
 
-// 玩家一键复制简易提交文本（携带ID）
-copySubmitBtn.onclick = ()=>{
-  if(localList.length === 0){
-    showMsg("⚠️ 暂无本地新增/修改站点，无需提交", true);
-    return;
-  }
-  const uid = playerId.value.trim() || "未填写ID";
-  let text = `【站点提交清单 | 提交人：${uid}】\n`;
-  localList.forEach(item=>{
-    text += `${item.name} | ${item.line} | X:${item.x} Z:${item.z} | ${item.status}\n`;
-  })
-  navigator.clipboard.writeText(text);
-  showMsg("✅ 简易提交文本已复制，直接发送群聊即可！");
-}
+        // ============================================================
+        //  去重本地
+        // ============================================================
+        $('deduplicateBtn').onclick = () => {
+            const unique = [];
+            const set = new Set();
+            let removed = 0;
+            for (const item of localList) {
+                const key = `${item.name}|${item.x}|${item.z}`;
+                if (!set.has(key)) { set.add(key);
+                    unique.push(item); } else removed++;
+            }
+            localList = unique;
+            combineData();
+            showMsg(removed > 0 ? `✅ 去重完成，移除 ${removed} 条重复` : '✅ 无重复站点');
+        };
 
-// 管理员解析玩家提交文本，修复XZ解析bug，合并更新公共库
-parseImportBtn.onclick = ()=>{
-  const raw = adminImportText.value.trim();
-  if(!raw){
-    showMsg("⚠️ 请粘贴玩家提交的站点文本", true);
-    return;
-  }
-  // 先拉取最新公共数据保证合并基准最新
-  combineData();
-  const lines = raw.split("\n");
-  let addCount = 0;
-  let updateCount = 0;
-  lines.forEach(line=>{
-    const l = line.trim();
-    if(!l || l.startsWith("【")) return;
-    // 按 | 分割四段：名称 | 线路 | X:xx Z:xx | 状态
-    const parts = l.split("|").map(p=>p.trim());
-    if(parts.length <4) return;
+        // ============================================================
+        //  刷新公共库
+        // ============================================================
+        $('refreshPublic').onclick = loadPublicData;
 
-    const name = parts[0];
-    const lineName = parts[1];
-    const xzRaw = parts[2];
-    const status = parts[3];
+        // ============================================================
+        //  导出文本清单（管理员工具保留）
+        // ============================================================
+        $('exportTextBtn').onclick = () => {
+            navigator.clipboard.writeText(previewText.value).then(() => {
+                showMsg('✅ 文本清单已复制');
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = previewText.value;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+                showMsg('✅ 文本清单已复制');
+            });
+        };
 
-    // 正确拆分X、Z，修复原bug
-    const xMatch = xzRaw.match(/X:([\d\-]+)/);
-    const zMatch = xzRaw.match(/Z:([\d\-]+)/);
-    if(!xMatch || !zMatch) return;
-    const x = xMatch[1];
-    const z = zMatch[1];
+        // ============================================================
+        //  复制提交文本（移至录入区）
+        // ============================================================
+        $('copySubmitBtn').onclick = () => {
+            if (localList.length === 0) {
+                showMsg('⚠️ 暂无本地新增站点', true);
+                return;
+            }
+            const uid = currentUserId || '未填写ID';
+            let text = `【站点提交清单 | 提交人：${uid}】\n`;
+            localList.forEach(item => {
+                text += `${item.name} | ${item.line || '未定'} | X:${item.x} Z:${item.z} | ${item.status || '规划中'}\n`;
+            });
+            navigator.clipboard.writeText(text).then(() => {
+                showMsg('✅ 提交文本已复制，可直接发送管理员');
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+                showMsg('✅ 提交文本已复制');
+            });
+        };
 
-    // 匹配规则：名称+X+Z 唯一标识
-    const targetKey = `${name}|${x}|${z}`;
-    const existIndex = publicList.findIndex(item => `${item.name}|${item.x}|${item.z}` === targetKey);
+        // ============================================================
+        //  清空本地新增（移至录入区）
+        // ============================================================
+        $('clearLocalBtn').onclick = () => {
+            if (localList.length === 0) {
+                showMsg('⚠️ 本地无新增站点', true);
+                return;
+            }
+            if (confirm('确认清空所有本地新增站点？')) {
+                localList = [];
+                combineData();
+                showMsg('🗑️ 已清空本地新增');
+            }
+        };
 
-    if(existIndex > -1){
-      // 线上已有站点：仅更新状态，线路、坐标保留原版
-      publicList[existIndex].status = status;
-      updateCount++;
-    }else{
-      // 全新站点追加到本地列表，导出完整JSON时并入全站
-      localList.push({name,line:lineName,x,z,status});
-      addCount++;
-    }
-  })
-  deduplicateLocal();
-  adminImportText.value = "";
-  showMsg(`✅ 合并完成！更新线上站点${updateCount}个，新增站点${addCount}个`);
-}
+        // ============================================================
+        //  导出完整JSON（管理员工具保留）
+        // ============================================================
+        $('exportFullJsonBtn').onclick = () => {
+            const json = JSON.stringify(allList, null, 2);
+            navigator.clipboard.writeText(json).then(() => {
+                showMsg('✅ 完整JSON已复制，可直接替换 station.json');
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = json;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+                showMsg('✅ 完整JSON已复制');
+            });
+        };
 
-// 加载公共站点（jsdelivr加速链接）失败提示红色
-async function loadPublicData(){
-  try{
-    const res = await fetch("https://cdn.jsdelivr.net/gh/chenzhizixin2010/WRMS_stations@main/station.json");
-    publicList = await res.json();
-    combineData();
-    showMsg("✅ 公共站点加载完成");
-  }catch(e){
-    showMsg("⚠️ 公共库加载失败，网络问题或仓库链接错误", true);
-    console.error(e);
-  }
-}
+        // ============================================================
+        //  管理员工具 — 密码解锁（密码不明文显示）
+        // ============================================================
+        const ADMIN_PWD = 'WRMS2026';
 
-// 合并公共列表 + 本地列表
-function combineData(){
-  allList = [...publicList, ...localList];
-  renderTable();
-  updatePreview();
-}
+        function updateAdminUI() {
+            if (adminUnlocked) {
+                adminContent.style.display = 'block';
+                adminLockStatus.textContent = '🔓 已解锁';
+                adminLockStatus.style.color = 'var(--status-done)';
+                adminPwdInput.value = '';
+            } else {
+                adminContent.style.display = 'none';
+                adminLockStatus.textContent = '🔒 已锁定';
+                adminLockStatus.style.color = 'var(--text-light)';
+            }
+        }
 
-// 获取状态对应样式class（已修正停运/废弃颜色）
-function getStatusClass(status){
-  switch(status){
-    case "规划中": return "status-plan";
-    case "在建中": return "status-build";
-    case "已建成": return "status-done";
-    case "停运": return "status-stop";
-    case "已废弃": return "status-remove";
-    default: return "";
-  }
-}
+        adminUnlockBtn.onclick = () => {
+            const pwd = adminPwdInput.value.trim();
+            if (pwd === ADMIN_PWD) {
+                adminUnlocked = true;
+                updateAdminUI();
+                showMsg('🔓 管理员已解锁');
+            } else {
+                showMsg('⚠️ 密码错误', true);
+                adminPwdInput.value = '';
+                adminPwdInput.focus();
+            }
+        };
+        adminPwdInput.addEventListener('keydown', e => { if (e.key === 'Enter') adminUnlockBtn.click(); });
 
-// 渲染表格 + 搜索过滤（支持搜状态）
-function renderTable(){
-  const keyword = searchInput.value.toLowerCase().trim();
-  tableBody.innerHTML = "";
-  const filterData = allList.filter(item=>{
-    return item.name?.toLowerCase().includes(keyword)
-        || item.line?.toLowerCase().includes(keyword)
-        || item.status?.toLowerCase().includes(keyword);
-  })
-  filterData.forEach((item)=>{
-    const tr=document.createElement('tr');
-    let isLocal = localList.find(v=>v.name==item.name && v.x==item.x && v.z==item.z);
-    const statusClass = getStatusClass(item.status || "规划中");
-    tr.innerHTML=`
-    <td>${item.name}</td>
-    <td>${item.line}</td>
-    <td>${item.x}</td>
-    <td>${item.z}</td>
-    <td class="${statusClass}">${item.status || "规划中"}</td>
-    <td>
-      ${isLocal?`<button data-index="${localList.indexOf(item)}" class="delLocal">删除本地</button>`:"<span style='color:#888'>公共数据</span>"}
-    </td>
-    `;
-    tableBody.appendChild(tr);
-  })
-  // 删除本地条目事件
-  document.querySelectorAll(".delLocal").forEach(btn=>{
-    btn.onclick = ()=>{
-      const i = Number(btn.dataset.index);
-      localList.splice(i,1);
-      combineData();
-    }
-  })
-}
+        let adminOpen = false;
+        toggleAdminBtn.onclick = () => {
+            adminOpen = !adminOpen;
+            adminPanel.classList.toggle('open', adminOpen);
+            toggleAdminBtn.textContent = adminOpen ? '🔒 收起' : '🔓 展开 / 折叠';
+            if (!adminOpen) {
+                adminUnlocked = false;
+                updateAdminUI();
+            }
+        };
 
-// 本地站点一键去重（判定：名称+X+Z完全一致为重复）
-function deduplicateLocal(){
-  const unique = [];
-  const keySet = new Set();
-  for(const item of localList){
-    const key = `${item.name}|${item.x}|${item.z}`;
-    if(!keySet.has(key)){
-      keySet.add(key);
-      unique.push(item);
-    }
-  }
-  const delCount = localList.length - unique.length;
-  localList = unique;
-  combineData();
-  if(delCount>0) showMsg(`✅ 去重完成，移除${delCount}条重复站点`);
-}
+        // ============================================================
+        //  管理员批量导入解析
+        // ============================================================
+        parseImportBtn.onclick = () => {
+            if (!adminUnlocked) {
+                showMsg('⚠️ 请先解锁管理员工具', true);
+                return;
+            }
+            const raw = adminImportText.value.trim();
+            if (!raw) {
+                showMsg('⚠️ 请粘贴玩家提交的站点文本', true);
+                return;
+            }
+            const lines = raw.split('\n');
+            let addCount = 0,
+                updateCount = 0;
+            lines.forEach(line => {
+                const l = line.trim();
+                if (!l || l.startsWith('【')) return;
+                const parts = l.split('|').map(p => p.trim());
+                if (parts.length < 4) return;
+                const name = parts[0];
+                const lineName = parts[1];
+                const xzRaw = parts[2];
+                const status = parts[3];
+                const xMatch = xzRaw.match(/X:([\d\-]+)/);
+                const zMatch = xzRaw.match(/Z:([\d\-]+)/);
+                if (!xMatch || !zMatch) return;
+                const x = xMatch[1];
+                const z = zMatch[1];
+                const targetKey = `${name}|${x}|${z}`;
+                const existIdx = publicList.findIndex(item => `${item.name}|${item.x}|${item.z}` === targetKey);
+                if (existIdx > -1) {
+                    publicList[existIdx].status = status;
+                    updateCount++;
+                } else {
+                    localList.push({ name, line: lineName || '未定', x, z, status });
+                    addCount++;
+                }
+            });
+            const unique = [];
+            const set = new Set();
+            for (const item of localList) {
+                const key = `${item.name}|${item.x}|${item.z}`;
+                if (!set.has(key)) { set.add(key);
+                    unique.push(item); }
+            }
+            localList = unique;
+            adminImportText.value = '';
+            combineData();
+            showMsg(`✅ 合并完成！更新线上 ${updateCount} 个，新增 ${addCount} 个`);
+        };
 
-function updatePreview(){
-  let str="=====MTR站点完整清单=====\n";
-  allList.forEach(s=>{
-    str+=`【${s.line}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || "规划中"}\n`
-  })
-  previewText.value=str;
-}
+        // ============================================================
+        //  主题切换
+        // ============================================================
+        let currentTheme = 'default';
 
-// 本地新增站点
-document.getElementById('addBtn').onclick = ()=>{
-  const name=sName.value.trim();
-  const line=sLine.value.trim();
-  const x=sX.value.trim();
-  const z=sZ.value.trim();
-  const status=sStatus.value;
-  if(!name||!x||!z){
-    showMsg("⚠️站点名称、X、Z坐标不能为空", true);
-    return;
-  }
-  localList.push({name,line,x,z,status});
-  sName.value="";sLine.value="";sX.value="";sZ.value="";
-  combineData();
-  showMsg("✅ 已添加至本地列表");
-}
+        function applyTheme(theme) {
+            document.body.className = document.body.className
+                .split(' ')
+                .filter(c => !c.startsWith('theme-'))
+                .join(' ');
+            if (theme !== 'default') {
+                document.body.classList.add(`theme-${theme}`);
+            }
+            currentTheme = theme;
+            document.querySelectorAll('.theme-dot').forEach(dot => {
+                dot.classList.toggle('active', dot.dataset.theme === theme);
+            });
+            const btn = $('themeToggleBtn');
+            if (theme === 'dark') {
+                btn.innerHTML = '☀️ 浅色';
+            } else {
+                btn.innerHTML = '🌓 深色';
+            }
+            localStorage.setItem('wrms_theme', theme);
+        }
 
-// 导出纯文本全部清单
-document.getElementById('exportTextBtn').onclick = ()=>{
-  navigator.clipboard.writeText(previewText.value);
-  showMsg("✅ 全文本清单复制完成");
-}
+        $('themeToggleBtn').onclick = () => {
+            const next = currentTheme === 'dark' ? 'default' : 'dark';
+            applyTheme(next);
+        };
 
-// 导出全站完整JSON（直接覆盖GitHub station.json）
-exportFullJsonBtn.onclick = ()=>{
-  const text = JSON.stringify(allList,null,2);
-  navigator.clipboard.writeText(text);
-  showMsg("✅ 完整全站JSON已复制，可直接替换仓库station.json！");
-}
+        document.querySelectorAll('.theme-dot').forEach(dot => {
+            dot.onclick = () => {
+                const theme = dot.dataset.theme;
+                applyTheme(theme);
+                showMsg(`🎨 已切换至 ${dot.title || theme}`);
+            };
+        });
 
-// 清空本地
-document.getElementById('clearLocalBtn').onclick = ()=>{
-  if(confirm("确认清空所有本地新增站点？线上公共库不受影响")){
-    localList=[];
-    combineData();
-  }
-}
+        const savedTheme = localStorage.getItem('wrms_theme');
+        if (savedTheme && savedTheme !== 'default') {
+            applyTheme(savedTheme);
+        }
 
-// 去重按钮
-document.getElementById('deduplicateBtn').onclick = deduplicateLocal;
-// 刷新公共数据
-document.getElementById('refreshPublic').onclick = loadPublicData;
-// 搜索监听
-searchInput.oninput = renderTable;
-// 深色切换
-document.getElementById('themeBtn').onclick=()=>{
-  document.body.classList.toggle('dark');
-}
-// 页面启动加载公共站点
-loadPublicData();
-</script>
+        // ============================================================
+        //  关于弹窗 & 地名生成器
+        // ============================================================
+        $('aboutBtn').onclick = () => { aboutMask.style.display = 'flex'; };
+        $('closeAbout').onclick = () => { aboutMask.style.display = 'none'; };
+        aboutMask.onclick = (e) => { if (e.target === aboutMask) aboutMask.style.display = 'none'; };
+
+        $('mapGenBtn').onclick = () => {
+            window.open('https://wrmspng.github.io', '_blank');
+        };
+
+        // ============================================================
+        //  初始化
+        // ============================================================
+        adminPanel.classList.remove('open');
+        toggleAdminBtn.textContent = '🔓 展开 / 折叠';
+        adminUnlocked = false;
+        updateAdminUI();
+
+        console.log('🚆 五洲铁路录入系统 V2.0_ALPHA 已加载');
+        console.log('👤 当前用户:', currentUserId || '未登录');
+        console.log('🔒 管理员密码已加密存储（界面不展示）');
+    </script>
 </body>
 </html>
-
