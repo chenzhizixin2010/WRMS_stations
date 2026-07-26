@@ -31,6 +31,8 @@
             --modal-overlay: rgba(0, 0, 0, 0.55);
             --footer-bg: #1a2a4a;
             --footer-text: #c8d6e5;
+            --line-width: 4;
+            --station-radius: 10;
         }
         /* 深色 */
         .theme-dark {
@@ -398,6 +400,12 @@
             padding: 5px 12px;
             font-size: 12px;
         }
+        button.map-btn {
+            background: #8e44ad;
+        }
+        button.map-btn:hover {
+            background: #7d3c98;
+        }
 
         /* ===== 表格 ===== */
         .table-wrap {
@@ -580,6 +588,148 @@
             font-size: 15px;
         }
 
+        /* ===== 线路图模态框 ===== */
+        .map-modal-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+            backdrop-filter: blur(8px);
+            animation: fadeSlideUp 0.4s ease;
+        }
+        .map-modal-mask.active {
+            display: flex;
+        }
+        .map-modal-box {
+            width: 100%;
+            max-width: 1100px;
+            max-height: 92vh;
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px 24px 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            transition: background var(--transition), border var(--transition);
+            overflow: hidden;
+        }
+        .map-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+        .map-modal-header h2 {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+        }
+        .map-modal-header .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 4px 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .map-modal-header .close-btn:hover {
+            background: var(--tag-bg);
+        }
+        .map-canvas-wrap {
+            flex: 1;
+            min-height: 400px;
+            background: var(--card2);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            position: relative;
+            transition: background var(--transition), border var(--transition);
+        }
+        .map-canvas-wrap canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .map-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0 4px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+        .map-controls label {
+            font-size: 13px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .map-controls input[type="range"] {
+            width: 160px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+        .map-controls .zoom-val {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            min-width: 44px;
+            text-align: center;
+        }
+        .map-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 14px;
+            padding: 6px 0 2px;
+            flex-shrink: 0;
+            border-top: 1px solid var(--border);
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        .map-legend .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .map-legend .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+        .map-legend .legend-label {
+            font-size: 12px;
+            color: var(--text);
+            white-space: nowrap;
+        }
+        .map-legend .legend-highlight {
+            background: #ffdd44;
+            color: #333;
+            padding: 1px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 11px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
         /* ===== 管理员工具 ===== */
         .admin-area {
             display: none;
@@ -658,7 +808,6 @@
             margin-top: 10px;
             letter-spacing: 0.3px;
         }
-        /* 底部B站链接（与文件2同款） */
         .footer .bili-links {
             margin-top: 8px;
             font-size: 13px;
@@ -737,6 +886,20 @@
                 font-size: 12px;
                 gap: 2px 6px;
             }
+            .map-modal-box {
+                padding: 14px 16px 16px;
+                max-height: 95vh;
+            }
+            .map-canvas-wrap {
+                min-height: 280px;
+            }
+            .map-controls input[type="range"] {
+                width: 100px;
+            }
+            .map-legend {
+                font-size: 11px;
+                gap: 4px 10px;
+            }
         }
         @media (max-width: 400px) {
             .header h1 {
@@ -747,6 +910,12 @@
             }
             .card-title {
                 font-size: 14px;
+            }
+            .map-canvas-wrap {
+                min-height: 200px;
+            }
+            .map-controls input[type="range"] {
+                width: 70px;
             }
         }
 
@@ -839,26 +1008,24 @@
         <div class="modal-box">
             <h2>🚉 五洲铁路模组服务器 · 车站录入系统</h2>
             <div class="sub">欢迎使用五洲铁路模组服务器官方线路车站管理平台！</div>
-
             <div class="log-area">
                 <strong>📖 使用说明</strong>
-                <p>🔍 <b>查询区</b> — 搜索站点/线路/状态，浏览全部车站数据</p>
+                <p>🔍 <b>查询区</b> — 搜索站点/线路/状态，浏览全部车站数据，点击「显示线路图」查看地铁风格线路图</p>
                 <p>✏️ <b>录入区</b> — 添加新站点到本地列表，预览清单，复制提交文本</p>
                 <p>⚙️ <b>管理员工具</b> — 批量导入、导出JSON、管理本地数据（需密码）</p>
                 <p>💡 本地新增站点仅保存在浏览器，提交文本发给管理员即可</p>
+                <p>🗺️ <b>线路图</b> — 模拟地铁风格，等距站点，支持缩放和搜索高亮</p>
                 <br>
-                <strong>📌 更新日志 V2.0_ALPHA</strong>
-                <p>✦ 全新双区布局：查询与录入分离，互不干扰</p>
-                <p>✦ 强制游戏ID验证，所有录入操作需绑定身份</p>
-                <p>✦ 6种主题配色自由切换（含深色/海洋/森林/紫/橙）</p>
-                <p>✦ 管理员工具密码保护，安全管控</p>
-                <p>✦ 查询表格同步至管理员区，方便管理</p>
-                <p>✦ 「复制提交文本」「清空本地新增」移至录入区，方便玩家自主操作</p>
-                <p>✦ 界面全面动画优化，交互更流畅</p>
-                <p>✦ 底部「了解我们」新增B站官方账号链接</p>
-                <p>✦ 开发者信息新增 DeepSeek</p>
+                <strong>📌 更新日志 V3.0_ALPHA</strong>
+                <p>✦ 🗺️ 新增「线路图生成」功能 — 模拟地铁风格线路图</p>
+                <p>✦ 线路图支持缩放滑杆（50%~200%），适配不同屏幕</p>
+                <p>✦ 根据搜索框内容自动高亮线路图中的对应站点</p>
+                <p>✦ 线路图按线路分组，等距排列，换乘站特殊标记</p>
+                <p>✦ 每条线路自动分配鲜明颜色，图例清晰显示</p>
+                <p>✦ 查询区新增「显示线路图」按钮，一键查看</p>
+                <p>✦ 版本号升级至 V3.0_ALPHA</p>
+                <p>✦ 优化弹窗背景模糊效果，视觉更聚焦</p>
             </div>
-
             <div class="id-input-wrap">
                 <input id="entryIdInput" placeholder="请输入你的游戏ID / 昵称" autofocus>
                 <button id="entryConfirmBtn" class="teal">确认进入</button>
@@ -874,7 +1041,7 @@
         <header class="header">
             <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
                 <h1>🚆 五洲铁路模组服务器 <small>线路车站录入系统</small></h1>
-                <span class="version-tag">V2.0_ALPHA</span>
+                <span class="version-tag">V3.0_ALPHA</span>
             </div>
             <div class="header-actions">
                 <button id="themeToggleBtn" title="切换深色/浅色">🌓 深色</button>
@@ -889,6 +1056,7 @@
                 🔍 查询区
                 <span class="badge">公共 + 本地</span>
                 <span style="flex:1;"></span>
+                <button id="showMapBtn" class="map-btn small">🗺️ 显示线路图</button>
                 <button id="refreshPublic" class="small" style="background:var(--accent);">🔄 刷新公共库</button>
                 <button id="deduplicateBtn" class="small orange">🔁 去重本地</button>
             </div>
@@ -933,14 +1101,11 @@
                 </select>
                 <button id="addBtn" class="green">➕ 添加站点</button>
             </div>
-
-            <!-- 新增操作行：复制提交文本 + 清空本地新增（从管理员工具移入） -->
             <div class="row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
                 <button id="copySubmitBtn" class="teal">📋 复制提交文本</button>
                 <button id="clearLocalBtn" class="red">🗑️ 清空本地新增</button>
                 <span style="font-size:12px;color:var(--text-light);margin-left:4px;">（提交文本含游戏ID，直接发给管理员）</span>
             </div>
-
             <div style="margin-top:16px;">
                 <div class="flex-between mb-8">
                     <span style="font-weight:500;font-size:14px;">📋 清单预览</span>
@@ -958,7 +1123,6 @@
                 <span style="flex:1;"></span>
                 <button id="toggleAdminBtn" class="small purple">🔓 展开 / 折叠</button>
             </div>
-
             <div class="admin-area" id="adminPanel">
                 <div class="admin-header">
                     <h4>🔐 管理员操作区</h4>
@@ -968,10 +1132,7 @@
                         <span id="adminLockStatus" style="font-size:12px;color:var(--text-light);">🔒 已锁定</span>
                     </div>
                 </div>
-
                 <div id="adminContent" style="display:none;margin-top:12px;">
-
-                    <!-- 批量导入（仅保留解析合并，移除复制提交和清空本地） -->
                     <div style="margin-bottom:14px;">
                         <div style="font-weight:500;font-size:14px;margin-bottom:6px;">📥 批量导入（粘贴玩家提交文本）</div>
                         <textarea id="adminImportText" placeholder="粘贴玩家发来的站点提交文本…" style="height:80px;"></textarea>
@@ -979,8 +1140,6 @@
                             <button id="parseImportBtn" class="purple">📂 解析并合并</button>
                         </div>
                     </div>
-
-                    <!-- 导出JSON -->
                     <div style="margin-bottom:14px;border-top:1px solid var(--border);padding-top:14px;">
                         <div style="font-weight:500;font-size:14px;margin-bottom:6px;">📦 数据导出</div>
                         <div class="row">
@@ -988,8 +1147,6 @@
                             <button id="exportTextBtn" class="gray">📃 导出文本清单</button>
                         </div>
                     </div>
-
-                    <!-- 同步表格 -->
                     <div style="border-top:1px solid var(--border);padding-top:14px;">
                         <div style="font-weight:500;font-size:14px;margin-bottom:6px;">📊 全站数据表（同步查询区）</div>
                         <div class="table-wrap">
@@ -1008,12 +1165,11 @@
                             </table>
                         </div>
                     </div>
-
-                </div><!-- /adminContent -->
+                </div>
             </div>
         </section>
 
-        <!-- ===== 底部 了解我们（含B站链接 文件2同款） ===== -->
+        <!-- ===== 底部 了解我们 ===== -->
         <footer class="footer animate-in animate-in-d3">
             <div class="footer-inner">
                 <h3>🚆 了解我们 · 五洲铁路模组服务器</h3>
@@ -1021,8 +1177,6 @@
                 <p>五洲铁路模组服务器（WRMS）成立于2023年，服务器属于《我的世界》MTR铁路模组主题服务器。</p>
                 <p>我们致力于打造高自由度的轨道交通世界，汇集了铁路爱好者与建筑师，希望共同构建一个宏伟的交通世界。</p>
                 <p style="margin-top:4px;font-size:13px;opacity:0.7;">📌 服务器地址：mc.chinadlrs.com ｜ 官方群：905631712</p>
-
-                <!-- B站链接（与文件2同款） -->
                 <div class="bili-links">
                     <span>📢</span>
                     <span class="sep">|</span>
@@ -1031,20 +1185,18 @@
                     <span class="sep">&</span>
                     <a href="https://space.bilibili.com/3546698959816732" target="_blank" rel="noopener">五洲社</a>
                 </div>
-
-                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V2.0_ALPHA</div>
+                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V3.0_ALPHA</div>
             </div>
         </footer>
     </div>
 
-    <!-- ===== 关于弹窗（含主题配色 & 开发者信息 + DeepSeek） ===== -->
+    <!-- ===== 关于弹窗 ===== -->
     <div class="modal-mask" id="aboutMask">
         <div class="modal-box">
             <h3>ℹ️ 工具信息 & 主题配色</h3>
             <p style="margin:6px 0 2px;"><strong>开发者：</strong>DeepSeek · 豆包 · 陈之自信</p>
-            <p style="margin:2px 0;"><strong>当前版本：</strong>V2.0_ALPHA</p>
+            <p style="margin:2px 0;"><strong>当前版本：</strong>V3.0_ALPHA</p>
             <p style="margin:2px 0 10px;"><strong>版权归属：</strong>© 五洲铁路模组服务器 2026</p>
-
             <div style="margin:10px 0 12px;">
                 <div style="font-weight:500;font-size:14px;margin-bottom:6px;">🎨 切换主题配色</div>
                 <div class="theme-selector" id="themeSelector">
@@ -1056,20 +1208,38 @@
                     <div class="theme-dot" data-theme="orange" style="background:#cc6a1a;border-color:#8a4a0a;" title="活力橙"><span class="check">✓</span></div>
                 </div>
             </div>
-
             <div style="background:var(--card2);border-radius:10px;padding:10px 14px;border:1px solid var(--border);font-size:13px;max-height:180px;overflow-y:auto;">
-                <strong>📌 更新日志 V2.0_ALPHA</strong>
-                <p style="margin:2px 0;">✦ 全新双区布局：查询与录入分离，互不干扰</p>
-                <p style="margin:2px 0;">✦ 强制游戏ID验证，所有录入操作需绑定身份</p>
-                <p style="margin:2px 0;">✦ 6种主题配色自由切换（含深色/海洋/森林/紫/橙）</p>
-                <p style="margin:2px 0;">✦ 管理员工具密码保护，安全管控</p>
-                <p style="margin:2px 0;">✦ 查询表格同步至管理员区，方便管理</p>
-                <p style="margin:2px 0;">✦ 「复制提交文本」「清空本地新增」移至录入区，方便玩家自主操作</p>
-                <p style="margin:2px 0;">✦ 界面全面动画优化，交互更流畅</p>
-                <p style="margin:2px 0;">✦ 底部「了解我们」新增B站官方账号链接</p>
-                <p style="margin:2px 0;">✦ 开发者信息新增 DeepSeek</p>
+                <strong>📌 更新日志 V3.0_ALPHA</strong>
+                <p style="margin:2px 0;">✦ 🗺️ 新增「线路图生成」功能 — 模拟地铁风格线路图</p>
+                <p style="margin:2px 0;">✦ 线路图支持缩放滑杆（50%~200%），适配不同屏幕</p>
+                <p style="margin:2px 0;">✦ 根据搜索框内容自动高亮线路图中的对应站点</p>
+                <p style="margin:2px 0;">✦ 线路图按线路分组，等距排列，换乘站特殊标记</p>
+                <p style="margin:2px 0;">✦ 每条线路自动分配鲜明颜色，图例清晰显示</p>
+                <p style="margin:2px 0;">✦ 查询区新增「显示线路图」按钮，一键查看</p>
+                <p style="margin:2px 0;">✦ 版本号升级至 V3.0_ALPHA</p>
+                <p style="margin:2px 0;">✦ 优化弹窗背景模糊效果，视觉更聚焦</p>
             </div>
             <button class="modal-close-btn" id="closeAbout">关闭</button>
+        </div>
+    </div>
+
+    <!-- ===== 线路图模态框 ===== -->
+    <div class="map-modal-mask" id="mapModal">
+        <div class="map-modal-box">
+            <div class="map-modal-header">
+                <h2>🚇 线路图 <span style="font-size:14px;font-weight:400;color:var(--text-light);">— 模拟地铁风格</span></h2>
+                <button class="close-btn" id="closeMapBtn">✕</button>
+            </div>
+            <div class="map-canvas-wrap">
+                <canvas id="mapCanvas"></canvas>
+            </div>
+            <div class="map-controls">
+                <label>🔍 缩放 <input type="range" id="zoomSlider" min="0.5" max="2.0" step="0.05" value="1.0"></label>
+                <span class="zoom-val" id="zoomVal">100%</span>
+                <span style="flex:1;"></span>
+                <span style="font-size:12px;color:var(--text-light);" id="mapStats">站点: 0 | 线路: 0</span>
+            </div>
+            <div class="map-legend" id="mapLegend"></div>
         </div>
     </div>
 
@@ -1110,6 +1280,14 @@
         const adminImportText = $('adminImportText');
         const parseImportBtn = $('parseImportBtn');
         const toggleAdminBtn = $('toggleAdminBtn');
+        const showMapBtn = $('showMapBtn');
+        const mapModal = $('mapModal');
+        const closeMapBtn = $('closeMapBtn');
+        const mapCanvas = $('mapCanvas');
+        const zoomSlider = $('zoomSlider');
+        const zoomVal = $('zoomVal');
+        const mapStats = $('mapStats');
+        const mapLegend = $('mapLegend');
 
         // ============================================================
         //  消息
@@ -1365,7 +1543,7 @@
         };
 
         // ============================================================
-        //  管理员工具 — 密码解锁（密码不明文显示）
+        //  管理员工具 — 密码解锁
         // ============================================================
         const ADMIN_PWD = 'WRMS2026';
 
@@ -1516,6 +1694,318 @@
         };
 
         // ============================================================
+        //  线路图功能
+        // ============================================================
+        const LINE_COLORS = [
+            '#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6',
+            '#1abc9c', '#e67e22', '#2c3e50', '#d35400', '#27ae60',
+            '#2980b9', '#8e44ad', '#16a085', '#c0392b', '#7f8c8d',
+            '#f1c40f', '#2ecc71', '#e74c3c', '#3498db', '#9b59b6'
+        ];
+
+        function getLineColor(lineName, index) {
+            // 用线路名称的hash来分配颜色，保证一致性
+            let hash = 0;
+            for (let i = 0; i < lineName.length; i++) {
+                hash = lineName.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const idx = Math.abs(hash) % LINE_COLORS.length;
+            return LINE_COLORS[idx];
+        }
+
+        function drawLineChart(scale) {
+            const canvas = mapCanvas;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            const w = rect.width || 800;
+            const h = Math.max(rect.height || 500, 300);
+
+            canvas.width = w * dpr;
+            canvas.height = h * dpr;
+            canvas.style.width = w + 'px';
+            canvas.style.height = h + 'px';
+
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+
+            // 清空
+            ctx.clearRect(0, 0, w, h);
+
+            // 背景
+            const bg = getComputedStyle(document.body).getPropertyValue('--card2').trim() || '#f7f9fc';
+            ctx.fillStyle = bg;
+            ctx.fillRect(0, 0, w, h);
+
+            // 获取数据
+            const data = allList.filter(s => s.name && s.line);
+            if (data.length === 0) {
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-light').trim() || '#999';
+                ctx.font = '18px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('暂无站点数据，请添加站点', w / 2, h / 2);
+                mapStats.textContent = '站点: 0 | 线路: 0';
+                mapLegend.innerHTML = '';
+                return;
+            }
+
+            // 按线路分组
+            const groups = {};
+            data.forEach(s => {
+                const line = s.line || '未定';
+                if (!groups[line]) groups[line] = [];
+                groups[line].push(s);
+            });
+
+            // 每条线路的站点按名称排序
+            Object.keys(groups).forEach(key => {
+                groups[key].sort((a, b) => a.name.localeCompare(b.name));
+            });
+
+            const lines = Object.keys(groups);
+            const lineCount = lines.length;
+
+            // 统计换乘站
+            const stationCounts = {};
+            data.forEach(s => {
+                const key = s.name;
+                if (!stationCounts[key]) stationCounts[key] = [];
+                if (!stationCounts[key].includes(s.line)) stationCounts[key].push(s.line);
+            });
+            const transferStations = Object.keys(stationCounts).filter(k => stationCounts[k].length > 1);
+
+            // 计算布局
+            const padding = { top: 40, bottom: 30, left: 80, right: 40 };
+            const availableW = w - padding.left - padding.right;
+            const availableH = h - padding.top - padding.bottom;
+
+            // 最大站点数
+            let maxStations = 0;
+            Object.values(groups).forEach(arr => {
+                if (arr.length > maxStations) maxStations = arr.length;
+            });
+            maxStations = Math.max(maxStations, 2);
+
+            const spacingX = availableW / (maxStations + 1);
+            const spacingY = lineCount > 1 ? availableH / (lineCount + 1) : availableH / 2;
+
+            // 应用缩放
+            const zoom = scale || 1.0;
+            const cx = w / 2,
+                cy = h / 2;
+
+            // 保存上下文
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(zoom, zoom);
+            ctx.translate(-cx, -cy);
+
+            // 绘制网格（极淡）
+            ctx.strokeStyle = 'rgba(200,200,200,0.15)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i <= 10; i++) {
+                const x = padding.left + (i / 10) * availableW;
+                ctx.beginPath();
+                ctx.moveTo(x, padding.top);
+                ctx.lineTo(x, h - padding.bottom);
+                ctx.stroke();
+                const y = padding.top + (i / 10) * availableH;
+                ctx.beginPath();
+                ctx.moveTo(padding.left, y);
+                ctx.lineTo(w - padding.right, y);
+                ctx.stroke();
+            }
+
+            // 绘制线路
+            lines.forEach((lineName, li) => {
+                const stations = groups[lineName];
+                const color = getLineColor(lineName, li);
+                const yPos = padding.top + (li + 1) * (availableH / (lineCount + 1));
+
+                // 绘制线路（粗线）
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 6;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                stations.forEach((s, si) => {
+                    const xPos = padding.left + (si + 1) * spacingX;
+                    if (si === 0) {
+                        ctx.moveTo(xPos, yPos);
+                    } else {
+                        ctx.lineTo(xPos, yPos);
+                    }
+                });
+                ctx.stroke();
+
+                // 绘制站点
+                stations.forEach((s, si) => {
+                    const xPos = padding.left + (si + 1) * spacingX;
+                    const isTransfer = transferStations.includes(s.name);
+                    const radius = isTransfer ? 12 : 9;
+
+                    // 外发光
+                    const grad = ctx.createRadialGradient(xPos, yPos, 0, xPos, yPos, radius * 2);
+                    grad.addColorStop(0, color + '40');
+                    grad.addColorStop(1, color + '00');
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(xPos, yPos, radius * 2, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // 外圈
+                    ctx.beginPath();
+                    ctx.arc(xPos, yPos, radius + 2, 0, Math.PI * 2);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fill();
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    // 内圈
+                    ctx.beginPath();
+                    ctx.arc(xPos, yPos, radius - 1, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+
+                    // 换乘站标记（双环）
+                    if (isTransfer) {
+                        ctx.beginPath();
+                        ctx.arc(xPos, yPos, radius + 5, 0, Math.PI * 2);
+                        ctx.strokeStyle = '#ffffff';
+                        ctx.lineWidth = 2.5;
+                        ctx.stroke();
+                        ctx.beginPath();
+                        ctx.arc(xPos, yPos, radius + 8, 0, Math.PI * 2);
+                        ctx.strokeStyle = color;
+                        ctx.lineWidth = 1.5;
+                        ctx.stroke();
+                    }
+
+                    // 站点名称
+                    const searchTerm = searchInput.value.trim().toLowerCase();
+                    const isHighlight = searchTerm && s.name.toLowerCase().includes(searchTerm);
+
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'top';
+                    const fontSize = isHighlight ? 13 : 11;
+                    ctx.font = (isHighlight ? 'bold ' : '') + fontSize + 'px system-ui, sans-serif';
+
+                    if (isHighlight) {
+                        // 高亮背景
+                        const metrics = ctx.measureText(s.name);
+                        const tw = metrics.width;
+                        const th = fontSize * 1.4;
+                        ctx.fillStyle = 'rgba(255, 215, 0, 0.25)';
+                        ctx.roundRect ? ctx.roundRect(xPos - tw / 2 - 6, yPos + radius + 4, tw + 12, th + 4, 6) : 0;
+                        if (ctx.roundRect) {
+                            ctx.roundRect(xPos - tw / 2 - 6, yPos + radius + 4, tw + 12, th + 4, 6);
+                            ctx.fill();
+                        } else {
+                            // fallback
+                            ctx.fillRect(xPos - tw / 2 - 6, yPos + radius + 4, tw + 12, th + 4);
+                        }
+                        ctx.fillStyle = '#d4a000';
+                        ctx.shadowColor = 'rgba(255,215,0,0.3)';
+                        ctx.shadowBlur = 8;
+                    } else {
+                        ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text').trim() || '#1a2332';
+                        ctx.shadowColor = 'transparent';
+                        ctx.shadowBlur = 0;
+                    }
+
+                    ctx.fillText(s.name, xPos, yPos + radius + 4);
+
+                    // 重置阴影
+                    ctx.shadowColor = 'transparent';
+                    ctx.shadowBlur = 0;
+                });
+            });
+
+            ctx.restore();
+
+            // 更新统计
+            mapStats.textContent = `站点: ${data.length} | 线路: ${lineCount}`;
+
+            // 更新图例
+            let legendHtml = '';
+            lines.forEach((lineName, li) => {
+                const color = getLineColor(lineName, li);
+                legendHtml += `
+                    <span class="legend-item">
+                        <span class="legend-color" style="background:${color};"></span>
+                        <span class="legend-label">${lineName}</span>
+                    </span>
+                `;
+            });
+            // 添加高亮说明
+            const searchTerm = searchInput.value.trim();
+            if (searchTerm) {
+                legendHtml += `
+                    <span class="legend-highlight">⭐ 高亮: ${searchTerm}</span>
+                `;
+            }
+            mapLegend.innerHTML = legendHtml || '<span style="color:var(--text-light);">暂无线路数据</span>';
+        }
+
+        // ============================================================
+        //  线路图模态框控制
+        // ============================================================
+        let mapZoom = 1.0;
+
+        function openMapModal() {
+            mapModal.classList.add('active');
+            // 延迟绘制，确保DOM渲染完成
+            requestAnimationFrame(() => {
+                drawLineChart(mapZoom);
+            });
+        }
+
+        function closeMapModal() {
+            mapModal.classList.remove('active');
+        }
+
+        showMapBtn.onclick = openMapModal;
+        closeMapBtn.onclick = closeMapModal;
+        mapModal.onclick = (e) => {
+            if (e.target === mapModal) closeMapModal();
+        };
+
+        // 缩放滑杆
+        zoomSlider.oninput = function() {
+            mapZoom = parseFloat(this.value);
+            zoomVal.textContent = Math.round(mapZoom * 100) + '%';
+            drawLineChart(mapZoom);
+        };
+
+        // 窗口尺寸变化时重绘
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (mapModal.classList.contains('active')) {
+                    drawLineChart(mapZoom);
+                }
+            }, 200);
+        });
+
+        // 监听数据变化，如果线路图打开则刷新
+        const origCombine = combineData;
+        combineData = function() {
+            origCombine();
+            if (mapModal.classList.contains('active')) {
+                drawLineChart(mapZoom);
+            }
+        };
+
+        // 搜索时更新线路图（如果打开）
+        searchInput.addEventListener('input', () => {
+            if (mapModal.classList.contains('active')) {
+                drawLineChart(mapZoom);
+            }
+        });
+
+        // ============================================================
         //  初始化
         // ============================================================
         adminPanel.classList.remove('open');
@@ -1523,9 +2013,9 @@
         adminUnlocked = false;
         updateAdminUI();
 
-        console.log('🚆 五洲铁路录入系统 V2.0_ALPHA 已加载');
+        console.log('🚆 五洲铁路录入系统 V3.0_ALPHA 已加载');
         console.log('👤 当前用户:', currentUserId || '未登录');
-        console.log('🔒 管理员密码已加密存储（界面不展示）');
+        console.log('🗺️ 线路图功能已启用');
     </script>
 </body>
 </html>
