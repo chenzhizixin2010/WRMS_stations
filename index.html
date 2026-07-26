@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>五洲铁路模组服务器线路车站录入系统 V3.0_BETA6</title>
+    <title>五洲铁路模组服务器线路车站录入系统 V3.0_RC</title>
     <style>
         /* ===== CSS 变量 & 主题 ===== */
         :root {
@@ -390,6 +390,8 @@
         .theme-selector .theme-dot.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,111,219,0.25); }
         .theme-selector .theme-dot .check { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 16px; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.4); display: none; }
         .theme-selector .theme-dot.active .check { display: block; }
+
+        /* ===== 标签样式 ===== */
         .alpha-tag { display: inline-block; background: #2ecc71; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 8px; border-radius: 12px; margin-left: 6px; vertical-align: middle; letter-spacing: 0.5px; text-transform: uppercase; }
         .alpha-tag.warning { background: #27ae60; }
         .beta-tag { display: inline-block; background: #f39c12; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 8px; border-radius: 12px; margin-left: 6px; vertical-align: middle; letter-spacing: 0.5px; text-transform: uppercase; }
@@ -404,20 +406,21 @@
             <div class="sub">欢迎使用五洲铁路模组服务器官方线路车站管理平台！</div>
             <div class="log-area">
                 <strong>📖 使用说明</strong>
-                <p>🔍 <b>查询区</b> — 搜索站点/线路/状态，浏览全部车站数据，点击「显示线路图 <span class="alpha-tag">Alpha</span>」查看拓扑线路图</p>
+                <p>🔍 <b>查询区</b> — 搜索站点/线路/状态，浏览全部车站数据，点击「显示线路图 <span class="beta-tag">Beta</span>」查看拓扑线路图</p>
                 <p>✏️ <b>录入区</b> — 每次只添加一条线路，换乘站需多次录入（同一站名和坐标，不同线路）</p>
                 <p>⚙️ <b>管理员工具</b> — 批量导入、导出JSON、管理本地数据（需密码）</p>
                 <p>💡 本地新增站点仅保存在浏览器，提交文本发给管理员即可</p>
-                <p>🗺️ <b>线路图</b> — 拓扑等距地铁示意图，基于X/Z距离自动串联站点，Alpha版</p>
+                <p>🗺️ <b>线路图</b> — 基于X/Z坐标映射，站点等距排列，换乘站自然交汇，呈现真实网络形态</p>
                 <br>
-                <strong>📌 更新日志 V3.0_BETA6</strong>
-                <p>✦ 🎨 修复浅色模式下标题栏背景为蓝色，文字清晰可读</p>
-                <p>✦ 📐 标题字体放大并居中，提升视觉层次</p>
-                <p>✦ 🗺️ 线路图全面优化：自适应间距、重置视角、更流畅的拖拽与缩放</p>
-                <p>✦ 🔍 线路图增加重置视角按钮，一键恢复默认视图</p>
-                <p>✦ ✨ 悬浮提示信息更丰富，包含站点名称、线路、坐标、状态</p>
-                <p>✦ 🧹 优化代码结构，确保所有主题下界面正常显示</p>
-                <p>✦ 📝 版本号升级至 V3.0_BETA6</p>
+                <strong>📌 更新日志 V3.0_RC</strong>
+                <p>✦ 🗺️ 线路图布局改为基于X/Z坐标映射，站点等距分布，线路自然交汇</p>
+                <p>✦ 🔄 换乘站位置重合，形成网络拓扑，符合现实地铁图样式</p>
+                <p>✦ 🎨 保留MTR风格：纯白背景、高饱和色彩、扁平化站点</p>
+                <p>✦ 🖱️ 拖拽平移、滚轮缩放、图例开关、站点悬浮提示功能保留</p>
+                <p>✦ 🧹 移除网格线，固定文字颜色，提升视觉清晰度</p>
+                <p>✦ 🔗 地名生成器按钮跳转至 wrmspng.github.io 外部站点</p>
+                <p>✦ 🏷️ 线路图状态标记为 Beta（稳定测试版）</p>
+                <p>✦ 📝 版本号升级至 V3.0_RC（Release Candidate）</p>
             </div>
             <div class="id-input-wrap">
                 <input id="entryIdInput" placeholder="请输入你的游戏ID / 昵称" autofocus>
@@ -429,7 +432,7 @@
     <!-- 主页面容器 -->
     <div class="container" id="mainApp" style="display:none;">
         <header class="header">
-            <h1>🚆 五洲铁路模组服务器 <small>线路车站录入系统</small> <span class="version-tag">V3.0_BETA6</span></h1>
+            <h1>🚆 五洲铁路模组服务器 <small>线路车站录入系统</small> <span class="version-tag">V3.0_RC</span></h1>
             <div class="header-actions">
                 <button id="themeToggleBtn" title="切换深色/浅色">🌓 深色</button>
                 <button id="aboutBtn" title="开发者信息 & 主题配色">ℹ️ 关于</button>
@@ -442,7 +445,7 @@
                 🔍 查询区
                 <span class="badge">公共 + 本地</span>
                 <span style="flex:1;"></span>
-                <button id="showMapBtn" class="map-btn small">🗺️ 显示线路图 <span class="alpha-tag">Alpha</span></button>
+                <button id="showMapBtn" class="map-btn small">🗺️ 显示线路图 <span class="beta-tag">Beta</span></button>
                 <button id="refreshPublic" class="small" style="background:var(--accent);">🔄 刷新公共库</button>
                 <button id="deduplicateBtn" class="small orange">🔁 去重本地</button>
             </div>
@@ -554,7 +557,7 @@
                     <span class="sep">&</span>
                     <a href="https://space.bilibili.com/3546698959816732" target="_blank" rel="noopener">五洲社</a>
                 </div>
-                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V3.0_BETA6</div>
+                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V3.0_RC</div>
             </div>
         </footer>
     </div>
@@ -563,7 +566,7 @@
         <div class="modal-box">
             <h3>ℹ️ 工具信息 & 主题配色</h3>
             <p style="margin:6px 0 2px;"><strong>开发者：</strong>DeepSeek · 豆包 · 陈之自信</p>
-            <p style="margin:2px 0;"><strong>当前版本：</strong>V3.0_BETA6</p>
+            <p style="margin:2px 0;"><strong>当前版本：</strong>V3.0_RC</p>
             <p style="margin:2px 0 10px;"><strong>版权归属：</strong>© 五洲铁路模组服务器 2026</p>
             <div style="margin:10px 0 12px;">
                 <div style="font-weight:500;font-size:14px;margin-bottom:6px;">🎨 切换主题配色</div>
@@ -577,14 +580,15 @@
                 </div>
             </div>
             <div style="background:var(--card2);border-radius:10px;padding:10px 14px;border:1px solid var(--border);font-size:13px;max-height:180px;overflow-y:auto;">
-                <strong>📌 更新日志 V3.0_BETA6</strong>
-                <p style="margin:2px 0;">✦ 🎨 修复浅色模式下标题栏背景为蓝色，文字清晰可读</p>
-                <p style="margin:2px 0;">✦ 📐 标题字体放大并居中，提升视觉层次</p>
-                <p style="margin:2px 0;">✦ 🗺️ 线路图全面优化：自适应间距、重置视角、更流畅的拖拽与缩放</p>
-                <p style="margin:2px 0;">✦ 🔍 线路图增加重置视角按钮，一键恢复默认视图</p>
-                <p style="margin:2px 0;">✦ ✨ 悬浮提示信息更丰富，包含站点名称、线路、坐标、状态</p>
-                <p style="margin:2px 0;">✦ 🧹 优化代码结构，确保所有主题下界面正常显示</p>
-                <p style="margin:2px 0;">✦ 📝 版本号升级至 V3.0_BETA6</p>
+                <strong>📌 更新日志 V3.0_RC</strong>
+                <p style="margin:2px 0;">✦ 🗺️ 线路图布局改为基于X/Z坐标映射，站点等距分布，线路自然交汇</p>
+                <p style="margin:2px 0;">✦ 🔄 换乘站位置重合，形成网络拓扑，符合现实地铁图样式</p>
+                <p style="margin:2px 0;">✦ 🎨 保留MTR风格：纯白背景、高饱和色彩、扁平化站点</p>
+                <p style="margin:2px 0;">✦ 🖱️ 拖拽平移、滚轮缩放、图例开关、站点悬浮提示功能保留</p>
+                <p style="margin:2px 0;">✦ 🧹 移除网格线，固定文字颜色，提升视觉清晰度</p>
+                <p style="margin:2px 0;">✦ 🔗 地名生成器按钮跳转至 wrmspng.github.io 外部站点</p>
+                <p style="margin:2px 0;">✦ 🏷️ 线路图状态标记为 Beta（稳定测试版）</p>
+                <p style="margin:2px 0;">✦ 📝 版本号升级至 V3.0_RC（Release Candidate）</p>
             </div>
             <button class="modal-close-btn" id="closeAbout">关闭</button>
         </div>
@@ -593,7 +597,7 @@
     <div class="map-modal-mask" id="mapModal">
         <div class="map-modal-box">
             <div class="map-modal-header">
-                <h2>🚇 线路图 <span style="font-size:14px;font-weight:400;color:var(--text-light);">— 拓扑等距示意图 <span class="alpha-tag warning">Alpha</span></span></h2>
+                <h2>🚇 线路图 <span style="font-size:14px;font-weight:400;color:var(--text-light);">— 基于坐标的网络拓扑 <span class="beta-tag warning">Beta</span></span></h2>
                 <button class="close-btn" id="closeMapBtn">✕</button>
             </div>
             <div class="map-canvas-wrap" id="canvasWrap">
@@ -609,7 +613,7 @@
                 <span style="font-size:12px;color:var(--text-light);" id="mapStats">站点: 0 | 线路: 0 | 换乘站: 0</span>
             </div>
             <div class="map-legend" id="mapLegend"></div>
-            <div class="map-tip-text">⚠️ Alpha测试版：同线路按MC X/Z距离自动串联，图例点击隐藏/显示线路 | 拖拽画布平移，滚轮缩放</div>
+            <div class="map-tip-text">⚠️ Beta 测试：基于X/Z坐标映射，站点等距排列，换乘站自然重合 | 拖拽平移，滚轮缩放</div>
         </div>
     </div>
 <script>
@@ -628,6 +632,7 @@
     let hiddenLines = new Set();
     let stationPosMap = new Map();
 
+    // 高饱和度颜色（MTR风格）
     const LINE_COLORS = [
         "#e74c3c", "#3498db", "#2ecc71", "#f39c12",
         "#9b59b6", "#1abc9c", "#e67e22", "#2c3e50",
@@ -1161,72 +1166,7 @@
         return allList.filter(item => (item.lines || []).includes(lineName));
     }
 
-    function distance(a, b) {
-        const dx = Number(a.x) - Number(b.x);
-        const dz = Number(a.z) - Number(b.z);
-        return Math.sqrt(dx * dx + dz * dz);
-    }
-
-    function sortStationsByDistance(stations) {
-        if (stations.length <= 1) return stations;
-
-        const result = [];
-        const used = new Set();
-
-        let current = stations[0];
-        result.push(current);
-        used.add(current);
-
-        while (result.length < stations.length) {
-            let nearest = null;
-            let minDist = Infinity;
-
-            stations.forEach(s => {
-                if (used.has(s)) return;
-                const d = distance(current, s);
-                if (d < minDist) {
-                    minDist = d;
-                    nearest = s;
-                }
-            });
-
-            if (nearest) {
-                result.push(nearest);
-                used.add(nearest);
-                current = nearest;
-            } else {
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    function buildTopologyLayout() {
-        const lines = getAllLines();
-        const lineStations = {};
-        const lineRoutes = {};
-
-        lines.forEach(line => {
-            const stations = getStationsByLine(line);
-            lineStations[line] = stations;
-
-            if (stations.length > 1) {
-                lineRoutes[line] = sortStationsByDistance(stations);
-            } else {
-                lineRoutes[line] = stations;
-            }
-        });
-
-        const stationLines = {};
-        allList.forEach(item => {
-            const key = `${item.name}|${item.x}|${item.z}`;
-            stationLines[key] = item.lines || [];
-        });
-
-        return { lines, lineStations, lineRoutes, stationLines };
-    }
-
+    // ===== 核心：基于坐标的等距拓扑布局 =====
     function drawLineChart() {
         const rect = canvasWrap.getBoundingClientRect();
         mapCanvas.width = rect.width;
@@ -1236,27 +1176,16 @@
         const h = mapCanvas.height;
         const ctx = mapCanvas.getContext('2d');
 
-        const isDark = document.body.classList.contains('theme-dark');
-        const bgColor = isDark ? '#1c2128' : '#f7f9fc';
-        const textColor = isDark ? '#e8edf5' : '#1a2332';
-        const gridColor = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)';
-
-        ctx.fillStyle = bgColor;
+        // MTR 风格：纯白背景
+        ctx.fillStyle = '#fcfcfd';
         ctx.fillRect(0, 0, w, h);
 
-        const topology = buildTopologyLayout();
-        const { lines, lineRoutes, stationLines } = topology;
-
-        const keyword = searchInput.value.toLowerCase().trim();
-
-        const visibleLines = lines.filter(line => {
-            if (hiddenLines.has(line)) return false;
-            if (!keyword) return true;
-            return line.toLowerCase().includes(keyword);
-        });
+        // 获取所有可见线路
+        const allLines = getAllLines();
+        const visibleLines = allLines.filter(line => !hiddenLines.has(line));
 
         if (visibleLines.length === 0) {
-            ctx.fillStyle = textColor;
+            ctx.fillStyle = '#2b434f';
             ctx.font = '18px system-ui';
             ctx.textAlign = 'center';
             ctx.fillText('没有可见的线路', w/2, h/2);
@@ -1265,45 +1194,133 @@
             return;
         }
 
-        const padding = 50;
-        // 计算最大站点数
-        let maxStations = 0;
+        // 收集所有可见站点（按线路分组）
+        const lineStations = {};
         visibleLines.forEach(line => {
-            const stations = lineRoutes[line] || [];
-            maxStations = Math.max(maxStations, stations.length);
+            lineStations[line] = getStationsByLine(line);
         });
-        maxStations = Math.max(maxStations, 1);
 
-        const lineHeight = Math.min(60, (h - padding * 2) / Math.max(visibleLines.length, 1));
-        const stationGap = Math.min(50, (w - padding * 2) / Math.max(maxStations, 1));
+        // 第一步：计算所有站点的XZ范围
+        let allStations = [];
+        visibleLines.forEach(line => {
+            lineStations[line].forEach(s => {
+                const key = `${s.name}|${s.x}|${s.z}`;
+                if (!allStations.find(st => st.name === s.name && st.x === s.x && st.z === s.z)) {
+                    allStations.push(s);
+                }
+            });
+        });
 
+        if (allStations.length === 0) {
+            ctx.fillStyle = '#2b434f';
+            ctx.font = '18px system-ui';
+            ctx.textAlign = 'center';
+            ctx.fillText('没有站点数据', w/2, h/2);
+            mapLegend.innerHTML = '';
+            mapStats.textContent = '站点: 0 | 线路: 0 | 换乘站: 0';
+            return;
+        }
+
+        // 计算XZ范围
+        let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
+        allStations.forEach(s => {
+            const x = parseFloat(s.x), z = parseFloat(s.z);
+            if (!isNaN(x) && !isNaN(z)) {
+                if (x < minX) minX = x;
+                if (x > maxX) maxX = x;
+                if (z < minZ) minZ = z;
+                if (z > maxZ) maxZ = z;
+            }
+        });
+        if (!isFinite(minX) || !isFinite(maxX) || !isFinite(minZ) || !isFinite(maxZ)) {
+            minX = -1; maxX = 1; minZ = -1; maxZ = 1;
+        }
+
+        const rangeX = maxX - minX || 1;
+        const rangeZ = maxZ - minZ || 1;
+        const padding = 50;
+        const scale = Math.min((w - padding * 2) / rangeX, (h - padding * 2) / rangeZ) * 0.9;
+
+        // 映射函数：将XZ映射到画布坐标（居中）
+        const mapX = (x) => (x - (minX + maxX) / 2) * scale + w / 2;
+        const mapY = (z) => (z - (minZ + maxZ) / 2) * scale + h / 2;
+
+        // 为每条线路生成初始坐标
+        const linePositions = {};
+        visibleLines.forEach(line => {
+            const stations = lineStations[line];
+            linePositions[line] = stations.map(s => ({
+                station: s,
+                x: mapX(parseFloat(s.x)),
+                y: mapY(parseFloat(s.z))
+            }));
+        });
+
+        // 第二步：对每条线路进行等距调整（保持线路形状）
+        visibleLines.forEach(line => {
+            const points = linePositions[line];
+            if (points.length < 2) return;
+
+            // 计算折线总长度
+            let totalLen = 0;
+            for (let i = 1; i < points.length; i++) {
+                const dx = points[i].x - points[i-1].x;
+                const dy = points[i].y - points[i-1].y;
+                totalLen += Math.sqrt(dx*dx + dy*dy);
+            }
+            if (totalLen === 0) return;
+
+            // 等距重新采样
+            const newPoints = [];
+            const step = totalLen / (points.length - 1);
+            let accumulated = 0;
+            newPoints.push({ ...points[0] }); // 保留第一个点
+
+            for (let i = 1; i < points.length - 1; i++) {
+                // 沿着折线移动 step 距离
+                let targetDist = i * step;
+                let currentDist = 0;
+                let segmentIdx = 0;
+                for (let j = 1; j < points.length; j++) {
+                    const dx = points[j].x - points[j-1].x;
+                    const dy = points[j].y - points[j-1].y;
+                    const segLen = Math.sqrt(dx*dx + dy*dy);
+                    if (currentDist + segLen >= targetDist) {
+                        const t = (targetDist - currentDist) / segLen;
+                        const px = points[j-1].x + dx * t;
+                        const py = points[j-1].y + dy * t;
+                        newPoints.push({ station: points[j].station, x: px, y: py });
+                        break;
+                    }
+                    currentDist += segLen;
+                }
+            }
+            newPoints.push({ ...points[points.length-1] }); // 保留最后一个点
+
+            // 替换原坐标
+            linePositions[line] = newPoints;
+        });
+
+        // 第三步：绘制线路和站点
+        // 绘制前清空 stationPosMap
         stationPosMap.clear();
 
-        // 先绘制所有线路
-        visibleLines.forEach((line, lineIndex) => {
-            const stations = lineRoutes[line] || [];
-            if (stations.length === 0) return;
+        // 先绘制所有线路（连线和站点圆）
+        visibleLines.forEach(line => {
+            const positions = linePositions[line];
+            if (positions.length === 0) return;
+            const color = getLineColor(line);
 
-            const lineColor = getLineColor(line);
-
-            const baseY = padding + lineIndex * lineHeight + lineHeight / 2;
-            const totalWidth = (stations.length - 1) * stationGap;
-            const startX = padding + (w - padding * 2 - totalWidth) / 2;
-
-            // 绘制连线
+            // 绘制线路连线
             ctx.beginPath();
-            ctx.strokeStyle = lineColor;
+            ctx.strokeStyle = color;
             ctx.lineWidth = Math.max(3, 4 * mapZoom);
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
-            stations.forEach((station, i) => {
-                const x = startX + i * stationGap;
-                const y = baseY;
-
-                const cx = x * mapZoom + mapOffsetX;
-                const cy = y * mapZoom + mapOffsetY;
-
+            positions.forEach((p, i) => {
+                const cx = p.x * mapZoom + mapOffsetX;
+                const cy = p.y * mapZoom + mapOffsetY;
                 if (i === 0) {
                     ctx.moveTo(cx, cy);
                 } else {
@@ -1312,60 +1329,54 @@
             });
             ctx.stroke();
 
-            // 绘制站点
-            stations.forEach((station, i) => {
-                const x = startX + i * stationGap;
-                const y = baseY;
-
-                const cx = x * mapZoom + mapOffsetX;
-                const cy = y * mapZoom + mapOffsetY;
-
+            // 绘制站点（圆点）
+            positions.forEach((p) => {
+                const cx = p.x * mapZoom + mapOffsetX;
+                const cy = p.y * mapZoom + mapOffsetY;
+                const station = p.station;
                 const key = `${station.name}|${station.x}|${station.z}`;
-                const linesAtStation = stationLines[key] || [];
-                const isTransfer = linesAtStation.length > 1;
 
-                // 缓存位置用于悬浮
-                stationPosMap.set(key, { x, y, line, station });
+                // 判断是否为换乘站（出现于多条线路）
+                const allLinesForStation = allList.filter(s => s.name === station.name && s.x === station.x && s.z === station.z);
+                const lineNames = allLinesForStation.flatMap(s => s.lines || []);
+                const uniqueLines = [...new Set(lineNames)];
+                const isTransfer = uniqueLines.length > 1;
 
-                // 站点外发光
-                const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 14 * mapZoom);
-                grad.addColorStop(0, lineColor + '60');
-                grad.addColorStop(1, 'transparent');
-                ctx.fillStyle = grad;
+                // 缓存位置
+                stationPosMap.set(key, { x: p.x, y: p.y, line, station });
+
+                // 站点圆
+                const radius = Math.max(isTransfer ? 11 : 8, 6 * mapZoom);
                 ctx.beginPath();
-                ctx.arc(cx, cy, 14 * mapZoom, 0, Math.PI * 2);
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.fillStyle = color;
                 ctx.fill();
 
-                // 站点主体
-                ctx.beginPath();
-                ctx.arc(cx, cy, Math.max(isTransfer ? 10 : 7, 6 * mapZoom), 0, Math.PI * 2);
-                ctx.fillStyle = lineColor;
-                ctx.fill();
+                // 白色描边
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = Math.max(2, 2.5 * mapZoom);
+                ctx.stroke();
 
-                // 换乘站白边
+                // 换乘站内圈（白色小圆）
                 if (isTransfer) {
-                    ctx.strokeStyle = '#ffffff';
-                    ctx.lineWidth = Math.max(2, 2.5 * mapZoom);
-                    ctx.stroke();
-
-                    // 内圈
                     ctx.beginPath();
-                    ctx.arc(cx, cy, Math.max(5, 3.5 * mapZoom), 0, Math.PI * 2);
-                    ctx.fillStyle = bgColor;
+                    ctx.arc(cx, cy, radius * 0.5, 0, Math.PI * 2);
+                    ctx.fillStyle = '#ffffff';
                     ctx.fill();
                 }
 
-                // 站点名称
-                ctx.fillStyle = textColor;
+                // 站点名称（使用固定深灰色，不随主题变化）
+                ctx.fillStyle = '#2b434f';
                 ctx.font = `${Math.max(11, 12 * mapZoom)}px system-ui`;
                 ctx.textAlign = 'center';
-                ctx.fillText(station.name, cx, cy - 16 * mapZoom);
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(station.name, cx, cy - radius - 4 * mapZoom);
             });
         });
 
         // 更新图例
         mapLegend.innerHTML = '';
-        lines.forEach(line => {
+        allLines.forEach(line => {
             const item = document.createElement('div');
             item.className = 'legend-item' + (hiddenLines.has(line) ? ' hidden-line' : '');
 
@@ -1387,30 +1398,33 @@
             mapLegend.appendChild(item);
         });
 
+        // 更新统计信息
         updateMapStats();
     }
 
     function updateMapStats() {
-        const topology = buildTopologyLayout();
+        const allLines = getAllLines();
+        const visibleLines = allLines.filter(line => !hiddenLines.has(line));
         const visibleStations = new Set();
         const transferCount = new Set();
 
-        getAllLines().forEach(line => {
-            if (hiddenLines.has(line)) return;
-
+        visibleLines.forEach(line => {
             const stations = getStationsByLine(line);
             stations.forEach(s => {
                 const key = `${s.name}|${s.x}|${s.z}`;
                 visibleStations.add(key);
 
-                const linesAtStation = s.lines || [];
-                if (linesAtStation.length > 1) {
+                // 检查换乘
+                const allLinesForStation = allList.filter(st => st.name === s.name && st.x === s.x && st.z === s.z);
+                const lineNames = allLinesForStation.flatMap(st => st.lines || []);
+                const uniqueLines = [...new Set(lineNames)];
+                if (uniqueLines.length > 1) {
                     transferCount.add(key);
                 }
             });
         });
 
-        mapStats.textContent = `站点: ${visibleStations.size} | 线路: ${getAllLines().length - hiddenLines.size} | 换乘站: ${transferCount.size}`;
+        mapStats.textContent = `站点: ${visibleStations.size} | 线路: ${visibleLines.length} | 换乘站: ${transferCount.size}`;
     }
 
     function resizeMapCanvas() {
@@ -1504,8 +1518,10 @@
 
         if (found) {
             mapTooltip.style.display = 'block';
-            mapTooltip.style.left = Math.min(e.clientX - rect.left + 12, rect.width - 200) + 'px';
-            mapTooltip.style.top = Math.min(e.clientY - rect.top + 12, rect.height - 120) + 'px';
+            const left = Math.min(e.clientX - rect.left + 12, rect.width - 200);
+            const top = Math.min(e.clientY - rect.top + 12, rect.height - 120);
+            mapTooltip.style.left = left + 'px';
+            mapTooltip.style.top = top + 'px';
 
             const s = found.station;
             const lineDisplay = (s.lines || []).join(', ');
@@ -1533,6 +1549,11 @@
         showMsg('✅ 线路图已导出PNG');
     };
 
+    // 地名生成器跳转
+    $('mapGenBtn').onclick = () => {
+        window.open('https://wrmspng.github.io', '_blank');
+    };
+
     let currentTheme = 'default';
 
     function applyTheme(theme) {
@@ -1548,6 +1569,7 @@
             dot.classList.toggle('active', dot.dataset.theme === theme);
         });
 
+        // 线路图背景不跟随主题，固定白色，无需重绘
         if (mapModal.classList.contains('active')) {
             drawLineChart();
         }
@@ -1575,10 +1597,6 @@
         if (e.target === aboutMask) {
             aboutMask.classList.remove('active');
         }
-    };
-
-    $('mapGenBtn').onclick = () => {
-        showMsg('⚠️ 地名生成器功能开发中', true);
     };
 </script>
 </body>
