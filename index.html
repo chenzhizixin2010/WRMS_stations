@@ -230,7 +230,24 @@
         .theme-selector .theme-dot .check { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 16px; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.4); display: none; }
         .theme-selector .theme-dot.active .check { display: block; }
 
-        /* Beta 标签 */
+        /* 版本标签 - Beta 改为 Alpha 仅用于线路图按钮 */
+        .alpha-tag {
+            display: inline-block;
+            background: #2ecc71;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 8px;
+            border-radius: 12px;
+            margin-left: 6px;
+            vertical-align: middle;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .alpha-tag.warning {
+            background: #27ae60;
+        }
+        /* Beta 标签保留给其他位置（如果有） */
         .beta-tag {
             display: inline-block;
             background: #f39c12;
@@ -258,18 +275,18 @@
             <div class="sub">欢迎使用五洲铁路模组服务器官方线路车站管理平台！</div>
             <div class="log-area">
                 <strong>📖 使用说明</strong>
-                <p>🔍 <b>查询区</b> — 搜索站点/线路/状态，浏览全部车站数据，点击「显示线路图 <span class="beta-tag">Beta</span>」查看拓扑线路图</p>
+                <p>🔍 <b>查询区</b> — 搜索站点/线路/状态，浏览全部车站数据，点击「显示线路图 <span class="alpha-tag">Alpha</span>」查看拓扑线路图</p>
                 <p>✏️ <b>录入区</b> — 每次只添加一条线路，换乘站需多次录入（同一站名和坐标，不同线路）</p>
                 <p>⚙️ <b>管理员工具</b> — 批量导入、导出JSON、管理本地数据（需密码）</p>
                 <p>💡 本地新增站点仅保存在浏览器，提交文本发给管理员即可</p>
-                <p>🗺️ <b>线路图</b> — 等距拓扑布局，换乘站并排多环，Beta版功能可能不稳定</p>
+                <p>🗺️ <b>线路图</b> — 等距拓扑布局，换乘站并排多环，Alpha版功能可能不稳定</p>
                 <br>
                 <strong>📌 更新日志 V3.0_BETA4</strong>
-                <p>✦ 📦 导出JSON优化为GitHub直接替换格式（与公共库完全兼容）</p>
+                <p>✦ 📦 导出JSON改为下载文件，更加稳定可靠</p>
                 <p>✦ 🔗 公共库数据源切换为 GitHub 直连，实时获取最新数据</p>
-                <p>✦ 🧪 线路图功能标记为 Beta 版（不稳定），增加醒目提示</p>
+                <p>✦ 🧪 线路图功能标记为 Alpha 版（早期测试），增加醒目提示</p>
                 <p>✦ 🐛 修复缩放滑杆导致窗口异常放大的问题</p>
-                <p>✦ 📝 版本号升级至 V3.0_BETA4</p>
+                <p>✦ 📝 版本号保持 V3.0_BETA4</p>
             </div>
             <div class="id-input-wrap">
                 <input id="entryIdInput" placeholder="请输入你的游戏ID / 昵称" autofocus>
@@ -301,7 +318,7 @@
                 🔍 查询区
                 <span class="badge">公共 + 本地</span>
                 <span style="flex:1;"></span>
-                <button id="showMapBtn" class="map-btn small">🗺️ 显示线路图 <span class="beta-tag">Beta</span></button>
+                <button id="showMapBtn" class="map-btn small">🗺️ 显示线路图 <span class="alpha-tag">Alpha</span></button>
                 <button id="refreshPublic" class="small" style="background:var(--accent);">🔄 刷新公共库</button>
                 <button id="deduplicateBtn" class="small orange">🔁 去重本地</button>
             </div>
@@ -382,10 +399,10 @@
                     <div style="margin-bottom:14px;border-top:1px solid var(--border);padding-top:14px;">
                         <div style="font-weight:500;font-size:14px;margin-bottom:6px;">📦 数据导出</div>
                         <div class="row">
-                            <button id="exportFullJsonBtn" class="orange">📄 导出完整JSON（GitHub替换）</button>
+                            <button id="exportFullJsonBtn" class="orange">📄 导出完整JSON（下载文件）</button>
                             <button id="exportTextBtn" class="gray">📃 导出文本清单</button>
                         </div>
-                        <div style="font-size:12px;color:var(--text-light);margin-top:4px;">💡 导出的JSON格式与公共库完全兼容，可直接替换仓库中的 station.json</div>
+                        <div style="font-size:12px;color:var(--text-light);margin-top:4px;">💡 导出的JSON文件可直接替换仓库中的 station.json</div>
                     </div>
                     <div style="border-top:1px solid var(--border);padding-top:14px;">
                         <div style="font-weight:500;font-size:14px;margin-bottom:6px;">📊 全站数据表（同步查询区）</div>
@@ -441,11 +458,11 @@
             </div>
             <div style="background:var(--card2);border-radius:10px;padding:10px 14px;border:1px solid var(--border);font-size:13px;max-height:180px;overflow-y:auto;">
                 <strong>📌 更新日志 V3.0_BETA4</strong>
-                <p style="margin:2px 0;">✦ 📦 导出JSON优化为GitHub直接替换格式（与公共库完全兼容）</p>
+                <p style="margin:2px 0;">✦ 📦 导出JSON改为下载文件，更加稳定可靠</p>
                 <p style="margin:2px 0;">✦ 🔗 公共库数据源切换为 GitHub 直连，实时获取最新数据</p>
-                <p style="margin:2px 0;">✦ 🧪 线路图功能标记为 Beta 版（不稳定），增加醒目提示</p>
+                <p style="margin:2px 0;">✦ 🧪 线路图功能标记为 Alpha 版（早期测试），增加醒目提示</p>
                 <p style="margin:2px 0;">✦ 🐛 修复缩放滑杆导致窗口异常放大的问题</p>
-                <p style="margin:2px 0;">✦ 📝 版本号升级至 V3.0_BETA4</p>
+                <p style="margin:2px 0;">✦ 📝 版本号保持 V3.0_BETA4</p>
             </div>
             <button class="modal-close-btn" id="closeAbout">关闭</button>
         </div>
@@ -455,7 +472,7 @@
     <div class="map-modal-mask" id="mapModal">
         <div class="map-modal-box">
             <div class="map-modal-header">
-                <h2>🚇 线路图 <span style="font-size:14px;font-weight:400;color:var(--text-light);">— 等距拓扑 <span class="beta-tag warning">Beta</span></span></h2>
+                <h2>🚇 线路图 <span style="font-size:14px;font-weight:400;color:var(--text-light);">— 等距拓扑 <span class="alpha-tag warning">Alpha</span></span></h2>
                 <button class="close-btn" id="closeMapBtn">✕</button>
             </div>
             <div class="map-canvas-wrap">
@@ -469,7 +486,7 @@
             </div>
             <div class="map-legend" id="mapLegend"></div>
             <div style="font-size:12px;color:var(--text-light);padding:4px 0 2px;border-top:1px solid var(--border);margin-top:4px;text-align:center;">
-                ⚠️ 此功能为 Beta 测试版，可能不稳定，请谨慎使用
+                ⚠️ 此功能为 Alpha 测试版，可能不稳定，请谨慎使用
             </div>
         </div>
     </div>
@@ -533,7 +550,6 @@
         // ============================================================
         async function loadPublicData() {
             try {
-                // 使用 GitHub raw 直连，不再使用 CDN
                 const res = await fetch('https://raw.githubusercontent.com/chenzhizixin2010/WRMS_stations/main/station.json');
                 publicList = await res.json();
                 combineData();
@@ -750,27 +766,32 @@
         };
 
         // ============================================================
-        //  导出完整JSON（GitHub替换格式）
+        //  导出完整JSON（下载文件方式）
         // ============================================================
         $('exportFullJsonBtn').onclick = () => {
-            // 导出全部站点（合并后的），格式与公共库完全一致
-            const exportData = allList.map(item => ({
-                name: item.name,
-                lines: item.lines || [],
-                x: item.x,
-                z: item.z,
-                status: item.status || '规划中'
-            }));
-            const json = JSON.stringify(exportData, null, 2);
-            navigator.clipboard.writeText(json).then(() => showMsg('✅ 完整JSON已复制，可直接替换 station.json')).catch(() => {
-                const ta = document.createElement('textarea');
-                ta.value = json;
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                ta.remove();
-                showMsg('✅ 完整JSON已复制');
-            });
+            try {
+                const exportData = allList.map(item => ({
+                    name: item.name,
+                    lines: item.lines || [],
+                    x: item.x,
+                    z: item.z,
+                    status: item.status || '规划中'
+                }));
+                const json = JSON.stringify(exportData, null, 2);
+                const blob = new Blob([json], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'station.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showMsg('✅ station.json 已下载，可直接替换仓库文件');
+            } catch (e) {
+                console.error(e);
+                showMsg('⚠️ 导出失败，请查看控制台错误', true);
+            }
         };
 
         // ============================================================
@@ -1177,7 +1198,7 @@
 
         console.log('🚆 五洲铁路录入系统 V3.0_BETA4 已加载 (GitHub直连)');
         console.log('👤 当前用户:', localStorage.getItem('wrms_user_id') || '未登录');
-        console.log('🗺️ 线路图为等距拓扑布局，Beta版');
+        console.log('🗺️ 线路图为等距拓扑布局，Alpha版');
     </script>
 </body>
 </html>
