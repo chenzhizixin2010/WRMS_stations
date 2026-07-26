@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>五洲铁路模组服务器线路车站录入系统 V3.0_BETA4</title>
+    <title>五洲铁路模组服务器线路车站录入系统 V3.0_BETA6</title>
     <style>
         /* ===== CSS 变量 & 主题 ===== */
         :root {
@@ -32,12 +32,110 @@
             --footer-bg: #1a2a4a;
             --footer-text: #c8d6e5;
         }
-        /* 深色等主题 (与之前一致) */
-        .theme-dark { --bg: #16181f; --text: #e8edf5; --card: #21262e; --card2: #1c2128; --border: #30363d; --shadow: 0 8px 30px rgba(0,0,0,0.4); --header-bg: linear-gradient(135deg,#0d1117,#1a2332); --text-light: #8b949e; --tag-bg: #2d333b; --input-bg: #1c2128; --modal-overlay: rgba(0,0,0,0.75); --footer-bg: #0d1117; --footer-text: #8b949e; --status-plan: #58a6ff; --status-build: #f0883e; --status-done: #3fb950; --status-stop: #f85149; --status-remove: #8b949e; }
-        .theme-ocean { --bg: #e8f0fe; --text: #0a2540; --card: #ffffff; --card2: #f2f7ff; --border: #b8d0e8; --accent: #0066cc; --accent-hover: #004d99; --header-bg: linear-gradient(135deg,#003366,#0066cc); --text-light: #4a6a8a; --tag-bg: #e0edfa; --input-bg: #ffffff; --status-plan: #0066cc; --status-build: #cc7a00; --status-done: #008844; --status-stop: #cc2233; --status-remove: #7a8a9a; --footer-bg: #003366; --footer-text: #c0d8f0; --modal-overlay: rgba(0,30,60,0.65); }
-        .theme-forest { --bg: #ecf5ec; --text: #1a3a1a; --card: #ffffff; --card2: #f2faf2; --border: #b8d0b8; --accent: #2d7a2d; --accent-hover: #1e5f1e; --header-bg: linear-gradient(135deg,#1a3a1a,#2d7a2d); --text-light: #4a6a4a; --tag-bg: #dcecdc; --input-bg: #ffffff; --status-plan: #2d7a2d; --status-build: #cc7a00; --status-done: #1a8a1a; --status-stop: #cc3333; --status-remove: #6a8a6a; --footer-bg: #1a3a1a; --footer-text: #c0e0c0; --modal-overlay: rgba(20,50,20,0.65); }
-        .theme-purple { --bg: #f5effa; --text: #2a1a3a; --card: #ffffff; --card2: #f8f2fc; --border: #d8c8e8; --accent: #7a3da8; --accent-hover: #5f2d8a; --header-bg: linear-gradient(135deg,#2a1a3a,#7a3da8); --text-light: #6a4a7a; --tag-bg: #ece0f8; --input-bg: #ffffff; --status-plan: #7a3da8; --status-build: #cc7a00; --status-done: #2d8a5a; --status-stop: #cc2244; --status-remove: #8a7a9a; --footer-bg: #2a1a3a; --footer-text: #d0c0e0; --modal-overlay: rgba(40,20,60,0.65); }
-        .theme-orange { --bg: #faf3ec; --text: #3a2a1a; --card: #ffffff; --card2: #fcf7f0; --border: #e8d8c8; --accent: #cc6a1a; --accent-hover: #aa5515; --header-bg: linear-gradient(135deg,#3a2a1a,#cc6a1a); --text-light: #7a6a4a; --tag-bg: #f8ece0; --input-bg: #ffffff; --status-plan: #cc6a1a; --status-build: #cc7a00; --status-done: #2d8a4a; --status-stop: #cc2233; --status-remove: #8a7a6a; --footer-bg: #3a2a1a; --footer-text: #e0d0c0; --modal-overlay: rgba(60,40,20,0.65); }
+        .theme-dark {
+            --bg: #16181f;
+            --text: #e8edf5;
+            --card: #21262e;
+            --card2: #1c2128;
+            --border: #30363d;
+            --shadow: 0 8px 30px rgba(0,0,0,0.4);
+            --header-bg: linear-gradient(135deg,#0d1117,#1a2332);
+            --text-light: #8b949e;
+            --tag-bg: #2d333b;
+            --input-bg: #1c2128;
+            --modal-overlay: rgba(0,0,0,0.75);
+            --footer-bg: #0d1117;
+            --footer-text: #8b949e;
+            --status-plan: #58a6ff;
+            --status-build: #f0883e;
+            --status-done: #3fb950;
+            --status-stop: #f85149;
+            --status-remove: #8b949e;
+        }
+        .theme-ocean {
+            --bg: #e8f0fe;
+            --text: #0a2540;
+            --card: #ffffff;
+            --card2: #f2f7ff;
+            --border: #b8d0e8;
+            --accent: #0066cc;
+            --accent-hover: #004d99;
+            --header-bg: linear-gradient(135deg,#003366,#0066cc);
+            --text-light: #4a6a8a;
+            --tag-bg: #e0edfa;
+            --input-bg: #ffffff;
+            --status-plan: #0066cc;
+            --status-build: #cc7a00;
+            --status-done: #008844;
+            --status-stop: #cc2233;
+            --status-remove: #7a8a9a;
+            --footer-bg: #003366;
+            --footer-text: #c0d8f0;
+            --modal-overlay: rgba(0,30,60,0.65);
+        }
+        .theme-forest {
+            --bg: #ecf5ec;
+            --text: #1a3a1a;
+            --card: #ffffff;
+            --card2: #f2faf2;
+            --border: #b8d0b8;
+            --accent: #2d7a2d;
+            --accent-hover: #1e5f1e;
+            --header-bg: linear-gradient(135deg,#1a3a1a,#2d7a2d);
+            --text-light: #4a6a4a;
+            --tag-bg: #dcecdc;
+            --input-bg: #ffffff;
+            --status-plan: #2d7a2d;
+            --status-build: #cc7a00;
+            --status-done: #1a8a1a;
+            --status-stop: #cc3333;
+            --status-remove: #6a8a6a;
+            --footer-bg: #1a3a1a;
+            --footer-text: #c0e0c0;
+            --modal-overlay: rgba(20,50,20,0.65);
+        }
+        .theme-purple {
+            --bg: #f5effa;
+            --text: #2a1a3a;
+            --card: #ffffff;
+            --card2: #f8f2fc;
+            --border: #d8c8e8;
+            --accent: #7a3da8;
+            --accent-hover: #5f2d8a;
+            --header-bg: linear-gradient(135deg,#2a1a3a,#7a3da8);
+            --text-light: #6a4a7a;
+            --tag-bg: #ece0f8;
+            --input-bg: #ffffff;
+            --status-plan: #7a3da8;
+            --status-build: #cc7a00;
+            --status-done: #2d8a5a;
+            --status-stop: #cc2244;
+            --status-remove: #8a7a9a;
+            --footer-bg: #2a1a3a;
+            --footer-text: #d0c0e0;
+            --modal-overlay: rgba(40,20,60,0.65);
+        }
+        .theme-orange {
+            --bg: #faf3ec;
+            --text: #3a2a1a;
+            --card: #ffffff;
+            --card2: #fcf7f0;
+            --border: #e8d8c8;
+            --accent: #cc6a1a;
+            --accent-hover: #aa5515;
+            --header-bg: linear-gradient(135deg,#3a2a1a,#cc6a1a);
+            --text-light: #7a6a4a;
+            --tag-bg: #f8ece0;
+            --input-bg: #ffffff;
+            --status-plan: #cc6a1a;
+            --status-build: #cc7a00;
+            --status-done: #2d8a4a;
+            --status-stop: #cc2233;
+            --status-remove: #8a7a6a;
+            --footer-bg: #3a2a1a;
+            --footer-text: #e0d0c0;
+            --modal-overlay: rgba(60,40,20,0.65);
+        }
 
         /* ===== 全局重置 ===== */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; }
@@ -50,14 +148,71 @@
         .animate-in-d3 { animation-delay: 0.20s; opacity: 0; }
 
         /* ===== 头部 ===== */
-        .header { background: var(--header-bg); border-radius: var(--radius); padding: 20px 24px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: background var(--transition); }
-        .header h1 { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .header h1 small { font-size: 14px; font-weight: 400; opacity: 0.7; letter-spacing: 0; }
-        .header .version-tag { background: rgba(255,255,255,0.15); padding: 4px 14px; border-radius: 40px; font-size: 13px; color: #fff; font-weight: 500; backdrop-filter: blur(4px); }
-        .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-        .header-actions button { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 14px; border-radius: 30px; font-size: 13px; cursor: pointer; transition: all 0.25s; backdrop-filter: blur(4px); }
-        .header-actions button:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
-        .header-actions button:active { transform: scale(0.96); }
+        .header {
+            background: var(--header-bg);
+            border-radius: var(--radius);
+            padding: 20px 24px 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: background var(--transition);
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .header h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            opacity: 0.8;
+            letter-spacing: 0;
+        }
+        .header .version-tag {
+            background: rgba(255,255,255,0.15);
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 13px;
+            color: #fff;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+        .header-actions button {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.25s;
+            backdrop-filter: blur(4px);
+        }
+        .header-actions button:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-1px);
+        }
+        .header-actions button:active {
+            transform: scale(0.96);
+        }
 
         /* ===== 卡片 ===== */
         .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px 20px; margin-bottom: 18px; box-shadow: var(--shadow); transition: background var(--transition), border var(--transition), box-shadow var(--transition); animation: fadeSlideUp 0.5s ease forwards; opacity: 0; }
@@ -130,28 +285,35 @@
         .map-modal-header h2 { font-size: 20px; display: flex; align-items: center; gap: 10px; color: var(--text); }
         .map-modal-header .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-light); padding: 4px 10px; border-radius: 8px; transition: background 0.2s; }
         .map-modal-header .close-btn:hover { background: var(--tag-bg); }
-        .map-canvas-wrap { flex: 1; min-height: 400px; background: var(--card2); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; position: relative; transition: background var(--transition), border var(--transition); }
+        .map-canvas-wrap { flex: 1; min-height: 400px; background: var(--card2); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; position: relative; transition: background var(--transition), border var(--transition); cursor: grab; }
+        .map-canvas-wrap:active { cursor: grabbing; }
         .map-canvas-wrap canvas { width: 100%; height: 100%; display: block; }
-        .map-controls { display: flex; align-items: center; gap: 16px; padding: 12px 0 4px; flex-shrink: 0; flex-wrap: wrap; }
-        .map-controls label { font-size: 13px; color: var(--text-light); display: flex; align-items: center; gap: 8px; }
-        .map-controls input[type="range"] { width: 160px; accent-color: var(--accent); cursor: pointer; }
-        .map-controls .zoom-val { font-size: 14px; font-weight: 600; color: var(--text); min-width: 44px; text-align: center; }
-        .map-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 6px 0 2px; flex-shrink: 0; border-top: 1px solid var(--border); margin-top: 4px; font-size: 12px; color: var(--text-light); }
-        .map-legend .legend-item { display: flex; align-items: center; gap: 4px; }
+        .map-tooltip { position: absolute; background: rgba(0,0,0,0.8); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 13px; pointer-events: none; z-index: 10; display: none; white-space: nowrap; backdrop-filter: blur(4px); max-width: 200px; word-wrap: break-word; white-space: normal; }
+        .map-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 0 4px; flex-shrink: 0; }
+        .map-controls label { font-size: 13px; color: var(--text-light); display: flex; align-items: center; gap: 6px; }
+        .map-controls input[type="range"] { width: 140px; accent-color: var(--accent); cursor: pointer; }
+        .map-controls .zoom-val { min-width: 44px; text-align: center; font-size: 14px; font-weight: 600; color: var(--text); }
+        .map-controls button { padding: 4px 14px; font-size: 12px; border-radius: 6px; border: none; background: var(--btn); color: #fff; cursor: pointer; transition: background 0.2s; }
+        .map-controls button:hover { background: var(--accent-hover); }
+        .map-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 6px 0 2px; border-top: 1px solid var(--border); margin-top: 4px; font-size: 12px; flex-shrink: 0; }
+        .map-legend .legend-item { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 2px 4px; border-radius: 6px; transition: background 0.2s; }
+        .map-legend .legend-item:hover { background: var(--tag-bg); }
+        .map-legend .legend-item.hidden-line { opacity: 0.4; text-decoration: line-through; }
         .map-legend .legend-color { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); flex-shrink: 0; }
-        .map-legend .legend-label { font-size: 12px; color: var(--text); white-space: nowrap; }
+        .map-legend .legend-label { white-space: nowrap; color: var(--text); font-size: 12px; }
         .map-legend .legend-highlight { background: #ffdd44; color: #333; padding: 1px 8px; border-radius: 12px; font-weight: 600; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; }
+        .map-tip-text { font-size: 12px; color: var(--text-light); padding: 4px 0 2px; border-top: 1px solid var(--border); margin-top: 4px; text-align: center; }
 
         /* ===== 管理员工具 ===== */
         .admin-area { display: none; margin-top: 14px; padding: 16px 18px 18px; border: 1.5px dashed var(--border); border-radius: var(--radius); background: var(--card2); transition: all var(--transition); }
         .admin-area.open { display: block; animation: fadeSlideUp 0.35s ease; }
         .admin-area .admin-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
         .admin-area .admin-header h4 { font-size: 16px; display: flex; align-items: center; gap: 8px; }
-        .admin-pwd-wrap { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .admin-pwd-wrap { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
         .admin-pwd-wrap input { flex: 0 1 160px; min-width: 120px; }
 
         /* ===== 底部 ===== */
-        .footer { margin-top: 32px; padding: 24px 20px 20px; background: var(--footer-bg); border-radius: var(--radius); color: var(--footer-text); transition: background var(--transition), color var(--transition); text-align: center; }
+        .footer { margin-top: 32px; padding: 24px 20px 20px; background: var(--footer-bg); border-radius: var(--radius); color: var(--footer-text); text-align: center; transition: background var(--transition), color var(--transition); }
         .footer .footer-inner { max-width: 700px; margin: 0 auto; }
         .footer h3 { font-size: 18px; color: #fff; margin-bottom: 4px; letter-spacing: 0.5px; }
         .footer p { font-size: 14px; line-height: 1.7; opacity: 0.85; margin: 6px 0; }
@@ -164,14 +326,15 @@
 
         /* ===== 响应式 ===== */
         @media (max-width: 768px) {
-            .header { padding: 14px 16px; }
-            .header h1 { font-size: 18px; gap: 6px; }
-            .header h1 small { font-size: 12px; display: block; width: 100%; }
+            .header { padding: 14px 16px; flex-direction: column; align-items: stretch; gap: 8px; }
+            .header h1 { font-size: 22px; flex-wrap: wrap; }
+            .header h1 small { font-size: 13px; display: block; width: 100%; }
             .header .version-tag { font-size: 10px; padding: 2px 10px; }
+            .header-actions { justify-content: center; }
             .card { padding: 12px 12px 14px; }
             .row { gap: 6px; }
             .row-gap { gap: 8px; }
-            input, select { font-size: 13px; padding: 8px 10px; min-width: 60px; flex: 1 1 100%; }
+            input, select { font-size: 13px; padding: 8px 10px; flex: 1 1 100%; min-width: 60px; }
             select { flex: 1 1 100%; }
             button { font-size: 12px; padding: 6px 12px; flex: 1 1 auto; }
             .card-title { font-size: 15px; flex-wrap: wrap; }
@@ -183,7 +346,7 @@
             .footer h3 { font-size: 15px; }
             .footer p { font-size: 13px; }
             .footer .bili-links { font-size: 12px; gap: 2px 6px; }
-            .map-modal-box { padding: 12px 12px 16px; max-height: 95vh; max-width: 100%; border-radius: 12px; }
+            .map-modal-box { padding: 12px 12px 16px; max-width: 100%; max-height: 95vh; border-radius: 12px; }
             .map-canvas-wrap { min-height: 280px; }
             .map-controls { gap: 8px; padding: 8px 0 4px; }
             .map-controls input[type="range"] { width: 100px; }
@@ -193,12 +356,11 @@
             .header-actions button { padding: 4px 10px; font-size: 11px; }
             .admin-pwd-wrap { flex-wrap: wrap; width: 100%; }
             .admin-pwd-wrap input { flex: 1 1 100%; }
-            .admin-pwd-wrap button { flex: 0 1 auto; }
             .admin-area .admin-header { flex-direction: column; align-items: stretch; gap: 6px; }
             .admin-area .admin-header h4 { font-size: 14px; }
         }
         @media (max-width: 400px) {
-            .header h1 { font-size: 15px; }
+            .header h1 { font-size: 18px; }
             .header .version-tag { font-size: 9px; padding: 1px 8px; }
             .card-title { font-size: 13px; }
             .map-canvas-wrap { min-height: 180px; }
@@ -208,13 +370,13 @@
             th, td { padding: 3px 2px; }
         }
 
-        /* ===== scrollbar ===== */
+        /* ===== 滚动条美化 ===== */
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: var(--card2); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--text-light); }
 
-        /* ===== 辅助 ===== */
+        /* ===== 辅助类 ===== */
         .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
         .mt-8 { margin-top: 8px; }
         .mb-8 { margin-bottom: 8px; }
@@ -222,53 +384,20 @@
         .text-center { text-align: center; }
         .hidden { display: none !important; }
         .w-full { width: 100%; }
-
         .theme-selector { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0 4px; }
-        .theme-selector .theme-dot { width: 34px; height: 34px; border-radius: 50%; border: 2.5px solid var(--border); cursor: pointer; transition: all 0.25s; position: relative; }
+        .theme-selector .theme-dot { width: 34px; height: 34px; border-radius: 50%; border: 2.5px solid var(--border); cursor: pointer; position: relative; transition: all 0.25s; }
         .theme-selector .theme-dot:hover { transform: scale(1.12); }
         .theme-selector .theme-dot.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,111,219,0.25); }
         .theme-selector .theme-dot .check { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 16px; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.4); display: none; }
         .theme-selector .theme-dot.active .check { display: block; }
-
-        /* 版本标签 - Beta 改为 Alpha 仅用于线路图按钮 */
-        .alpha-tag {
-            display: inline-block;
-            background: #2ecc71;
-            color: #fff;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 1px 8px;
-            border-radius: 12px;
-            margin-left: 6px;
-            vertical-align: middle;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        .alpha-tag.warning {
-            background: #27ae60;
-        }
-        /* Beta 标签保留给其他位置（如果有） */
-        .beta-tag {
-            display: inline-block;
-            background: #f39c12;
-            color: #fff;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 1px 8px;
-            border-radius: 12px;
-            margin-left: 6px;
-            vertical-align: middle;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        .beta-tag.warning {
-            background: #e67e22;
-        }
+        .alpha-tag { display: inline-block; background: #2ecc71; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 8px; border-radius: 12px; margin-left: 6px; vertical-align: middle; letter-spacing: 0.5px; text-transform: uppercase; }
+        .alpha-tag.warning { background: #27ae60; }
+        .beta-tag { display: inline-block; background: #f39c12; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 8px; border-radius: 12px; margin-left: 6px; vertical-align: middle; letter-spacing: 0.5px; text-transform: uppercase; }
+        .beta-tag.warning { background: #e67e22; }
     </style>
 </head>
 <body>
-
-    <!-- ===== 强制ID + 使用说明弹窗 ===== -->
+    <!-- 登录弹窗 -->
     <div class="modal-mask active" id="entryModal">
         <div class="modal-box">
             <h2>🚉 五洲铁路模组服务器 · 车站录入系统</h2>
@@ -279,14 +408,16 @@
                 <p>✏️ <b>录入区</b> — 每次只添加一条线路，换乘站需多次录入（同一站名和坐标，不同线路）</p>
                 <p>⚙️ <b>管理员工具</b> — 批量导入、导出JSON、管理本地数据（需密码）</p>
                 <p>💡 本地新增站点仅保存在浏览器，提交文本发给管理员即可</p>
-                <p>🗺️ <b>线路图</b> — 等距拓扑布局，换乘站并排多环，Alpha版功能可能不稳定</p>
+                <p>🗺️ <b>线路图</b> — 拓扑等距地铁示意图，基于X/Z距离自动串联站点，Alpha版</p>
                 <br>
-                <strong>📌 更新日志 V3.0_BETA4</strong>
-                <p>✦ 📦 导出JSON改为下载文件，更加稳定可靠</p>
-                <p>✦ 🔗 公共库数据源切换为 GitHub 直连，实时获取最新数据</p>
-                <p>✦ 🧪 线路图功能标记为 Alpha 版（早期测试），增加醒目提示</p>
-                <p>✦ 🐛 修复缩放滑杆导致窗口异常放大的问题</p>
-                <p>✦ 📝 版本号保持 V3.0_BETA4</p>
+                <strong>📌 更新日志 V3.0_BETA6</strong>
+                <p>✦ 🎨 修复浅色模式下标题栏背景为蓝色，文字清晰可读</p>
+                <p>✦ 📐 标题字体放大并居中，提升视觉层次</p>
+                <p>✦ 🗺️ 线路图全面优化：自适应间距、重置视角、更流畅的拖拽与缩放</p>
+                <p>✦ 🔍 线路图增加重置视角按钮，一键恢复默认视图</p>
+                <p>✦ ✨ 悬浮提示信息更丰富，包含站点名称、线路、坐标、状态</p>
+                <p>✦ 🧹 优化代码结构，确保所有主题下界面正常显示</p>
+                <p>✦ 📝 版本号升级至 V3.0_BETA6</p>
             </div>
             <div class="id-input-wrap">
                 <input id="entryIdInput" placeholder="请输入你的游戏ID / 昵称" autofocus>
@@ -295,24 +426,17 @@
             <div id="entryError" style="color:var(--status-stop);font-size:13px;margin-top:6px;min-height:20px;"></div>
         </div>
     </div>
-
-    <!-- ===== 主容器 ===== -->
+    <!-- 主页面容器 -->
     <div class="container" id="mainApp" style="display:none;">
-
-        <!-- 头部 -->
         <header class="header">
-            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                <h1>🚆 五洲铁路模组服务器 <small>线路车站录入系统</small></h1>
-                <span class="version-tag">V3.0_BETA4</span>
-            </div>
+            <h1>🚆 五洲铁路模组服务器 <small>线路车站录入系统</small> <span class="version-tag">V3.0_BETA6</span></h1>
             <div class="header-actions">
                 <button id="themeToggleBtn" title="切换深色/浅色">🌓 深色</button>
                 <button id="aboutBtn" title="开发者信息 & 主题配色">ℹ️ 关于</button>
                 <button id="mapGenBtn" class="outline" style="border-color:rgba(255,255,255,0.3);color:#fff;">🗺️ 地名生成器</button>
             </div>
         </header>
-
-        <!-- ===== 查询区 ===== -->
+        <!-- 查询卡片 -->
         <section class="card animate-in animate-in-d1">
             <div class="card-title">
                 🔍 查询区
@@ -335,8 +459,7 @@
             </div>
             <div id="msg" style="min-height:22px;font-size:13px;"></div>
         </section>
-
-        <!-- ===== 录入区 ===== -->
+        <!-- 录入卡片 -->
         <section class="card animate-in animate-in-d2">
             <div class="card-title">
                 ✏️ 录入区
@@ -370,8 +493,7 @@
                 <textarea id="previewText" readonly style="height:110px;"></textarea>
             </div>
         </section>
-
-        <!-- ===== 管理员工具 ===== -->
+        <!-- 管理员工具 -->
         <section class="card animate-in animate-in-d3">
             <div class="card-title">
                 ⚙️ 管理员工具
@@ -416,8 +538,7 @@
                 </div>
             </div>
         </section>
-
-        <!-- ===== 底部 ===== -->
+        <!-- 页脚 -->
         <footer class="footer animate-in animate-in-d3">
             <div class="footer-inner">
                 <h3>🚆 了解我们 · 五洲铁路模组服务器</h3>
@@ -433,17 +554,16 @@
                     <span class="sep">&</span>
                     <a href="https://space.bilibili.com/3546698959816732" target="_blank" rel="noopener">五洲社</a>
                 </div>
-                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V3.0_BETA4</div>
+                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V3.0_BETA6</div>
             </div>
         </footer>
     </div>
-
-    <!-- ===== 关于弹窗 ===== -->
+    <!-- 关于弹窗 -->
     <div class="modal-mask" id="aboutMask">
         <div class="modal-box">
             <h3>ℹ️ 工具信息 & 主题配色</h3>
             <p style="margin:6px 0 2px;"><strong>开发者：</strong>DeepSeek · 豆包 · 陈之自信</p>
-            <p style="margin:2px 0;"><strong>当前版本：</strong>V3.0_BETA4</p>
+            <p style="margin:2px 0;"><strong>当前版本：</strong>V3.0_BETA6</p>
             <p style="margin:2px 0 10px;"><strong>版权归属：</strong>© 五洲铁路模组服务器 2026</p>
             <div style="margin:10px 0 12px;">
                 <div style="font-weight:500;font-size:14px;margin-bottom:6px;">🎨 切换主题配色</div>
@@ -457,748 +577,1009 @@
                 </div>
             </div>
             <div style="background:var(--card2);border-radius:10px;padding:10px 14px;border:1px solid var(--border);font-size:13px;max-height:180px;overflow-y:auto;">
-                <strong>📌 更新日志 V3.0_BETA4</strong>
-                <p style="margin:2px 0;">✦ 📦 导出JSON改为下载文件，更加稳定可靠</p>
-                <p style="margin:2px 0;">✦ 🔗 公共库数据源切换为 GitHub 直连，实时获取最新数据</p>
-                <p style="margin:2px 0;">✦ 🧪 线路图功能标记为 Alpha 版（早期测试），增加醒目提示</p>
-                <p style="margin:2px 0;">✦ 🐛 修复缩放滑杆导致窗口异常放大的问题</p>
-                <p style="margin:2px 0;">✦ 📝 版本号保持 V3.0_BETA4</p>
+                <strong>📌 更新日志 V3.0_BETA6</strong>
+                <p style="margin:2px 0;">✦ 🎨 修复浅色模式下标题栏背景为蓝色，文字清晰可读</p>
+                <p style="margin:2px 0;">✦ 📐 标题字体放大并居中，提升视觉层次</p>
+                <p style="margin:2px 0;">✦ 🗺️ 线路图全面优化：自适应间距、重置视角、更流畅的拖拽与缩放</p>
+                <p style="margin:2px 0;">✦ 🔍 线路图增加重置视角按钮，一键恢复默认视图</p>
+                <p style="margin:2px 0;">✦ ✨ 悬浮提示信息更丰富，包含站点名称、线路、坐标、状态</p>
+                <p style="margin:2px 0;">✦ 🧹 优化代码结构，确保所有主题下界面正常显示</p>
+                <p style="margin:2px 0;">✦ 📝 版本号升级至 V3.0_BETA6</p>
             </div>
             <button class="modal-close-btn" id="closeAbout">关闭</button>
         </div>
     </div>
-
-    <!-- ===== 线路图模态框 ===== -->
+    <!-- 线路图弹窗 -->
     <div class="map-modal-mask" id="mapModal">
         <div class="map-modal-box">
             <div class="map-modal-header">
-                <h2>🚇 线路图 <span style="font-size:14px;font-weight:400;color:var(--text-light);">— 等距拓扑 <span class="alpha-tag warning">Alpha</span></span></h2>
+                <h2>🚇 线路图 <span style="font-size:14px;font-weight:400;color:var(--text-light);">— 拓扑等距示意图 <span class="alpha-tag warning">Alpha</span></span></h2>
                 <button class="close-btn" id="closeMapBtn">✕</button>
             </div>
-            <div class="map-canvas-wrap">
+            <div class="map-canvas-wrap" id="canvasWrap">
                 <canvas id="mapCanvas"></canvas>
+                <div class="map-tooltip" id="mapTooltip"></div>
             </div>
             <div class="map-controls">
                 <label>🔍 缩放 <input type="range" id="zoomSlider" min="0.5" max="2.0" step="0.05" value="1.0"></label>
                 <span class="zoom-val" id="zoomVal">100%</span>
+                <button id="resetViewBtn">↺ 重置视角</button>
+                <button id="exportMapBtn">💾 导出PNG</button>
                 <span style="flex:1;"></span>
-                <span style="font-size:12px;color:var(--text-light);" id="mapStats">站点: 0 | 线路: 0</span>
+                <span style="font-size:12px;color:var(--text-light);" id="mapStats">站点: 0 | 线路: 0 | 换乘站: 0</span>
             </div>
             <div class="map-legend" id="mapLegend"></div>
-            <div style="font-size:12px;color:var(--text-light);padding:4px 0 2px;border-top:1px solid var(--border);margin-top:4px;text-align:center;">
-                ⚠️ 此功能为 Alpha 测试版，可能不稳定，请谨慎使用
-            </div>
+            <div class="map-tip-text">⚠️ Alpha测试版：同线路按MC X/Z距离自动串联，图例点击隐藏/显示线路 | 拖拽画布平移，滚轮缩放</div>
         </div>
     </div>
+<script>
+    let publicList = [];
+    let localList = [];
+    let allList = [];
+    let currentUserId = '';
+    let adminUnlocked = false;
 
-    <script>
-        // ============================================================
-        //  核心数据
-        // ============================================================
-        let publicList = [];
-        let localList = [];
-        let allList = [];
-        let currentUserId = '';
-        let adminUnlocked = false;
+    let mapZoom = 1;
+    let mapOffsetX = 0;
+    let mapOffsetY = 0;
+    let mapIsDrag = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let hiddenLines = new Set();
+    let stationPosMap = new Map();
 
-        const $ = id => document.getElementById(id);
-        const sName = $('sName'), sLine = $('sLine'), sX = $('sX'), sZ = $('sZ'), sStatus = $('sStatus');
-        const queryTbody = $('queryTableBody'), adminTbody = $('adminTableBody');
-        const previewText = $('previewText'), previewCount = $('previewCount');
-        const msg = $('msg'), searchInput = $('searchInput');
-        const entryModal = $('entryModal'), entryIdInput = $('entryIdInput'), entryConfirmBtn = $('entryConfirmBtn'), entryError = $('entryError');
-        const mainApp = $('mainApp'), aboutMask = $('aboutMask');
-        const adminPanel = $('adminPanel'), adminPwdInput = $('adminPwdInput'), adminUnlockBtn = $('adminUnlockBtn');
-        const adminLockStatus = $('adminLockStatus'), adminContent = $('adminContent'), adminImportText = $('adminImportText');
-        const parseImportBtn = $('parseImportBtn'), toggleAdminBtn = $('toggleAdminBtn');
-        const showMapBtn = $('showMapBtn'), mapModal = $('mapModal'), closeMapBtn = $('closeMapBtn');
-        const mapCanvas = $('mapCanvas'), zoomSlider = $('zoomSlider'), zoomVal = $('zoomVal');
-        const mapStats = $('mapStats'), mapLegend = $('mapLegend');
+    const LINE_COLORS = [
+        "#e74c3c", "#3498db", "#2ecc71", "#f39c12",
+        "#9b59b6", "#1abc9c", "#e67e22", "#2c3e50",
+        "#d35400", "#27ae60", "#2980b9", "#8e44ad",
+        "#c0392b", "#7f8c8d", "#16a085", "#8e44ad"
+    ];
 
-        // ============================================================
-        //  消息
-        // ============================================================
-        function showMsg(text, isError = false) {
-            msg.textContent = text;
-            msg.className = isError ? 'msg-error' : 'msg-success';
-            clearTimeout(msg._timer);
-            msg._timer = setTimeout(() => { msg.textContent = ''; msg.className = ''; }, 3000);
+    const $ = id => document.getElementById(id);
+
+    const sName = $('sName');
+    const sLine = $('sLine');
+    const sX = $('sX');
+    const sZ = $('sZ');
+    const sStatus = $('sStatus');
+    const queryTbody = $('queryTableBody');
+    const adminTbody = $('adminTableBody');
+    const previewText = $('previewText');
+    const previewCount = $('previewCount');
+    const msg = $('msg');
+    const searchInput = $('searchInput');
+    const entryModal = $('entryModal');
+    const entryIdInput = $('entryIdInput');
+    const entryConfirmBtn = $('entryConfirmBtn');
+    const entryError = $('entryError');
+    const mainApp = $('mainApp');
+    const aboutMask = $('aboutMask');
+    const adminPanel = $('adminPanel');
+    const adminPwdInput = $('adminPwdInput');
+    const adminUnlockBtn = $('adminUnlockBtn');
+    const adminLockStatus = $('adminLockStatus');
+    const adminContent = $('adminContent');
+    const adminImportText = $('adminImportText');
+    const parseImportBtn = $('parseImportBtn');
+    const toggleAdminBtn = $('toggleAdminBtn');
+    const showMapBtn = $('showMapBtn');
+    const mapModal = $('mapModal');
+    const closeMapBtn = $('closeMapBtn');
+    const mapCanvas = $('mapCanvas');
+    const zoomSlider = $('zoomSlider');
+    const zoomVal = $('zoomVal');
+    const mapStats = $('mapStats');
+    const mapLegend = $('mapLegend');
+    const mapTooltip = $('mapTooltip');
+    const canvasWrap = $('canvasWrap');
+    const exportMapBtn = $('exportMapBtn');
+    const resetViewBtn = $('resetViewBtn');
+    const themeToggleBtn = $('themeToggleBtn');
+    const aboutBtn = $('aboutBtn');
+    const closeAbout = $('closeAbout');
+    const themeSelector = $('themeSelector');
+
+    function showMsg(text, isError = false) {
+        msg.textContent = text;
+        msg.className = isError ? 'msg-error' : 'msg-success';
+        clearTimeout(msg._timer);
+        msg._timer = setTimeout(() => {
+            msg.textContent = '';
+            msg.className = '';
+        }, 3000);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedId = localStorage.getItem('wrms_user_id');
+        if (savedId) {
+            entryIdInput.value = savedId;
         }
+    });
 
-        // ============================================================
-        //  强制ID弹窗 & 记忆
-        // ============================================================
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedId = localStorage.getItem('wrms_user_id');
-            if (savedId) entryIdInput.value = savedId;
-        });
-        entryConfirmBtn.onclick = () => {
-            const id = entryIdInput.value.trim();
-            if (!id) { entryError.textContent = '⚠️ 请填写你的游戏ID / 昵称'; entryIdInput.focus(); return; }
-            localStorage.setItem('wrms_user_id', id);
-            currentUserId = id;
-            entryModal.classList.remove('active');
-            entryModal.style.display = 'none';
-            mainApp.style.display = 'block';
-            loadPublicData();
-        };
-        entryIdInput.addEventListener('keydown', e => { if (e.key === 'Enter') entryConfirmBtn.click(); });
-        setTimeout(() => entryIdInput.focus(), 300);
-
-        // ============================================================
-        //  加载公共数据 (改为 GitHub 直连)
-        // ============================================================
-        async function loadPublicData() {
-            try {
-                const res = await fetch('https://raw.githubusercontent.com/chenzhizixin2010/WRMS_stations/main/station.json');
-                publicList = await res.json();
-                combineData();
-                showMsg('✅ 公共站点加载完成 (GitHub直连)');
-            } catch (e) {
-                showMsg('⚠️ 公共库加载失败，请检查网络或仓库地址', true);
-                console.error(e);
-                publicList = [];
-                combineData();
-            }
+    entryConfirmBtn.onclick = () => {
+        const id = entryIdInput.value.trim();
+        if (!id) {
+            entryError.textContent = '⚠️ 请填写你的游戏ID / 昵称';
+            entryIdInput.focus();
+            return;
         }
+        localStorage.setItem('wrms_user_id', id);
+        currentUserId = id;
+        entryModal.classList.remove('active');
+        entryModal.style.display = 'none';
+        mainApp.style.display = 'block';
+        loadPublicData();
+    };
 
-        // ============================================================
-        //  合并 & 渲染
-        // ============================================================
-        function combineData() {
-            const merged = [...publicList];
-            localList.forEach(localItem => {
-                const idx = merged.findIndex(p => p.name === localItem.name && p.x === localItem.x && p.z === localItem.z);
-                if (idx >= 0) {
-                    const existingLines = merged[idx].lines || [];
-                    const newLines = localItem.lines || [];
-                    const combined = [...new Set([...existingLines, ...newLines])];
-                    merged[idx].lines = combined;
-                    merged[idx].status = localItem.status;
-                } else {
-                    merged.push({ ...localItem });
-                }
-            });
-            allList = merged;
-            renderAllTables();
-            updatePreview();
+    entryIdInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') entryConfirmBtn.click();
+    });
+
+    setTimeout(() => entryIdInput.focus(), 300);
+
+    async function loadPublicData() {
+        try {
+            const res = await fetch('https://raw.githubusercontent.com/chenzhizixin2010/WRMS_stations/main/station.json');
+            publicList = await res.json();
+            combineData();
+            showMsg('✅ 公共站点加载完成');
+        } catch (e) {
+            showMsg('⚠️ 公共库加载失败，请检查网络或仓库地址', true);
+            console.error(e);
+            publicList = [];
+            combineData();
         }
+    }
 
-        function getStatusClass(status) {
-            const map = { '规划中': 'status-plan', '在建中': 'status-build', '已建成': 'status-done', '停运': 'status-stop', '已废弃': 'status-remove' };
-            return map[status] || '';
-        }
+    function combineData() {
+        const merged = [...publicList];
 
-        function renderTable(tbody, showDelete = true) {
-            const keyword = searchInput.value.toLowerCase().trim();
-            const filtered = allList.filter(item => {
-                const name = (item.name || '').toLowerCase();
-                const line = (item.lines || []).join(',').toLowerCase();
-                const status = (item.status || '').toLowerCase();
-                return name.includes(keyword) || line.includes(keyword) || status.includes(keyword);
-            });
-            tbody.innerHTML = '';
-            filtered.forEach((item, idx) => {
-                const tr = document.createElement('tr');
-                const isLocal = localList.some(v => v.name === item.name && v.x === item.x && v.z === item.z);
-                const cls = getStatusClass(item.status || '规划中');
-                let opHtml = '';
-                if (isLocal && showDelete) {
-                    const li = localList.findIndex(v => v.name === item.name && v.x === item.x && v.z === item.z);
-                    opHtml = `<button class="small red delLocal" data-li="${li}">删除本地</button>`;
-                } else {
-                    opHtml = `<span style="color:var(--text-light);font-size:12px;">${isLocal ? '本地' : '公共'}</span>`;
-                }
-                const lineDisplay = (item.lines || []).join(', ') || '未定';
-                tr.innerHTML = `
-                    <td>${item.name || ''}</td>
-                    <td>${lineDisplay}</td>
-                    <td>${item.x || ''}</td>
-                    <td>${item.z || ''}</td>
-                    <td class="${cls}">${item.status || '规划中'}</td>
-                    <td>${opHtml}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-            tbody.querySelectorAll('.delLocal').forEach(btn => {
-                btn.onclick = () => {
-                    const i = Number(btn.dataset.li);
-                    if (!isNaN(i) && i >= 0 && i < localList.length) {
-                        localList.splice(i, 1);
-                        combineData();
-                        showMsg('🗑️ 已删除本地站点');
-                    }
-                };
-            });
-        }
+        localList.forEach(localItem => {
+            const idx = merged.findIndex(p =>
+                p.name === localItem.name &&
+                String(p.x) === String(localItem.x) &&
+                String(p.z) === String(localItem.z)
+            );
 
-        function renderAllTables() {
-            renderTable(queryTbody, true);
-            renderTable(adminTbody, true);
-        }
-
-        function updatePreview() {
-            let str = '===== 本地新增站点清单 =====\n';
-            if (localList.length === 0) str += '（暂无本地新增站点）\n';
-            else {
-                localList.forEach(s => {
-                    const lineDisplay = (s.lines || []).join(', ') || '未定';
-                    str += `【${lineDisplay}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || '规划中'}\n`;
-                });
-            }
-            previewText.value = str;
-            previewCount.textContent = localList.length;
-        }
-
-        // ============================================================
-        //  搜索
-        // ============================================================
-        searchInput.oninput = renderAllTables;
-
-        // ============================================================
-        //  添加本地站点（单线路，支持重复添加合并）
-        // ============================================================
-        $('addBtn').onclick = () => {
-            const name = sName.value.trim();
-            const line = sLine.value.trim();
-            const x = sX.value.trim();
-            const z = sZ.value.trim();
-            const status = sStatus.value;
-            if (!name || !x || !z || !line) {
-                showMsg('⚠️ 站点名称、线路、X、Z坐标均不能为空', true);
-                return;
-            }
-            let existing = localList.find(v => v.name === name && v.x === x && v.z === z);
-            if (existing) {
-                if (!existing.lines) existing.lines = [];
-                if (!existing.lines.includes(line)) {
-                    existing.lines.push(line);
-                    existing.status = status;
-                    showMsg(`✅ 已为「${name}」追加线路「${line}」`);
-                } else {
-                    showMsg(`⚠️ 该站点已包含线路「${line}」`, true);
-                }
+            if (idx >= 0) {
+                const existing = merged[idx];
+                existing.lines = [...new Set([
+                    ...(existing.lines || []),
+                    ...(localItem.lines || [])
+                ])];
+                existing.status = localItem.status;
             } else {
-                localList.push({ name, lines: [line], x, z, status });
-                showMsg(`✅ 已添加「${name}」至本地列表`);
+                merged.push({ ...localItem });
             }
-            sName.value = ''; sLine.value = ''; sX.value = ''; sZ.value = '';
-            combineData();
-        };
+        });
 
-        // ============================================================
-        //  去重本地
-        // ============================================================
-        $('deduplicateBtn').onclick = () => {
-            const map = new Map();
-            localList.forEach(item => {
-                const key = `${item.name}|${item.x}|${item.z}`;
-                if (map.has(key)) {
-                    const existing = map.get(key);
-                    const combined = [...new Set([...existing.lines, ...item.lines])];
-                    existing.lines = combined;
-                } else {
-                    map.set(key, { ...item });
+        allList = merged;
+        renderAllTables();
+        updatePreview();
+
+        if (mapModal.classList.contains('active')) {
+            drawLineChart();
+        }
+    }
+
+    function getStatusClass(status) {
+        const map = {
+            '规划中': 'status-plan',
+            '在建中': 'status-build',
+            '已建成': 'status-done',
+            '停运': 'status-stop',
+            '已废弃': 'status-remove'
+        };
+        return map[status] || '';
+    }
+
+    function renderTable(tbody, showDelete = true) {
+        const keyword = searchInput.value.toLowerCase().trim();
+
+        const filtered = allList.filter(item => {
+            const name = (item.name || '').toLowerCase();
+            const line = (item.lines || []).join(', ').toLowerCase();
+            const status = (item.status || '').toLowerCase();
+            return name.includes(keyword) || line.includes(keyword) || status.includes(keyword);
+        });
+
+        tbody.innerHTML = '';
+
+        filtered.forEach(item => {
+            const tr = document.createElement('tr');
+            const isLocal = localList.some(v =>
+                v.name === item.name &&
+                String(v.x) === String(item.x) &&
+                String(v.z) === String(item.z)
+            );
+            const cls = getStatusClass(item.status || '规划中');
+
+            let opHtml = '';
+
+            if (isLocal && showDelete) {
+                const li = localList.findIndex(v =>
+                    v.name === item.name &&
+                    String(v.x) === String(item.x) &&
+                    String(v.z) === String(item.z)
+                );
+                opHtml = `<button class="small red delLocal" data-li="${li}">删除本地</button>`;
+            } else {
+                opHtml = `<span style="color:var(--text-light);font-size:12px;">${isLocal ? '本地' : '公共'}</span>`;
+            }
+
+            const lineDisplay = (item.lines || []).join(', ') || '未定';
+
+            tr.innerHTML = `
+                <td>${item.name || ''}</td>
+                <td>${lineDisplay}</td>
+                <td>${item.x || ''}</td>
+                <td>${item.z || ''}</td>
+                <td class="${cls}">${item.status || '规划中'}</td>
+                <td>${opHtml}</td>
+            `;
+
+            tbody.appendChild(tr);
+        });
+
+        tbody.querySelectorAll('.delLocal').forEach(btn => {
+            btn.onclick = () => {
+                const i = Number(btn.dataset.li);
+                if (!isNaN(i) && i >= 0 && i < localList.length) {
+                    localList.splice(i, 1);
+                    combineData();
+                    showMsg('🗑️ 已删除本地站点');
                 }
-            });
-            localList = Array.from(map.values());
-            combineData();
-            showMsg('✅ 本地站点已去重合并');
-        };
+            };
+        });
+    }
 
-        // ============================================================
-        //  刷新公共库
-        // ============================================================
-        $('refreshPublic').onclick = loadPublicData;
+    function renderAllTables() {
+        renderTable(queryTbody, true);
+        renderTable(adminTbody, true);
+    }
 
-        // ============================================================
-        //  导出文本清单（管理员工具）
-        // ============================================================
-        $('exportTextBtn').onclick = () => {
-            let str = '===== 全部站点清单 =====\n';
-            allList.forEach(s => {
+    function updatePreview() {
+        let str = '===== 本地新增站点清单 =====\n';
+
+        if (localList.length === 0) {
+            str += '（暂无本地新增站点）\n';
+        } else {
+            localList.forEach(s => {
                 const lineDisplay = (s.lines || []).join(', ') || '未定';
                 str += `【${lineDisplay}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || '规划中'}\n`;
             });
-            navigator.clipboard.writeText(str).then(() => showMsg('✅ 文本清单已复制')).catch(() => {
-                const ta = document.createElement('textarea');
-                ta.value = str;
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                ta.remove();
-                showMsg('✅ 文本清单已复制');
-            });
-        };
-
-        // ============================================================
-        //  复制提交文本
-        // ============================================================
-        $('copySubmitBtn').onclick = () => {
-            if (localList.length === 0) { showMsg('⚠️ 暂无本地新增站点', true); return; }
-            const uid = currentUserId || '未填写ID';
-            let text = `【站点提交清单 | 提交人：${uid}】\n`;
-            localList.forEach(item => {
-                const lineDisplay = (item.lines || []).join(', ') || '未定';
-                text += `${item.name} | ${lineDisplay} | X:${item.x} Z:${item.z} | ${item.status || '规划中'}\n`;
-            });
-            navigator.clipboard.writeText(text).then(() => showMsg('✅ 提交文本已复制，可直接发送管理员')).catch(() => {
-                const ta = document.createElement('textarea');
-                ta.value = text;
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                ta.remove();
-                showMsg('✅ 提交文本已复制');
-            });
-        };
-
-        // ============================================================
-        //  清空本地新增
-        // ============================================================
-        $('clearLocalBtn').onclick = () => {
-            if (localList.length === 0) { showMsg('⚠️ 本地无新增站点', true); return; }
-            if (confirm('确认清空所有本地新增站点？')) {
-                localList = [];
-                combineData();
-                showMsg('🗑️ 已清空本地新增');
-            }
-        };
-
-        // ============================================================
-        //  导出完整JSON（下载文件方式）
-        // ============================================================
-        $('exportFullJsonBtn').onclick = () => {
-            try {
-                const exportData = allList.map(item => ({
-                    name: item.name,
-                    lines: item.lines || [],
-                    x: item.x,
-                    z: item.z,
-                    status: item.status || '规划中'
-                }));
-                const json = JSON.stringify(exportData, null, 2);
-                const blob = new Blob([json], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'station.json';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                showMsg('✅ station.json 已下载，可直接替换仓库文件');
-            } catch (e) {
-                console.error(e);
-                showMsg('⚠️ 导出失败，请查看控制台错误', true);
-            }
-        };
-
-        // ============================================================
-        //  管理员工具 — 密码解锁
-        // ============================================================
-        const ADMIN_PWD = 'WRMS2026';
-        function updateAdminUI() {
-            if (adminUnlocked) {
-                adminContent.style.display = 'block';
-                adminLockStatus.textContent = '🔓 已解锁';
-                adminLockStatus.style.color = 'var(--status-done)';
-                adminPwdInput.value = '';
-            } else {
-                adminContent.style.display = 'none';
-                adminLockStatus.textContent = '🔒 已锁定';
-                adminLockStatus.style.color = 'var(--text-light)';
-            }
         }
-        adminUnlockBtn.onclick = () => {
-            const pwd = adminPwdInput.value.trim();
-            if (pwd === ADMIN_PWD) { adminUnlocked = true; updateAdminUI(); showMsg('🔓 管理员已解锁'); }
-            else { showMsg('⚠️ 密码错误', true); adminPwdInput.value = ''; adminPwdInput.focus(); }
-        };
-        adminPwdInput.addEventListener('keydown', e => { if (e.key === 'Enter') adminUnlockBtn.click(); });
-        let adminOpen = false;
-        toggleAdminBtn.onclick = () => {
-            adminOpen = !adminOpen;
-            adminPanel.classList.toggle('open', adminOpen);
-            toggleAdminBtn.textContent = adminOpen ? '🔒 收起' : '🔓 展开 / 折叠';
-            if (!adminOpen) { adminUnlocked = false; updateAdminUI(); }
-        };
 
-        // ============================================================
-        //  管理员批量导入解析
-        // ============================================================
-        parseImportBtn.onclick = () => {
-            if (!adminUnlocked) { showMsg('⚠️ 请先解锁管理员工具', true); return; }
-            const raw = adminImportText.value.trim();
-            if (!raw) { showMsg('⚠️ 请粘贴玩家提交的站点文本', true); return; }
-            const lines = raw.split('\n');
-            let addCount = 0, updateCount = 0;
-            lines.forEach(line => {
-                const l = line.trim();
-                if (!l || l.startsWith('【')) return;
-                const parts = l.split('|').map(p => p.trim());
-                if (parts.length < 4) return;
-                const name = parts[0], lineName = parts[1], xzRaw = parts[2], status = parts[3];
-                const xMatch = xzRaw.match(/X:([\d\-]+)/), zMatch = xzRaw.match(/Z:([\d\-]+)/);
-                if (!xMatch || !zMatch) return;
-                const x = xMatch[1], z = zMatch[1];
-                const targetKey = `${name}|${x}|${z}`;
-                const existIdx = publicList.findIndex(item => `${item.name}|${item.x}|${item.z}` === targetKey);
-                if (existIdx > -1) {
-                    const existing = publicList[existIdx];
-                    if (!existing.lines) existing.lines = [];
-                    if (!existing.lines.includes(lineName)) existing.lines.push(lineName);
-                    existing.status = status;
-                    updateCount++;
-                } else {
-                    const localExist = localList.find(v => v.name === name && v.x === x && v.z === z);
-                    if (localExist) {
-                        if (!localExist.lines) localExist.lines = [];
-                        if (!localExist.lines.includes(lineName)) localExist.lines.push(lineName);
-                        localExist.status = status;
-                    } else {
-                        localList.push({ name, lines: [lineName], x, z, status });
+        previewText.value = str;
+        previewCount.textContent = localList.length;
+    }
+
+    searchInput.oninput = () => {
+        renderAllTables();
+        if (mapModal.classList.contains('active')) {
+            drawLineChart();
+        }
+    };
+
+    $('addBtn').onclick = () => {
+        const name = sName.value.trim();
+        const line = sLine.value.trim();
+        const x = sX.value.trim();
+        const z = sZ.value.trim();
+        const status = sStatus.value;
+
+        if (!name || !line || !x || !z) {
+            showMsg('⚠️ 站点名称、线路、X、Z坐标均不能为空', true);
+            return;
+        }
+
+        let existing = localList.find(v =>
+            v.name === name &&
+            String(v.x) === String(x) &&
+            String(v.z) === String(z)
+        );
+
+        if (existing) {
+            if (!existing.lines) existing.lines = [];
+            if (!existing.lines.includes(line)) {
+                existing.lines.push(line);
+                existing.status = status;
+                showMsg(`✅ 已为「${name}」追加线路「${line}」`);
+            } else {
+                showMsg(`⚠️ 该站点已包含线路「${line}」`, true);
+            }
+        } else {
+            localList.push({ name, lines: [line], x, z, status });
+            showMsg(`✅ 已添加「${name}」至本地列表`);
+        }
+
+        sName.value = '';
+        sLine.value = '';
+        sX.value = '';
+        sZ.value = '';
+
+        combineData();
+    };
+
+    $('deduplicateBtn').onclick = () => {
+        const map = new Map();
+
+        localList.forEach(item => {
+            const key = `${item.name}|${item.x}|${item.z}`;
+            if (map.has(key)) {
+                const existing = map.get(key);
+                existing.lines = [...new Set([...existing.lines, ...item.lines])];
+            } else {
+                map.set(key, { ...item });
+            }
+        });
+
+        localList = Array.from(map.values());
+        combineData();
+        showMsg('✅ 本地站点已去重合并');
+    };
+
+    $('refreshPublic').onclick = loadPublicData;
+
+    $('exportTextBtn').onclick = () => {
+        let str = '===== 全部站点清单 =====\n';
+
+        allList.forEach(s => {
+            const lineDisplay = (s.lines || []).join(', ') || '未定';
+            str += `【${lineDisplay}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || '规划中'}\n`;
+        });
+
+        navigator.clipboard.writeText(str).then(() => {
+            showMsg('✅ 文本清单已复制');
+        }).catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = str;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            showMsg('✅ 文本清单已复制');
+        });
+    };
+
+    $('copySubmitBtn').onclick = () => {
+        if (localList.length === 0) {
+            showMsg('⚠️ 暂无本地新增站点', true);
+            return;
+        }
+
+        const uid = currentUserId || '未填写ID';
+        let text = `【站点提交清单 | 提交人：${uid}】\n`;
+
+        localList.forEach(item => {
+            const lineDisplay = (item.lines || []).join(', ') || '未定';
+            text += `${item.name} | ${lineDisplay} | X:${item.x} Z:${item.z} | ${item.status || '规划中'}\n`;
+        });
+
+        navigator.clipboard.writeText(text).then(() => {
+            showMsg('✅ 提交文本已复制，可直接发送管理员');
+        }).catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            showMsg('✅ 提交文本已复制');
+        });
+    };
+
+    $('clearLocalBtn').onclick = () => {
+        if (localList.length === 0) {
+            showMsg('⚠️ 本地无新增站点', true);
+            return;
+        }
+
+        if (confirm('确认清空所有本地新增站点？')) {
+            localList = [];
+            combineData();
+            showMsg('🗑️ 已清空本地新增');
+        }
+    };
+
+    $('exportFullJsonBtn').onclick = () => {
+        try {
+            const exportData = allList.map(item => ({
+                name: item.name,
+                lines: item.lines || [],
+                x: item.x,
+                z: item.z,
+                status: item.status || '规划中'
+            }));
+
+            const json = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'station.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showMsg('✅ station.json 已下载，可直接替换仓库文件');
+        } catch (e) {
+            console.error(e);
+            showMsg('⚠️ 导出失败，请查看控制台错误', true);
+        }
+    };
+
+    const ADMIN_PWD = 'WRMS2026';
+
+    function updateAdminUI() {
+        if (adminUnlocked) {
+            adminContent.style.display = 'block';
+            adminLockStatus.textContent = '🔓 已解锁';
+            adminLockStatus.style.color = 'var(--status-done)';
+        } else {
+            adminContent.style.display = 'none';
+            adminLockStatus.textContent = '🔒 已锁定';
+            adminLockStatus.style.color = 'var(--text-light)';
+        }
+        adminPwdInput.value = '';
+    }
+
+    adminUnlockBtn.onclick = () => {
+        const pwd = adminPwdInput.value.trim();
+
+        if (pwd === ADMIN_PWD) {
+            adminUnlocked = true;
+            updateAdminUI();
+            showMsg('🔓 管理员已解锁');
+        } else {
+            showMsg('⚠️ 密码错误', true);
+            adminPwdInput.value = '';
+            adminPwdInput.focus();
+        }
+    };
+
+    adminPwdInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') adminUnlockBtn.click();
+    });
+
+    let adminOpen = false;
+
+    toggleAdminBtn.onclick = () => {
+        adminOpen = !adminOpen;
+        adminPanel.classList.toggle('open', adminOpen);
+        toggleAdminBtn.textContent = adminOpen ? '🔒 收起' : '🔓 展开 / 折叠';
+
+        if (!adminOpen) {
+            adminUnlocked = false;
+            updateAdminUI();
+        }
+    };
+
+    parseImportBtn.onclick = () => {
+        if (!adminUnlocked) {
+            showMsg('⚠️ 请先解锁管理员工具', true);
+            return;
+        }
+
+        const raw = adminImportText.value.trim();
+
+        if (!raw) {
+            showMsg('⚠️ 请粘贴玩家提交的站点文本', true);
+            return;
+        }
+
+        const lines = raw.split('\n');
+        let addCount = 0;
+        let updateCount = 0;
+
+        lines.forEach(line => {
+            const l = line.trim();
+            if (!l || l.startsWith('【')) return;
+
+            const parts = l.split('|').map(p => p.trim());
+            if (parts.length < 4) return;
+
+            const name = parts[0];
+            const lineName = parts[1];
+            const xzRaw = parts[2];
+            const status = parts[3];
+
+            const xMatch = xzRaw.match(/X:([\d\-]+)/);
+            const zMatch = xzRaw.match(/Z:([\d\-]+)/);
+
+            if (!xMatch || !zMatch) return;
+
+            const x = xMatch[1];
+            const z = zMatch[1];
+            const targetKey = `${name}|${x}|${z}`;
+
+            const existIdx = publicList.findIndex(item =>
+                `${item.name}|${item.x}|${item.z}` === targetKey
+            );
+
+            if (existIdx > -1) {
+                const existing = publicList[existIdx];
+                if (!existing.lines) existing.lines = [];
+                if (!existing.lines.includes(lineName)) {
+                    existing.lines.push(lineName);
+                }
+                existing.status = status;
+                updateCount++;
+            } else {
+                const localExist = localList.find(v =>
+                    v.name === name && String(v.x) === String(x) && String(v.z) === String(z)
+                );
+
+                if (localExist) {
+                    if (!localExist.lines) localExist.lines = [];
+                    if (!localExist.lines.includes(lineName)) {
+                        localExist.lines.push(lineName);
                     }
+                    localExist.status = status;
+                } else {
+                    localList.push({ name, lines: [lineName], x, z, status });
                     addCount++;
                 }
-            });
-            const map = new Map();
-            localList.forEach(item => {
-                const key = `${item.name}|${item.x}|${item.z}`;
-                if (map.has(key)) {
-                    const existing = map.get(key);
-                    const combined = [...new Set([...existing.lines, ...item.lines])];
-                    existing.lines = combined;
-                } else {
-                    map.set(key, { ...item });
+            }
+        });
+
+        const map = new Map();
+        localList.forEach(item => {
+            const key = `${item.name}|${item.x}|${item.z}`;
+            if (map.has(key)) {
+                const old = map.get(key);
+                old.lines = [...new Set([...old.lines, ...item.lines])];
+            } else {
+                map.set(key, { ...item });
+            }
+        });
+        localList = Array.from(map.values());
+
+        adminImportText.value = '';
+        combineData();
+        showMsg(`✅ 合并完成，更新${updateCount}个，新增${addCount}个站点`);
+    };
+
+    function getLineColor(lineName) {
+        let hash = 0;
+        for (let i = 0; i < lineName.length; i++) {
+            hash = lineName.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return LINE_COLORS[Math.abs(hash) % LINE_COLORS.length];
+    }
+
+    function getAllLines() {
+        const set = new Set();
+        allList.forEach(item => {
+            (item.lines || []).forEach(line => set.add(line));
+        });
+        return Array.from(set).sort();
+    }
+
+    function getStationsByLine(lineName) {
+        return allList.filter(item => (item.lines || []).includes(lineName));
+    }
+
+    function distance(a, b) {
+        const dx = Number(a.x) - Number(b.x);
+        const dz = Number(a.z) - Number(b.z);
+        return Math.sqrt(dx * dx + dz * dz);
+    }
+
+    function sortStationsByDistance(stations) {
+        if (stations.length <= 1) return stations;
+
+        const result = [];
+        const used = new Set();
+
+        let current = stations[0];
+        result.push(current);
+        used.add(current);
+
+        while (result.length < stations.length) {
+            let nearest = null;
+            let minDist = Infinity;
+
+            stations.forEach(s => {
+                if (used.has(s)) return;
+                const d = distance(current, s);
+                if (d < minDist) {
+                    minDist = d;
+                    nearest = s;
                 }
             });
-            localList = Array.from(map.values());
-            adminImportText.value = '';
-            combineData();
-            showMsg(`✅ 合并完成！更新线上 ${updateCount} 个，新增 ${addCount} 个`);
-        };
 
-        // ============================================================
-        //  主题切换
-        // ============================================================
-        let currentTheme = 'default';
-        function applyTheme(theme) {
-            document.body.className = document.body.className.split(' ').filter(c => !c.startsWith('theme-')).join(' ');
-            if (theme !== 'default') document.body.classList.add(`theme-${theme}`);
-            currentTheme = theme;
-            document.querySelectorAll('.theme-dot').forEach(dot => dot.classList.toggle('active', dot.dataset.theme === theme));
-            const btn = $('themeToggleBtn');
-            btn.innerHTML = theme === 'dark' ? '☀️ 浅色' : '🌓 深色';
-            localStorage.setItem('wrms_theme', theme);
+            if (nearest) {
+                result.push(nearest);
+                used.add(nearest);
+                current = nearest;
+            } else {
+                break;
+            }
         }
-        $('themeToggleBtn').onclick = () => { const next = currentTheme === 'dark' ? 'default' : 'dark'; applyTheme(next); };
-        document.querySelectorAll('.theme-dot').forEach(dot => {
-            dot.onclick = () => { const theme = dot.dataset.theme; applyTheme(theme); showMsg(`🎨 已切换至 ${dot.title || theme}`); };
+
+        return result;
+    }
+
+    function buildTopologyLayout() {
+        const lines = getAllLines();
+        const lineStations = {};
+        const lineRoutes = {};
+
+        lines.forEach(line => {
+            const stations = getStationsByLine(line);
+            lineStations[line] = stations;
+
+            if (stations.length > 1) {
+                lineRoutes[line] = sortStationsByDistance(stations);
+            } else {
+                lineRoutes[line] = stations;
+            }
         });
-        const savedTheme = localStorage.getItem('wrms_theme');
-        if (savedTheme && savedTheme !== 'default') applyTheme(savedTheme);
 
-        // ============================================================
-        //  关于弹窗 & 地名生成器
-        // ============================================================
-        $('aboutBtn').onclick = () => { aboutMask.style.display = 'flex'; };
-        $('closeAbout').onclick = () => { aboutMask.style.display = 'none'; };
-        aboutMask.onclick = (e) => { if (e.target === aboutMask) aboutMask.style.display = 'none'; };
-        $('mapGenBtn').onclick = () => { window.open('https://wrmspng.github.io', '_blank'); };
+        const stationLines = {};
+        allList.forEach(item => {
+            const key = `${item.name}|${item.x}|${item.z}`;
+            stationLines[key] = item.lines || [];
+        });
 
-        // ============================================================
-        //  线路图功能 (等距拓扑布局，修复缩放)
-        // ============================================================
-        const LINE_COLORS = [
-            '#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6',
-            '#1abc9c', '#e67e22', '#2c3e50', '#d35400', '#27ae60',
-            '#2980b9', '#8e44ad', '#16a085', '#c0392b', '#7f8c8d',
-            '#f1c40f', '#2ecc71', '#e74c3c', '#3498db', '#9b59b6'
-        ];
+        return { lines, lineStations, lineRoutes, stationLines };
+    }
 
-        function getLineColor(lineName) {
-            let hash = 0;
-            for (let i = 0; i < lineName.length; i++) hash = lineName.charCodeAt(i) + ((hash << 5) - hash);
-            return LINE_COLORS[Math.abs(hash) % LINE_COLORS.length];
+    function drawLineChart() {
+        const rect = canvasWrap.getBoundingClientRect();
+        mapCanvas.width = rect.width;
+        mapCanvas.height = rect.height;
+
+        const w = mapCanvas.width;
+        const h = mapCanvas.height;
+        const ctx = mapCanvas.getContext('2d');
+
+        const isDark = document.body.classList.contains('theme-dark');
+        const bgColor = isDark ? '#1c2128' : '#f7f9fc';
+        const textColor = isDark ? '#e8edf5' : '#1a2332';
+        const gridColor = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)';
+
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, w, h);
+
+        const topology = buildTopologyLayout();
+        const { lines, lineRoutes, stationLines } = topology;
+
+        const keyword = searchInput.value.toLowerCase().trim();
+
+        const visibleLines = lines.filter(line => {
+            if (hiddenLines.has(line)) return false;
+            if (!keyword) return true;
+            return line.toLowerCase().includes(keyword);
+        });
+
+        if (visibleLines.length === 0) {
+            ctx.fillStyle = textColor;
+            ctx.font = '18px system-ui';
+            ctx.textAlign = 'center';
+            ctx.fillText('没有可见的线路', w/2, h/2);
+            mapLegend.innerHTML = '';
+            mapStats.textContent = '站点: 0 | 线路: 0 | 换乘站: 0';
+            return;
         }
 
-        function drawLineChart(scale) {
-            const canvas = mapCanvas;
-            const rect = canvas.parentElement.getBoundingClientRect();
-            const dpr = window.devicePixelRatio || 1;
-            const w = Math.floor(rect.width);
-            const h = Math.floor(rect.height);
+        const padding = 50;
+        // 计算最大站点数
+        let maxStations = 0;
+        visibleLines.forEach(line => {
+            const stations = lineRoutes[line] || [];
+            maxStations = Math.max(maxStations, stations.length);
+        });
+        maxStations = Math.max(maxStations, 1);
 
-            canvas.width = w * dpr;
-            canvas.height = h * dpr;
-            canvas.style.width = w + 'px';
-            canvas.style.height = h + 'px';
+        const lineHeight = Math.min(60, (h - padding * 2) / Math.max(visibleLines.length, 1));
+        const stationGap = Math.min(50, (w - padding * 2) / Math.max(maxStations, 1));
 
-            const ctx = canvas.getContext('2d');
-            ctx.scale(dpr, dpr);
+        stationPosMap.clear();
 
-            ctx.clearRect(0, 0, w, h);
+        // 先绘制所有线路
+        visibleLines.forEach((line, lineIndex) => {
+            const stations = lineRoutes[line] || [];
+            if (stations.length === 0) return;
 
-            const bg = getComputedStyle(document.body).getPropertyValue('--card2').trim() || '#f7f9fc';
-            ctx.fillStyle = bg;
-            ctx.fillRect(0, 0, w, h);
+            const lineColor = getLineColor(line);
 
-            const data = allList.filter(s => s.name && s.lines && s.lines.length > 0);
-            if (data.length === 0) {
-                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-light').trim() || '#999';
-                ctx.font = '18px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText('暂无站点数据，请添加站点', w / 2, h / 2);
-                mapStats.textContent = '站点: 0 | 线路: 0';
-                mapLegend.innerHTML = '';
-                return;
-            }
+            const baseY = padding + lineIndex * lineHeight + lineHeight / 2;
+            const totalWidth = (stations.length - 1) * stationGap;
+            const startX = padding + (w - padding * 2 - totalWidth) / 2;
 
-            // 按线路分组
-            const groups = {};
-            data.forEach(s => {
-                s.lines.forEach(line => {
-                    if (!groups[line]) groups[line] = [];
-                    groups[line].push(s);
-                });
+            // 绘制连线
+            ctx.beginPath();
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = Math.max(3, 4 * mapZoom);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            stations.forEach((station, i) => {
+                const x = startX + i * stationGap;
+                const y = baseY;
+
+                const cx = x * mapZoom + mapOffsetX;
+                const cy = y * mapZoom + mapOffsetY;
+
+                if (i === 0) {
+                    ctx.moveTo(cx, cy);
+                } else {
+                    ctx.lineTo(cx, cy);
+                }
             });
-            Object.keys(groups).forEach(line => {
-                groups[line].sort((a, b) => a.name.localeCompare(b.name));
-            });
+            ctx.stroke();
 
-            const lines = Object.keys(groups);
-            const lineCount = lines.length;
-            if (lineCount === 0) {
-                mapStats.textContent = '站点: 0 | 线路: 0';
-                mapLegend.innerHTML = '';
-                return;
-            }
+            // 绘制站点
+            stations.forEach((station, i) => {
+                const x = startX + i * stationGap;
+                const y = baseY;
 
-            // 计算每个站点参与的线路数
-            const stationLinesSet = {};
-            data.forEach(s => {
-                const key = s.name;
-                if (!stationLinesSet[key]) stationLinesSet[key] = new Set();
-                s.lines.forEach(l => stationLinesSet[key].add(l));
-            });
+                const cx = x * mapZoom + mapOffsetX;
+                const cy = y * mapZoom + mapOffsetY;
 
-            const padding = { top: 40, bottom: 30, left: 60, right: 40 };
-            const availableW = w - padding.left - padding.right;
-            const availableH = h - padding.top - padding.bottom;
+                const key = `${station.name}|${station.x}|${station.z}`;
+                const linesAtStation = stationLines[key] || [];
+                const isTransfer = linesAtStation.length > 1;
 
-            let maxStations = 0;
-            Object.values(groups).forEach(arr => { if (arr.length > maxStations) maxStations = arr.length; });
-            maxStations = Math.max(maxStations, 2);
+                // 缓存位置用于悬浮
+                stationPosMap.set(key, { x, y, line, station });
 
-            const zoom = scale || 1.0;
-            const spacingX = (availableW / (maxStations + 1)) * zoom;
-            const spacingY = (availableH / (lineCount + 1)) * zoom;
-
-            const totalWidth = (maxStations - 1) * spacingX;
-            const totalHeight = (lineCount - 1) * spacingY;
-            const offsetX = padding.left + (availableW - totalWidth) / 2;
-            const offsetY = padding.top + (availableH - totalHeight) / 2;
-
-            // 网格
-            ctx.strokeStyle = 'rgba(200,200,200,0.15)';
-            ctx.lineWidth = 0.5;
-            for (let i = 0; i <= 10; i++) {
-                const x = padding.left + (i / 10) * availableW;
-                ctx.beginPath(); ctx.moveTo(x, padding.top); ctx.lineTo(x, h - padding.bottom); ctx.stroke();
-                const y = padding.top + (i / 10) * availableH;
-                ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(w - padding.right, y); ctx.stroke();
-            }
-
-            // 绘制线路
-            lines.forEach((lineName, li) => {
-                const stations = groups[lineName];
-                const color = getLineColor(lineName);
-                const yPos = offsetY + li * spacingY;
-
+                // 站点外发光
+                const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 14 * mapZoom);
+                grad.addColorStop(0, lineColor + '60');
+                grad.addColorStop(1, 'transparent');
+                ctx.fillStyle = grad;
                 ctx.beginPath();
-                ctx.strokeStyle = color;
-                ctx.lineWidth = 5;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
+                ctx.arc(cx, cy, 14 * mapZoom, 0, Math.PI * 2);
+                ctx.fill();
 
-                stations.forEach((s, si) => {
-                    const xPos = offsetX + si * spacingX;
-                    if (si === 0) ctx.moveTo(xPos, yPos);
-                    else ctx.lineTo(xPos, yPos);
-                });
-                ctx.stroke();
+                // 站点主体
+                ctx.beginPath();
+                ctx.arc(cx, cy, Math.max(isTransfer ? 10 : 7, 6 * mapZoom), 0, Math.PI * 2);
+                ctx.fillStyle = lineColor;
+                ctx.fill();
 
-                // 站点
-                stations.forEach((s, si) => {
-                    const xPos = offsetX + si * spacingX;
-                    const lineCountForStation = stationLinesSet[s.name] ? stationLinesSet[s.name].size : 1;
-                    const isTransfer = lineCountForStation > 1;
-                    const radius = isTransfer ? 10 : 7;
-
-                    const grad = ctx.createRadialGradient(xPos, yPos, 0, xPos, yPos, radius * 2.5);
-                    grad.addColorStop(0, color + '50');
-                    grad.addColorStop(1, color + '00');
-                    ctx.fillStyle = grad;
-                    ctx.beginPath();
-                    ctx.arc(xPos, yPos, radius * 2.5, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.arc(xPos, yPos, radius + 2, 0, Math.PI * 2);
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fill();
-                    ctx.strokeStyle = color;
-                    ctx.lineWidth = 2;
+                // 换乘站白边
+                if (isTransfer) {
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = Math.max(2, 2.5 * mapZoom);
                     ctx.stroke();
 
+                    // 内圈
                     ctx.beginPath();
-                    ctx.arc(xPos, yPos, radius - 1, 0, Math.PI * 2);
-                    ctx.fillStyle = color;
+                    ctx.arc(cx, cy, Math.max(5, 3.5 * mapZoom), 0, Math.PI * 2);
+                    ctx.fillStyle = bgColor;
                     ctx.fill();
-
-                    // 换乘站并排多环
-                    if (isTransfer) {
-                        const linesArr = Array.from(stationLinesSet[s.name]);
-                        const count = linesArr.length;
-                        const spacingRing = 14;
-                        const totalWidthRings = (count - 1) * spacingRing;
-                        const startX = xPos - totalWidthRings / 2;
-                        const ringR = 7;
-                        linesArr.forEach((line, idx) => {
-                            const lColor = getLineColor(line);
-                            const xRing = startX + idx * spacingRing;
-                            ctx.beginPath();
-                            ctx.arc(xRing, yPos, ringR + 2, 0, Math.PI * 2);
-                            ctx.strokeStyle = '#ffffff';
-                            ctx.lineWidth = 2.5;
-                            ctx.stroke();
-                            ctx.beginPath();
-                            ctx.arc(xRing, yPos, ringR, 0, Math.PI * 2);
-                            ctx.strokeStyle = lColor;
-                            ctx.lineWidth = 2.5;
-                            ctx.stroke();
-                        });
-                    }
-
-                    // 站点名
-                    const searchTerm = searchInput.value.trim().toLowerCase();
-                    const isHighlight = searchTerm && s.name.toLowerCase().includes(searchTerm);
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'bottom';
-                    const fontSize = isHighlight ? 12 : 10;
-                    ctx.font = (isHighlight ? 'bold ' : '') + fontSize + 'px system-ui, sans-serif';
-
-                    const labelY = yPos - radius - 6;
-                    if (isHighlight) {
-                        const metrics = ctx.measureText(s.name);
-                        const tw = metrics.width;
-                        const th = fontSize * 1.2;
-                        ctx.fillStyle = 'rgba(255, 215, 0, 0.25)';
-                        if (ctx.roundRect) {
-                            ctx.roundRect(xPos - tw / 2 - 4, labelY - th - 2, tw + 8, th + 4, 4);
-                            ctx.fill();
-                        } else {
-                            ctx.fillRect(xPos - tw / 2 - 4, labelY - th - 2, tw + 8, th + 4);
-                        }
-                        ctx.fillStyle = '#d4a000';
-                        ctx.shadowColor = 'rgba(255,215,0,0.3)';
-                        ctx.shadowBlur = 6;
-                    } else {
-                        ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text').trim() || '#1a2332';
-                        ctx.shadowColor = 'transparent';
-                        ctx.shadowBlur = 0;
-                    }
-                    ctx.textBaseline = 'bottom';
-                    ctx.fillText(s.name, xPos, labelY);
-                    ctx.shadowColor = 'transparent';
-                    ctx.shadowBlur = 0;
-                });
-            });
-
-            const totalStations = data.length;
-            const totalLines = lines.length;
-            mapStats.textContent = `站点: ${totalStations} | 线路: ${totalLines}`;
-
-            let legendHtml = '';
-            lines.forEach(line => {
-                const color = getLineColor(line);
-                legendHtml += `
-                    <span class="legend-item">
-                        <span class="legend-color" style="background:${color};"></span>
-                        <span class="legend-label">${line}</span>
-                    </span>
-                `;
-            });
-            const searchTerm2 = searchInput.value.trim();
-            if (searchTerm2) {
-                legendHtml += `
-                    <span class="legend-highlight">⭐ 高亮: ${searchTerm2}</span>
-                `;
-            }
-            mapLegend.innerHTML = legendHtml || '<span style="color:var(--text-light);">暂无线路数据</span>';
-        }
-
-        // ============================================================
-        //  线路图模态框控制
-        // ============================================================
-        let mapZoom = 1.0;
-
-        function openMapModal() {
-            mapModal.classList.add('active');
-            requestAnimationFrame(() => {
-                drawLineChart(mapZoom);
-            });
-        }
-
-        function closeMapModal() {
-            mapModal.classList.remove('active');
-        }
-
-        showMapBtn.onclick = openMapModal;
-        closeMapBtn.onclick = closeMapModal;
-        mapModal.onclick = (e) => { if (e.target === mapModal) closeMapModal(); };
-
-        zoomSlider.oninput = function() {
-            mapZoom = parseFloat(this.value);
-            zoomVal.textContent = Math.round(mapZoom * 100) + '%';
-            drawLineChart(mapZoom);
-        };
-
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (mapModal.classList.contains('active')) {
-                    drawLineChart(mapZoom);
                 }
-            }, 200);
+
+                // 站点名称
+                ctx.fillStyle = textColor;
+                ctx.font = `${Math.max(11, 12 * mapZoom)}px system-ui`;
+                ctx.textAlign = 'center';
+                ctx.fillText(station.name, cx, cy - 16 * mapZoom);
+            });
         });
 
-        const origCombine = combineData;
-        combineData = function() {
-            origCombine();
-            if (mapModal.classList.contains('active')) {
-                drawLineChart(mapZoom);
-            }
-        };
-        searchInput.addEventListener('input', () => {
-            if (mapModal.classList.contains('active')) {
-                drawLineChart(mapZoom);
-            }
+        // 更新图例
+        mapLegend.innerHTML = '';
+        lines.forEach(line => {
+            const item = document.createElement('div');
+            item.className = 'legend-item' + (hiddenLines.has(line) ? ' hidden-line' : '');
+
+            item.innerHTML = `
+                <div class="legend-color" style="background:${getLineColor(line)}"></div>
+                <span class="legend-label">${line}</span>
+            `;
+
+            item.onclick = () => {
+                if (hiddenLines.has(line)) {
+                    hiddenLines.delete(line);
+                } else {
+                    hiddenLines.add(line);
+                }
+                drawLineChart();
+                updateMapStats();
+            };
+
+            mapLegend.appendChild(item);
         });
 
-        // ============================================================
-        //  初始化
-        // ============================================================
-        adminPanel.classList.remove('open');
-        toggleAdminBtn.textContent = '🔓 展开 / 折叠';
-        adminUnlocked = false;
-        updateAdminUI();
+        updateMapStats();
+    }
 
-        console.log('🚆 五洲铁路录入系统 V3.0_BETA4 已加载 (GitHub直连)');
-        console.log('👤 当前用户:', localStorage.getItem('wrms_user_id') || '未登录');
-        console.log('🗺️ 线路图为等距拓扑布局，Alpha版');
-    </script>
+    function updateMapStats() {
+        const topology = buildTopologyLayout();
+        const visibleStations = new Set();
+        const transferCount = new Set();
+
+        getAllLines().forEach(line => {
+            if (hiddenLines.has(line)) return;
+
+            const stations = getStationsByLine(line);
+            stations.forEach(s => {
+                const key = `${s.name}|${s.x}|${s.z}`;
+                visibleStations.add(key);
+
+                const linesAtStation = s.lines || [];
+                if (linesAtStation.length > 1) {
+                    transferCount.add(key);
+                }
+            });
+        });
+
+        mapStats.textContent = `站点: ${visibleStations.size} | 线路: ${getAllLines().length - hiddenLines.size} | 换乘站: ${transferCount.size}`;
+    }
+
+    function resizeMapCanvas() {
+        if (mapModal.classList.contains('active')) {
+            drawLineChart();
+        }
+    }
+
+    window.addEventListener('resize', () => {
+        if (mapModal.classList.contains('active')) {
+            drawLineChart();
+        }
+    });
+
+    showMapBtn.onclick = () => {
+        mapModal.classList.add('active');
+        mapZoom = 1;
+        mapOffsetX = 0;
+        mapOffsetY = 0;
+        zoomSlider.value = 1;
+        zoomVal.textContent = '100%';
+        drawLineChart();
+    };
+
+    closeMapBtn.onclick = () => {
+        mapModal.classList.remove('active');
+    };
+
+    resetViewBtn.onclick = () => {
+        mapZoom = 1;
+        mapOffsetX = 0;
+        mapOffsetY = 0;
+        zoomSlider.value = 1;
+        zoomVal.textContent = '100%';
+        drawLineChart();
+    };
+
+    // 拖拽
+    canvasWrap.addEventListener('mousedown', e => {
+        mapIsDrag = true;
+        dragStartX = e.clientX - mapOffsetX;
+        dragStartY = e.clientY - mapOffsetY;
+    });
+
+    window.addEventListener('mousemove', e => {
+        if (!mapIsDrag) return;
+        mapOffsetX = e.clientX - dragStartX;
+        mapOffsetY = e.clientY - dragStartY;
+        drawLineChart();
+    });
+
+    window.addEventListener('mouseup', () => {
+        mapIsDrag = false;
+    });
+
+    // 滚轮缩放
+    canvasWrap.addEventListener('wheel', e => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.05 : 0.05;
+        mapZoom = Math.max(0.5, Math.min(2, mapZoom + delta));
+        zoomSlider.value = mapZoom;
+        zoomVal.textContent = Math.round(mapZoom * 100) + '%';
+        drawLineChart();
+    });
+
+    // 滑杆
+    zoomSlider.oninput = () => {
+        mapZoom = Number(zoomSlider.value);
+        zoomVal.textContent = Math.round(mapZoom * 100) + '%';
+        drawLineChart();
+    };
+
+    // 悬浮提示
+    canvasWrap.addEventListener('mousemove', e => {
+        const rect = canvasWrap.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+
+        let found = null;
+
+        for (const [key, pos] of stationPosMap.entries()) {
+            const dx = mx - (pos.x * mapZoom + mapOffsetX);
+            const dy = my - (pos.y * mapZoom + mapOffsetY);
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 14 * mapZoom) {
+                found = pos;
+                break;
+            }
+        }
+
+        if (found) {
+            mapTooltip.style.display = 'block';
+            mapTooltip.style.left = Math.min(e.clientX - rect.left + 12, rect.width - 200) + 'px';
+            mapTooltip.style.top = Math.min(e.clientY - rect.top + 12, rect.height - 120) + 'px';
+
+            const s = found.station;
+            const lineDisplay = (s.lines || []).join(', ');
+
+            mapTooltip.innerHTML = `
+                <strong>${s.name}</strong><br>
+                线路：${lineDisplay}<br>
+                X：${s.x}  Z：${s.z}<br>
+                状态：${s.status || '规划中'}
+            `;
+        } else {
+            mapTooltip.style.display = 'none';
+        }
+    });
+
+    canvasWrap.addEventListener('mouseleave', () => {
+        mapTooltip.style.display = 'none';
+    });
+
+    exportMapBtn.onclick = () => {
+        const link = document.createElement('a');
+        link.download = `五洲铁路线路图_${new Date().toLocaleDateString()}.png`;
+        link.href = mapCanvas.toDataURL('image/png');
+        link.click();
+        showMsg('✅ 线路图已导出PNG');
+    };
+
+    let currentTheme = 'default';
+
+    function applyTheme(theme) {
+        document.body.classList.remove('theme-dark', 'theme-ocean', 'theme-forest', 'theme-purple', 'theme-orange');
+
+        if (theme !== 'default') {
+            document.body.classList.add(`theme-${theme}`);
+        }
+
+        currentTheme = theme;
+
+        document.querySelectorAll('.theme-dot').forEach(dot => {
+            dot.classList.toggle('active', dot.dataset.theme === theme);
+        });
+
+        if (mapModal.classList.contains('active')) {
+            drawLineChart();
+        }
+    }
+
+    themeToggleBtn.onclick = () => {
+        applyTheme(currentTheme === 'dark' ? 'default' : 'dark');
+    };
+
+    themeSelector.onclick = e => {
+        const dot = e.target.closest('.theme-dot');
+        if (!dot) return;
+        applyTheme(dot.dataset.theme);
+    };
+
+    aboutBtn.onclick = () => {
+        aboutMask.classList.add('active');
+    };
+
+    closeAbout.onclick = () => {
+        aboutMask.classList.remove('active');
+    };
+
+    aboutMask.onclick = e => {
+        if (e.target === aboutMask) {
+            aboutMask.classList.remove('active');
+        }
+    };
+
+    $('mapGenBtn').onclick = () => {
+        showMsg('⚠️ 地名生成器功能开发中', true);
+    };
+</script>
 </body>
 </html>
