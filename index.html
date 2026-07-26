@@ -1077,16 +1077,16 @@
             <div class="log-area">
                 <strong>📖 使用说明</strong>
                 <p>🔍 <b>查询区</b> — 搜索站点/线路/状态，浏览全部车站数据，点击「显示线路图」查看基于XZ坐标的线路图</p>
-                <p>✏️ <b>录入区</b> — 添加新站点，线路名可用逗号分隔多条线路（如“1号线,2号线”），实现换乘站录入</p>
+                <p>✏️ <b>录入区</b> — 每次只添加一条线路，换乘站需多次录入（同一站名和坐标，不同线路）</p>
                 <p>⚙️ <b>管理员工具</b> — 批量导入、导出JSON、管理本地数据（需密码）</p>
                 <p>💡 本地新增站点仅保存在浏览器，提交文本发给管理员即可</p>
-                <p>🗺️ <b>线路图</b> — 基于XZ坐标绘制，换乘站根据线路数量显示并排多环，每条线路一个环</p>
+                <p>🗺️ <b>线路图</b> — 基于XZ坐标映射，保留真实方位，换乘站显示并排多环</p>
                 <br>
                 <strong>📌 更新日志 V3.0_BETA2</strong>
                 <p>✦ 🔍 修复搜索功能，确保所有站点（包括“城西枢纽”）可被检索</p>
-                <p>✦ 🔄 换乘站支持无限线路录入（线路名用逗号分隔），并自动识别</p>
-                <p>✦ 🎨 换乘站标识改为并排多环（每条线路一个环），环数随线路数变化</p>
-                <p>✦ 🗺️ 线路图采用XZ坐标建立平面直角坐标系，站点间等距分布</p>
+                <p>✦ 🔄 换乘站录入改为单线路多次添加，自动合并线路列表</p>
+                <p>✦ 🎨 换乘站标识为并排多环，环数与线路数一致</p>
+                <p>✦ 🗺️ 线路图基于XZ坐标直接映射，保留地理方位</p>
                 <p>✦ 📝 版本号升级至 V3.0_BETA2</p>
             </div>
             <div class="id-input-wrap">
@@ -1149,11 +1149,11 @@
             <div class="card-title">
                 ✏️ 录入区
                 <span class="badge">本地新增</span>
-                <span style="font-size:12px;font-weight:400;color:var(--text-light);">（换乘站用逗号分隔线路名）</span>
+                <span style="font-size:12px;font-weight:400;color:var(--text-light);">（换乘站需多次添加，每次填一条线路）</span>
             </div>
             <div class="row row-gap">
                 <input id="sName" placeholder="站点名称">
-                <input id="sLine" placeholder="所属线路（多线用逗号分隔）">
+                <input id="sLine" placeholder="所属线路（单条）">
                 <input id="sX" placeholder="X坐标">
                 <input id="sZ" placeholder="Z坐标">
                 <select id="sStatus">
@@ -1275,9 +1275,9 @@
             <div style="background:var(--card2);border-radius:10px;padding:10px 14px;border:1px solid var(--border);font-size:13px;max-height:180px;overflow-y:auto;">
                 <strong>📌 更新日志 V3.0_BETA2</strong>
                 <p style="margin:2px 0;">✦ 🔍 修复搜索功能，确保所有站点（包括“城西枢纽”）可被检索</p>
-                <p style="margin:2px 0;">✦ 🔄 换乘站支持无限线路录入（线路名用逗号分隔），并自动识别</p>
-                <p style="margin:2px 0;">✦ 🎨 换乘站标识改为并排多环（每条线路一个环），环数随线路数变化</p>
-                <p style="margin:2px 0;">✦ 🗺️ 线路图采用XZ坐标建立平面直角坐标系，站点间等距分布</p>
+                <p style="margin:2px 0;">✦ 🔄 换乘站录入改为单线路多次添加，自动合并线路列表</p>
+                <p style="margin:2px 0;">✦ 🎨 换乘站标识为并排多环，环数与线路数一致</p>
+                <p style="margin:2px 0;">✦ 🗺️ 线路图基于XZ坐标直接映射，保留地理方位</p>
                 <p style="margin:2px 0;">✦ 📝 版本号升级至 V3.0_BETA2</p>
             </div>
             <button class="modal-close-btn" id="closeAbout">关闭</button>
@@ -1288,7 +1288,7 @@
     <div class="map-modal-mask" id="mapModal">
         <div class="map-modal-box">
             <div class="map-modal-header">
-                <h2>🚇 线路图 <span style="font-size:14px;font-weight:400;color:var(--text-light);">— 基于XZ坐标，等距分布</span></h2>
+                <h2>🚇 线路图 <span style="font-size:14px;font-weight:400;color:var(--text-light);">— 基于XZ坐标，保留方位</span></h2>
                 <button class="close-btn" id="closeMapBtn">✕</button>
             </div>
             <div class="map-canvas-wrap">
@@ -1406,18 +1406,27 @@
         }
 
         // ============================================================
-        //  辅助：将线路字符串拆分为数组（逗号分隔）
-        // ============================================================
-        function splitLines(lineStr) {
-            if (!lineStr) return [];
-            return lineStr.split(',').map(s => s.trim()).filter(s => s.length > 0);
-        }
-
-        // ============================================================
         //  合并 & 渲染
         // ============================================================
         function combineData() {
-            allList = [...publicList, ...localList];
+            // 合并公共和本地，本地覆盖公共（如有冲突，以本地为准）
+            const merged = [...publicList];
+            localList.forEach(localItem => {
+                const idx = merged.findIndex(p => p.name === localItem.name && p.x === localItem.x && p.z === localItem
+                    .z);
+                if (idx >= 0) {
+                    // 合并线路（去重）
+                    const existingLines = merged[idx].lines || [];
+                    const newLines = localItem.lines || [];
+                    const combined = [...new Set([...existingLines, ...newLines])];
+                    merged[idx].lines = combined;
+                    // 状态以本地为准
+                    merged[idx].status = localItem.status;
+                } else {
+                    merged.push({ ...localItem });
+                }
+            });
+            allList = merged;
             renderAllTables();
             updatePreview();
         }
@@ -1437,7 +1446,7 @@
             const keyword = searchInput.value.toLowerCase().trim();
             const filtered = allList.filter(item => {
                 const name = (item.name || '').toLowerCase();
-                const line = (item.line || '').toLowerCase();
+                const line = (item.lines || []).join(',').toLowerCase();
                 const status = (item.status || '').toLowerCase();
                 return name.includes(keyword) || line.includes(keyword) || status.includes(keyword);
             });
@@ -1454,9 +1463,10 @@
                 } else {
                     opHtml = `<span style="color:var(--text-light);font-size:12px;">${isLocal ? '本地' : '公共'}</span>`;
                 }
+                const lineDisplay = (item.lines || []).join(', ') || '未定';
                 tr.innerHTML = `
               <td>${item.name || ''}</td>
-              <td>${item.line || ''}</td>
+              <td>${lineDisplay}</td>
               <td>${item.x || ''}</td>
               <td>${item.z || ''}</td>
               <td class="${cls}">${item.status || '规划中'}</td>
@@ -1487,7 +1497,9 @@
                 str += '（暂无本地新增站点）\n';
             } else {
                 localList.forEach(s => {
-                    str += `【${s.line || '未定'}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || '规划中'}\n`;
+                    const lineDisplay = (s.lines || []).join(', ') || '未定';
+                    str +=
+                        `【${lineDisplay}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || '规划中'}\n`;
                 });
             }
             previewText.value = str;
@@ -1500,7 +1512,7 @@
         searchInput.oninput = renderAllTables;
 
         // ============================================================
-        //  添加本地站点（支持多线路）
+        //  添加本地站点（单线路，支持重复添加合并）
         // ============================================================
         $('addBtn').onclick = () => {
             const name = sName.value.trim();
@@ -1508,40 +1520,54 @@
             const x = sX.value.trim();
             const z = sZ.value.trim();
             const status = sStatus.value;
-            if (!name || !x || !z) {
-                showMsg('⚠️ 站点名称、X、Z坐标不能为空', true);
+            if (!name || !x || !z || !line) {
+                showMsg('⚠️ 站点名称、线路、X、Z坐标均不能为空', true);
                 return;
             }
-            // 检查是否已存在（名称+X+Z）
-            const exist = localList.some(v => v.name === name && v.x === x && v.z === z);
-            if (exist) {
-                showMsg('⚠️ 该站点已在本地列表中', true);
-                return;
+            // 查找是否已存在相同名称和坐标的本地记录
+            let existing = localList.find(v => v.name === name && v.x === x && v.z === z);
+            if (existing) {
+                // 追加线路（去重）
+                if (!existing.lines) existing.lines = [];
+                if (!existing.lines.includes(line)) {
+                    existing.lines.push(line);
+                    // 更新状态（以最新添加为准）
+                    existing.status = status;
+                    showMsg(`✅ 已为「${name}」追加线路「${line}」`);
+                } else {
+                    showMsg(`⚠️ 该站点已包含线路「${line}」`, true);
+                }
+            } else {
+                // 新建
+                localList.push({ name, lines: [line], x, z, status });
+                showMsg(`✅ 已添加「${name}」至本地列表`);
             }
-            localList.push({ name, line: line || '未定', x, z, status });
             sName.value = '';
             sLine.value = '';
             sX.value = '';
             sZ.value = '';
             combineData();
-            showMsg(`✅ 已添加「${name}」至本地列表`);
         };
 
         // ============================================================
-        //  去重本地
+        //  去重本地（按名称+坐标合并，线路取并集）
         // ============================================================
         $('deduplicateBtn').onclick = () => {
-            const unique = [];
-            const set = new Set();
-            let removed = 0;
-            for (const item of localList) {
+            const map = new Map();
+            localList.forEach(item => {
                 const key = `${item.name}|${item.x}|${item.z}`;
-                if (!set.has(key)) { set.add(key);
-                    unique.push(item); } else removed++;
-            }
-            localList = unique;
+                if (map.has(key)) {
+                    const existing = map.get(key);
+                    const combined = [...new Set([...existing.lines, ...item.lines])];
+                    existing.lines = combined;
+                    // 状态取最新的（以先出现的为准，可优化）
+                } else {
+                    map.set(key, { ...item });
+                }
+            });
+            localList = Array.from(map.values());
             combineData();
-            showMsg(removed > 0 ? `✅ 去重完成，移除 ${removed} 条重复` : '✅ 无重复站点');
+            showMsg('✅ 本地站点已去重合并');
         };
 
         // ============================================================
@@ -1555,7 +1581,8 @@
         $('exportTextBtn').onclick = () => {
             let str = '===== 全部站点清单 =====\n';
             allList.forEach(s => {
-                str += `【${s.line || '未定'}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || '规划中'}\n`;
+                const lineDisplay = (s.lines || []).join(', ') || '未定';
+                str += `【${lineDisplay}】${s.name} | X:${s.x}, Z:${s.z} | 状态：${s.status || '规划中'}\n`;
             });
             navigator.clipboard.writeText(str).then(() => {
                 showMsg('✅ 文本清单已复制');
@@ -1581,7 +1608,9 @@
             const uid = currentUserId || '未填写ID';
             let text = `【站点提交清单 | 提交人：${uid}】\n`;
             localList.forEach(item => {
-                text += `${item.name} | ${item.line || '未定'} | X:${item.x} Z:${item.z} | ${item.status || '规划中'}\n`;
+                const lineDisplay = (item.lines || []).join(', ') || '未定';
+                text +=
+                    `${item.name} | ${lineDisplay} | X:${item.x} Z:${item.z} | ${item.status || '规划中'}\n`;
             });
             navigator.clipboard.writeText(text).then(() => {
                 showMsg('✅ 提交文本已复制，可直接发送管理员');
@@ -1615,7 +1644,15 @@
         //  导出完整JSON（管理员工具保留）
         // ============================================================
         $('exportFullJsonBtn').onclick = () => {
-            const json = JSON.stringify(allList, null, 2);
+            // 导出全部站点（合并后的）
+            const exportData = allList.map(item => ({
+                name: item.name,
+                lines: item.lines || [],
+                x: item.x,
+                z: item.z,
+                status: item.status || '规划中'
+            }));
+            const json = JSON.stringify(exportData, null, 2);
             navigator.clipboard.writeText(json).then(() => {
                 showMsg('✅ 完整JSON已复制，可直接替换 station.json');
             }).catch(() => {
@@ -1702,25 +1739,46 @@
                 if (!xMatch || !zMatch) return;
                 const x = xMatch[1];
                 const z = zMatch[1];
+                // 查找公共库中是否存在
                 const targetKey = `${name}|${x}|${z}`;
                 const existIdx = publicList.findIndex(item => `${item.name}|${item.x}|${item.z}` === targetKey);
                 if (existIdx > -1) {
-                    publicList[existIdx].status = status;
-                    // 合并线路（如果已有线路不同，可考虑合并，但简单起见保留原线路）
+                    // 更新状态和线路（追加）
+                    const existing = publicList[existIdx];
+                    if (!existing.lines) existing.lines = [];
+                    if (!existing.lines.includes(lineName)) {
+                        existing.lines.push(lineName);
+                    }
+                    existing.status = status;
                     updateCount++;
                 } else {
-                    localList.push({ name, line: lineName || '未定', x, z, status });
+                    // 新增到本地
+                    const localExist = localList.find(v => v.name === name && v.x === x && v.z === z);
+                    if (localExist) {
+                        if (!localExist.lines) localExist.lines = [];
+                        if (!localExist.lines.includes(lineName)) {
+                            localExist.lines.push(lineName);
+                        }
+                        localExist.status = status;
+                    } else {
+                        localList.push({ name, lines: [lineName], x, z, status });
+                    }
                     addCount++;
                 }
             });
-            const unique = [];
-            const set = new Set();
-            for (const item of localList) {
+            // 去重本地
+            const map = new Map();
+            localList.forEach(item => {
                 const key = `${item.name}|${item.x}|${item.z}`;
-                if (!set.has(key)) { set.add(key);
-                    unique.push(item); }
-            }
-            localList = unique;
+                if (map.has(key)) {
+                    const existing = map.get(key);
+                    const combined = [...new Set([...existing.lines, ...item.lines])];
+                    existing.lines = combined;
+                } else {
+                    map.set(key, { ...item });
+                }
+            });
+            localList = Array.from(map.values());
             adminImportText.value = '';
             combineData();
             showMsg(`✅ 合并完成！更新线上 ${updateCount} 个，新增 ${addCount} 个`);
@@ -1782,7 +1840,7 @@
         };
 
         // ============================================================
-        //  线路图功能 (基于XZ坐标，等距分布，多环换乘)
+        //  线路图功能 (基于XZ坐标映射，保留方位，换乘站多环)
         // ============================================================
         const LINE_COLORS = [
             '#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6',
@@ -1798,25 +1856,6 @@
             }
             const idx = Math.abs(hash) % LINE_COLORS.length;
             return LINE_COLORS[idx];
-        }
-
-        // 将站点列表按线路分组（支持多线路拆分）
-        function groupByLine(data) {
-            const groups = {};
-            data.forEach(s => {
-                const lines = splitLines(s.line);
-                if (lines.length === 0) {
-                    // 如果线路为空，归入"未定"
-                    if (!groups['未定']) groups['未定'] = [];
-                    groups['未定'].push(s);
-                } else {
-                    lines.forEach(line => {
-                        if (!groups[line]) groups[line] = [];
-                        groups[line].push(s);
-                    });
-                }
-            });
-            return groups;
         }
 
         function drawLineChart(scale) {
@@ -1853,30 +1892,7 @@
                 return;
             }
 
-            // 按线路分组（拆分多线路）
-            const groups = groupByLine(data);
-            const lines = Object.keys(groups);
-            const lineCount = lines.length;
-
-            // 计算每个站点参与的线路列表（用于换乘）
-            const stationLines = {};
-            data.forEach(s => {
-                const key = s.name;
-                if (!stationLines[key]) stationLines[key] = new Set();
-                const linesArr = splitLines(s.line);
-                linesArr.forEach(l => stationLines[key].add(l));
-            });
-
-            // 对于每个线路，需要按照顺序排列站点（按名称排序或按原始顺序？我们按名称排序保证一致）
-            lines.forEach(line => {
-                groups[line].sort((a, b) => a.name.localeCompare(b.name));
-            });
-
-            // 计算布局：我们采用等距分布，但保留XZ坐标相对位置。
-            // 方法：对每个线路，根据其站点的XZ坐标计算折线总长度，然后等距分布。
-            // 但由于站点顺序已知，我们按顺序连接，然后等距插值。
-            // 为了简化，我们采用每个线路单独计算，但全局统一坐标系。
-            // 先计算所有站点的坐标范围，用于映射。
+            // 计算XZ范围
             let minX = Infinity,
                 maxX = -Infinity,
                 minZ = Infinity,
@@ -1910,9 +1926,7 @@
             const availableW = w - padding.left - padding.right;
             const availableH = h - padding.top - padding.bottom;
 
-            // 缩放
             const zoom = scale || 1.0;
-            // 计算全局缩放，使得所有站点适应画布
             const scaleX = availableW / (maxX - minX);
             const scaleY = availableH / (maxZ - minZ);
             const globalScale = Math.min(scaleX, scaleY) * zoom;
@@ -1939,217 +1953,156 @@
                 ctx.stroke();
             }
 
-            // 对于每条线路，我们需要等距分布站点。
-            // 我们将每个线路的站点坐标重新映射到等距位置，但保留线路的总体方向和形状。
-            // 方法：计算该线路所有站点的原始坐标，然后沿折线均匀分布。
-            // 但因为站点数量可能较少，我们可以简单地按顺序在原始坐标上进行线性插值，使相邻站点距离相等。
-            // 更精确：计算折线总长度，然后等距。
-            lines.forEach((lineName) => {
-                const stations = groups[lineName];
-                if (stations.length < 2) {
-                    // 单站线路直接绘制
-                    stations.forEach(s => {
-                        const x = parseFloat(s.x),
-                            z = parseFloat(s.z);
-                        if (isNaN(x) || isNaN(z)) return;
-                        const cx = mapX(x),
-                            cy = mapZ(z);
-                        // 绘制站点（稍后统一绘制）
-                    });
-                    return;
-                }
+            // 收集所有线路
+            const allLines = new Set();
+            data.forEach(s => {
+                (s.lines || []).forEach(l => allLines.add(l));
+            });
+            const linesArray = Array.from(allLines);
 
-                // 收集原始坐标
-                const coords = stations.map(s => ({ x: parseFloat(s.x), z: parseFloat(s.z) }));
-                // 计算每段距离和总长
-                const segLengths = [];
-                let totalLen = 0;
-                for (let i = 1; i < coords.length; i++) {
-                    const dx = coords[i].x - coords[i - 1].x;
-                    const dz = coords[i].z - coords[i - 1].z;
-                    const len = Math.sqrt(dx * dx + dz * dz);
-                    segLengths.push(len);
-                    totalLen += len;
-                }
-                // 如果总长为0，则均匀分布（水平）
-                if (totalLen === 0) {
-                    const step = 1 / (stations.length - 1);
-                    stations.forEach((s, idx) => {
-                        const t = idx * step;
-                        // 我们依然使用原始坐标映射，但为了等距，我们将它们平铺在一条直线上
-                        // 这里简化：直接使用原始坐标，但实际应该沿线路方向均匀分布。
-                        // 为简化，我们用原始坐标，因为用户要求基于XZ坐标，但等距是额外要求。
-                        // 我们采用折线等距插值：计算累计距离比例，然后插值。
-                    });
-                }
+            // 为每个站点构建线路列表
+            const stationLines = {};
+            data.forEach(s => {
+                const key = s.name;
+                if (!stationLines[key]) stationLines[key] = new Set();
+                (s.lines || []).forEach(l => stationLines[key].add(l));
+            });
 
-                // 计算每个站点的累计距离比例
-                const cumDist = [0];
-                let cum = 0;
-                for (let i = 1; i < coords.length; i++) {
-                    cum += segLengths[i - 1];
-                    cumDist.push(cum);
-                }
-                // 归一化
-                const ratios = cumDist.map(d => d / totalLen);
-
-                // 现在重新计算每个站点的坐标：按比例在原始折线上插值
-                // 但我们希望站点等距，所以每个站点的比例应该是均匀的：i/(n-1)
-                const targetRatios = stations.map((_, i) => i / (stations.length - 1));
-
-                // 根据目标比例在折线上插值
-                const newCoords = targetRatios.map(t => {
-                    // 找到 t 所在的段
-                    let idx = 0;
-                    while (idx < ratios.length - 1 && ratios[idx + 1] < t) idx++;
-                    if (idx >= ratios.length - 1) return { x: coords[coords.length - 1].x, z: coords[coords.length - 1]
-                            .z };
-                    const segStart = ratios[idx];
-                    const segEnd = ratios[idx + 1];
-                    const localT = (t - segStart) / (segEnd - segStart);
-                    const p1 = coords[idx];
-                    const p2 = coords[idx + 1];
-                    return {
-                        x: p1.x + (p2.x - p1.x) * localT,
-                        z: p1.z + (p2.z - p1.z) * localT
-                    };
-                });
-
-                // 更新站点坐标（用于绘制）
-                // 但我们需要保留原始数据以便其他，我们直接使用newCoords
+            // 绘制线路（先绘制线，再绘制站点）
+            linesArray.forEach(lineName => {
+                const stations = data.filter(s => (s.lines || []).includes(lineName));
+                if (stations.length < 2) return;
+                // 按名称排序，保证一致
+                stations.sort((a, b) => a.name.localeCompare(b.name));
                 const color = getLineColor(lineName);
 
-                // 绘制线路（粗线）
                 ctx.beginPath();
                 ctx.strokeStyle = color;
-                ctx.lineWidth = 5;
+                ctx.lineWidth = 4;
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
-                newCoords.forEach((c, i) => {
-                    const cx = mapX(c.x),
-                        cy = mapZ(c.z);
-                    if (i === 0) ctx.moveTo(cx, cy);
+
+                stations.forEach((s, idx) => {
+                    const cx = mapX(parseFloat(s.x));
+                    const cy = mapZ(parseFloat(s.z));
+                    if (idx === 0) ctx.moveTo(cx, cy);
                     else ctx.lineTo(cx, cy);
                 });
                 ctx.stroke();
+            });
 
-                // 绘制站点
-                stations.forEach((s, idx) => {
-                    const c = newCoords[idx];
-                    const cx = mapX(c.x),
-                        cy = mapZ(c.z);
-                    // 获取该站点参与的线路数
-                    const linesSet = stationLines[s.name] || new Set();
-                    const lineCountForStation = linesSet.size;
-                    const isTransfer = lineCountForStation > 1;
+            // 绘制站点
+            data.forEach(s => {
+                const cx = mapX(parseFloat(s.x));
+                const cy = mapZ(parseFloat(s.z));
+                const lines = s.lines || [];
+                const count = lines.length;
+                const isTransfer = count > 1;
+                const color = count > 0 ? getLineColor(lines[0]) : '#888';
+                const radius = isTransfer ? 10 : 7;
 
-                    const radius = isTransfer ? 10 : 7;
+                // 外发光
+                const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 2.5);
+                grad.addColorStop(0, color + '50');
+                grad.addColorStop(1, color + '00');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius * 2.5, 0, Math.PI * 2);
+                ctx.fill();
 
-                    // 外发光
-                    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 2.5);
-                    grad.addColorStop(0, color + '50');
-                    grad.addColorStop(1, color + '00');
-                    ctx.fillStyle = grad;
-                    ctx.beginPath();
-                    ctx.arc(cx, cy, radius * 2.5, 0, Math.PI * 2);
-                    ctx.fill();
+                // 外圈白色
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius + 2, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.stroke();
 
-                    // 外圈白色
-                    ctx.beginPath();
-                    ctx.arc(cx, cy, radius + 2, 0, Math.PI * 2);
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fill();
-                    ctx.strokeStyle = color;
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
+                // 内圈彩色
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius - 1, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
 
-                    // 内圈彩色
-                    ctx.beginPath();
-                    ctx.arc(cx, cy, radius - 1, 0, Math.PI * 2);
-                    ctx.fillStyle = color;
-                    ctx.fill();
+                // 换乘站：并排多环
+                if (isTransfer) {
+                    const spacing = 14;
+                    const totalWidth = (count - 1) * spacing;
+                    const startX = cx - totalWidth / 2;
+                    const ringR = 7;
+                    lines.forEach((line, idx) => {
+                        const lColor = getLineColor(line);
+                        const xPos = startX + idx * spacing;
+                        // 外白
+                        ctx.beginPath();
+                        ctx.arc(xPos, cy, ringR + 2, 0, Math.PI * 2);
+                        ctx.strokeStyle = '#ffffff';
+                        ctx.lineWidth = 2.5;
+                        ctx.stroke();
+                        // 内彩
+                        ctx.beginPath();
+                        ctx.arc(xPos, cy, ringR, 0, Math.PI * 2);
+                        ctx.strokeStyle = lColor;
+                        ctx.lineWidth = 2.5;
+                        ctx.stroke();
+                    });
+                }
 
-                    // 如果是换乘站，绘制并排多环（每个线路一个环）
-                    if (isTransfer) {
-                        const linesArr = Array.from(linesSet);
-                        const count = linesArr.length;
-                        // 并排排列，水平方向
-                        const spacing = 14;
-                        const totalWidth = (count - 1) * spacing;
-                        const startX = cx - totalWidth / 2;
-                        const ringR = 7;
-                        linesArr.forEach((lineName2, i) => {
-                            const lColor = getLineColor(lineName2);
-                            const xPos = startX + i * spacing;
-                            // 外白
-                            ctx.beginPath();
-                            ctx.arc(xPos, cy, ringR + 2, 0, Math.PI * 2);
-                            ctx.strokeStyle = '#ffffff';
-                            ctx.lineWidth = 2.5;
-                            ctx.stroke();
-                            // 内彩
-                            ctx.beginPath();
-                            ctx.arc(xPos, cy, ringR, 0, Math.PI * 2);
-                            ctx.strokeStyle = lColor;
-                            ctx.lineWidth = 2.5;
-                            ctx.stroke();
-                        });
-                    }
+                // 站点名称
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                const isHighlight = searchTerm && s.name.toLowerCase().includes(searchTerm);
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                const fontSize = isHighlight ? 12 : 10;
+                ctx.font = (isHighlight ? 'bold ' : '') + fontSize + 'px system-ui, sans-serif';
 
-                    // 站点名称（在站点上方）
-                    const searchTerm = searchInput.value.trim().toLowerCase();
-                    const isHighlight = searchTerm && s.name.toLowerCase().includes(searchTerm);
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'bottom';
-                    const fontSize = isHighlight ? 12 : 10;
-                    ctx.font = (isHighlight ? 'bold ' : '') + fontSize + 'px system-ui, sans-serif';
-
-                    const labelY = cy - radius - 6;
-                    if (isHighlight) {
-                        const metrics = ctx.measureText(s.name);
-                        const tw = metrics.width;
-                        const th = fontSize * 1.2;
-                        ctx.fillStyle = 'rgba(255, 215, 0, 0.25)';
-                        if (ctx.roundRect) {
-                            ctx.roundRect(cx - tw / 2 - 4, labelY - th - 2, tw + 8, th + 4, 4);
-                            ctx.fill();
-                        } else {
-                            ctx.fillRect(cx - tw / 2 - 4, labelY - th - 2, tw + 8, th + 4);
-                        }
-                        ctx.fillStyle = '#d4a000';
-                        ctx.shadowColor = 'rgba(255,215,0,0.3)';
-                        ctx.shadowBlur = 6;
+                const labelY = cy - radius - 6;
+                if (isHighlight) {
+                    const metrics = ctx.measureText(s.name);
+                    const tw = metrics.width;
+                    const th = fontSize * 1.2;
+                    ctx.fillStyle = 'rgba(255, 215, 0, 0.25)';
+                    if (ctx.roundRect) {
+                        ctx.roundRect(cx - tw / 2 - 4, labelY - th - 2, tw + 8, th + 4, 4);
+                        ctx.fill();
                     } else {
-                        ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text').trim() || '#1a2332';
-                        ctx.shadowColor = 'transparent';
-                        ctx.shadowBlur = 0;
+                        ctx.fillRect(cx - tw / 2 - 4, labelY - th - 2, tw + 8, th + 4);
                     }
-                    ctx.textBaseline = 'bottom';
-                    ctx.fillText(s.name, cx, labelY);
+                    ctx.fillStyle = '#d4a000';
+                    ctx.shadowColor = 'rgba(255,215,0,0.3)';
+                    ctx.shadowBlur = 6;
+                } else {
+                    ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text').trim() || '#1a2332';
                     ctx.shadowColor = 'transparent';
                     ctx.shadowBlur = 0;
-                });
+                }
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(s.name, cx, labelY);
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
             });
 
             // 统计
             const totalStations = data.length;
-            mapStats.textContent = `站点: ${totalStations} | 线路: ${lineCount}`;
+            const totalLines = linesArray.length;
+            mapStats.textContent = `站点: ${totalStations} | 线路: ${totalLines}`;
 
             // 图例
             let legendHtml = '';
-            lines.forEach((lineName) => {
-                const color = getLineColor(lineName);
+            linesArray.forEach(line => {
+                const color = getLineColor(line);
                 legendHtml += `
                     <span class="legend-item">
                         <span class="legend-color" style="background:${color};"></span>
-                        <span class="legend-label">${lineName}</span>
+                        <span class="legend-label">${line}</span>
                     </span>
                 `;
             });
-            const searchTerm = searchInput.value.trim();
-            if (searchTerm) {
+            const searchTerm2 = searchInput.value.trim();
+            if (searchTerm2) {
                 legendHtml += `
-                    <span class="legend-highlight">⭐ 高亮: ${searchTerm}</span>
+                    <span class="legend-highlight">⭐ 高亮: ${searchTerm2}</span>
                 `;
             }
             mapLegend.innerHTML = legendHtml || '<span style="color:var(--text-light);">暂无线路数据</span>';
@@ -2217,7 +2170,7 @@
 
         console.log('🚆 五洲铁路录入系统 V3.0_BETA2 已加载');
         console.log('👤 当前用户:', localStorage.getItem('wrms_user_id') || '未登录');
-        console.log('🗺️ 线路图功能已启用 (基于XZ坐标，等距分布，多环换乘)');
+        console.log('🗺️ 线路图功能已启用 (基于XZ坐标，保留方位)');
     </script>
 </body>
 </html>
