@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>五洲铁路模组服务器线路车站录入系统 V3.0_RELEASE</title>
+    <title>五洲铁路模组服务器线路车站录入系统 V3.1_RELEASE</title>
     <style>
         /* ===== CSS 变量 & 主题 ===== */
         :root {
@@ -147,6 +147,131 @@
         .animate-in-d2 { animation-delay: 0.12s; opacity: 0; }
         .animate-in-d3 { animation-delay: 0.20s; opacity: 0; }
 
+        /* ===== 弹窗（含淡出） ===== */
+        .modal-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 16px;
+            backdrop-filter: blur(6px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .modal-mask.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-mask.active .modal-box {
+            animation: fadeSlideUp 0.4s ease forwards;
+        }
+        .modal-mask:not(.active) .modal-box {
+            animation: none;
+            transform: scale(0.97);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        .modal-box {
+            width: 100%;
+            max-width: 520px;
+            max-height: 92vh;
+            overflow-y: auto;
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 24px 26px 28px;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+            transition: background var(--transition), border var(--transition);
+            transform: scale(1);
+            opacity: 1;
+        }
+        .modal-box h2 { font-size: 20px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .modal-box .sub { color: var(--text-light); font-size: 13px; margin-bottom: 16px; }
+        .modal-box .log-area { background: var(--card2); border-radius: 12px; padding: 14px 16px; margin: 12px 0 16px; max-height: 240px; overflow-y: auto; border: 1px solid var(--border); font-size: 13px; line-height: 1.7; transition: background var(--transition), border var(--transition); }
+        .modal-box .log-area strong { display: block; margin-bottom: 4px; font-size: 14px; }
+        .modal-box .log-area p { margin: 2px 0; padding-left: 6px; }
+        .modal-box .id-input-wrap { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+        .modal-box .id-input-wrap input { flex: 1; min-width: 160px; }
+        .modal-box .id-input-wrap button { flex-shrink: 0; padding: 9px 28px; }
+        .modal-close-btn { margin-top: 16px; width: 100%; padding: 12px; font-size: 15px; }
+
+        /* ===== 线路图模态框（含淡出） ===== */
+        .map-modal-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .map-modal-mask.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .map-modal-mask.active .map-modal-box {
+            animation: fadeSlideUp 0.4s ease forwards;
+        }
+        .map-modal-mask:not(.active) .map-modal-box {
+            animation: none;
+            transform: scale(0.97);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        .map-modal-box {
+            width: 100%;
+            max-width: 1100px;
+            max-height: 92vh;
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px 24px 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            transition: background var(--transition), border var(--transition);
+            overflow: hidden;
+            transform: scale(1);
+            opacity: 1;
+        }
+        .map-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-shrink: 0; }
+        .map-modal-header h2 { font-size: 20px; display: flex; align-items: center; gap: 10px; color: var(--text); }
+        .map-modal-header .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-light); padding: 4px 10px; border-radius: 8px; transition: background 0.2s; }
+        .map-modal-header .close-btn:hover { background: var(--tag-bg); }
+        .map-canvas-wrap { flex: 1; min-height: 400px; background: var(--card2); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; position: relative; transition: background var(--transition), border var(--transition); cursor: grab; }
+        .map-canvas-wrap:active { cursor: grabbing; }
+        .map-canvas-wrap canvas { width: 100%; height: 100%; display: block; }
+        .map-tooltip { position: absolute; background: rgba(0,0,0,0.8); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 13px; pointer-events: none; z-index: 10; display: none; white-space: nowrap; backdrop-filter: blur(4px); max-width: 200px; word-wrap: break-word; white-space: normal; }
+        .map-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 0 4px; flex-shrink: 0; }
+        .map-controls label { font-size: 13px; color: var(--text-light); display: flex; align-items: center; gap: 6px; }
+        .map-controls input[type="range"] { width: 140px; accent-color: var(--accent); cursor: pointer; }
+        .map-controls .zoom-val { min-width: 44px; text-align: center; font-size: 14px; font-weight: 600; color: var(--text); }
+        .map-controls button { padding: 4px 14px; font-size: 12px; border-radius: 6px; border: none; background: var(--btn); color: #fff; cursor: pointer; transition: background 0.2s; }
+        .map-controls button:hover { background: var(--accent-hover); }
+        .map-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 6px 0 2px; border-top: 1px solid var(--border); margin-top: 4px; font-size: 12px; flex-shrink: 0; }
+        .map-legend .legend-item { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 2px 4px; border-radius: 6px; transition: background 0.2s; }
+        .map-legend .legend-item:hover { background: var(--tag-bg); }
+        .map-legend .legend-item.hidden-line { opacity: 0.4; text-decoration: line-through; }
+        .map-legend .legend-color { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); flex-shrink: 0; }
+        .map-legend .legend-label { white-space: nowrap; color: var(--text); font-size: 12px; }
+        .map-legend .legend-highlight { background: #ffdd44; color: #333; padding: 1px 8px; border-radius: 12px; font-weight: 600; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; }
+        .map-tip-text { font-size: 12px; color: var(--text-light); padding: 4px 0 2px; border-top: 1px solid var(--border); margin-top: 4px; text-align: center; }
+
         /* ===== 头部 ===== */
         .header {
             background: var(--header-bg);
@@ -223,7 +348,19 @@
         /* ===== 表单 ===== */
         .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 6px 0; }
         .row-gap { gap: 12px; }
-        input, select { padding: 9px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--input-bg); color: var(--text); outline: none; font-size: 14px; transition: border 0.2s, box-shadow 0.2s, background var(--transition), color var(--transition); flex: 1; min-width: 100px; }
+        input, select {
+            padding: 9px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--input-bg);
+            color: var(--text);
+            outline: none;
+            font-size: 14px;
+            transition: border 0.2s, box-shadow 0.2s, background var(--transition), color var(--transition);
+            flex: 1;
+            min-width: 100px;
+            ime-mode: active; /* 保证中文输入法正常工作 */
+        }
         input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,111,219,0.15); }
         input::placeholder { color: var(--text-light); opacity: 0.6; }
         select { flex: 0 1 auto; min-width: 110px; cursor: pointer; }
@@ -262,47 +399,6 @@
         #msg { margin-top: 8px; min-height: 24px; font-size: 14px; font-weight: 500; }
         .msg-success { color: var(--status-done); }
         .msg-error { color: var(--status-stop); }
-
-        /* ===== 弹窗 ===== */
-        .modal-mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; align-items: center; justify-content: center; z-index: 999; padding: 16px; backdrop-filter: blur(6px); animation: fadeSlideUp 0.35s ease; }
-        .modal-mask.active { display: flex; }
-        .modal-box { width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto; background: var(--card); border-radius: var(--radius); padding: 24px 26px 28px; border: 1px solid var(--border); box-shadow: 0 30px 80px rgba(0,0,0,0.25); animation: fadeSlideUp 0.4s ease; transition: background var(--transition), border var(--transition); }
-        .modal-box h2 { font-size: 20px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-        .modal-box .sub { color: var(--text-light); font-size: 13px; margin-bottom: 16px; }
-        .modal-box .log-area { background: var(--card2); border-radius: 12px; padding: 14px 16px; margin: 12px 0 16px; max-height: 240px; overflow-y: auto; border: 1px solid var(--border); font-size: 13px; line-height: 1.7; transition: background var(--transition), border var(--transition); }
-        .modal-box .log-area strong { display: block; margin-bottom: 4px; font-size: 14px; }
-        .modal-box .log-area p { margin: 2px 0; padding-left: 6px; }
-        .modal-box .id-input-wrap { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
-        .modal-box .id-input-wrap input { flex: 1; min-width: 160px; }
-        .modal-box .id-input-wrap button { flex-shrink: 0; padding: 9px 28px; }
-        .modal-close-btn { margin-top: 16px; width: 100%; padding: 12px; font-size: 15px; }
-
-        /* ===== 线路图模态框 ===== */
-        .map-modal-mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; backdrop-filter: blur(8px); animation: fadeSlideUp 0.4s ease; }
-        .map-modal-mask.active { display: flex; }
-        .map-modal-box { width: 100%; max-width: 1100px; max-height: 92vh; background: var(--card); border-radius: var(--radius); padding: 20px 24px 24px; border: 1px solid var(--border); box-shadow: 0 30px 80px rgba(0,0,0,0.3); display: flex; flex-direction: column; transition: background var(--transition), border var(--transition); overflow: hidden; }
-        .map-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-shrink: 0; }
-        .map-modal-header h2 { font-size: 20px; display: flex; align-items: center; gap: 10px; color: var(--text); }
-        .map-modal-header .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-light); padding: 4px 10px; border-radius: 8px; transition: background 0.2s; }
-        .map-modal-header .close-btn:hover { background: var(--tag-bg); }
-        .map-canvas-wrap { flex: 1; min-height: 400px; background: var(--card2); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; position: relative; transition: background var(--transition), border var(--transition); cursor: grab; }
-        .map-canvas-wrap:active { cursor: grabbing; }
-        .map-canvas-wrap canvas { width: 100%; height: 100%; display: block; }
-        .map-tooltip { position: absolute; background: rgba(0,0,0,0.8); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 13px; pointer-events: none; z-index: 10; display: none; white-space: nowrap; backdrop-filter: blur(4px); max-width: 200px; word-wrap: break-word; white-space: normal; }
-        .map-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 0 4px; flex-shrink: 0; }
-        .map-controls label { font-size: 13px; color: var(--text-light); display: flex; align-items: center; gap: 6px; }
-        .map-controls input[type="range"] { width: 140px; accent-color: var(--accent); cursor: pointer; }
-        .map-controls .zoom-val { min-width: 44px; text-align: center; font-size: 14px; font-weight: 600; color: var(--text); }
-        .map-controls button { padding: 4px 14px; font-size: 12px; border-radius: 6px; border: none; background: var(--btn); color: #fff; cursor: pointer; transition: background 0.2s; }
-        .map-controls button:hover { background: var(--accent-hover); }
-        .map-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 6px 0 2px; border-top: 1px solid var(--border); margin-top: 4px; font-size: 12px; flex-shrink: 0; }
-        .map-legend .legend-item { cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 2px 4px; border-radius: 6px; transition: background 0.2s; }
-        .map-legend .legend-item:hover { background: var(--tag-bg); }
-        .map-legend .legend-item.hidden-line { opacity: 0.4; text-decoration: line-through; }
-        .map-legend .legend-color { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); flex-shrink: 0; }
-        .map-legend .legend-label { white-space: nowrap; color: var(--text); font-size: 12px; }
-        .map-legend .legend-highlight { background: #ffdd44; color: #333; padding: 1px 8px; border-radius: 12px; font-weight: 600; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; }
-        .map-tip-text { font-size: 12px; color: var(--text-light); padding: 4px 0 2px; border-top: 1px solid var(--border); margin-top: 4px; text-align: center; }
 
         /* ===== 管理员工具 ===== */
         .admin-area { display: none; margin-top: 14px; padding: 16px 18px 18px; border: 1.5px dashed var(--border); border-radius: var(--radius); background: var(--card2); transition: all var(--transition); }
@@ -396,6 +492,11 @@
         .alpha-tag.warning { background: #27ae60; }
         .beta-tag { display: inline-block; background: #f39c12; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 8px; border-radius: 12px; margin-left: 6px; vertical-align: middle; letter-spacing: 0.5px; text-transform: uppercase; }
         .beta-tag.warning { background: #e67e22; }
+
+        /* ===== 提示弹窗内列表 ===== */
+        .tip-list { padding-left: 18px; margin: 6px 0; }
+        .tip-list li { margin-bottom: 4px; line-height: 1.6; }
+        .tip-highlight { background: var(--tag-bg); padding: 1px 6px; border-radius: 4px; font-weight: 500; }
     </style>
 </head>
 <body>
@@ -412,12 +513,14 @@
                 <p>💡 本地新增站点仅保存在浏览器，提交文本发给管理员即可</p>
                 <p>🗺️ <b>线路图</b> — 基于X/Z坐标映射，站点等距排列，换乘站自然交汇，呈现真实网络形态</p>
                 <br>
-                <strong>📌 更新日志 V3.0_RELEASE</strong>
-                <p>✦ 🖼️ 线路图适配高DPI屏幕，画质清晰度大幅提升</p>
-                <p>✦ 🧭 修正Z轴方向：Z坐标越大（南方）显示在画布上方，符合常规地图习惯</p>
-                <p>✦ 🔓 管理员工具解锁状态持久化，无需重复输入密码</p>
-                <p>✦ 🚀 版本号正式升级为 V3.0_RELEASE（稳定发布版）</p>
-                <p>✦ ✨ 所有核心功能稳定，线路图拖拽、缩放、图例交互流畅</p>
+                <strong>📌 更新日志 V3.1_RELEASE</strong>
+                <p>✦ ✨ 弹窗加入淡出动画，交互体验更流畅</p>
+                <p>✦ 🐛 修复线路图缩放滑杆导致窗口尺寸异常变大的问题</p>
+                <p>✦ 🆕 线路图增加「重置线路图」功能，一键恢复所有状态</p>
+                <p>✦ 📸 导出PNG文件名增加时分秒，便于区分不同版本</p>
+                <p>✦ 📖 录入区增加使用提示按钮，新手上手更轻松</p>
+                <p>✦ 🛠️ 修复中文输入法在站名输入框首次无法输入的问题</p>
+                <p>✦ 🔧 版本号升级至 V3.1_RELEASE</p>
             </div>
             <div class="id-input-wrap">
                 <input id="entryIdInput" placeholder="请输入你的游戏ID / 昵称" autofocus>
@@ -429,7 +532,7 @@
     <!-- 主页面容器 -->
     <div class="container" id="mainApp" style="display:none;">
         <header class="header">
-            <h1>🚆 五洲铁路模组服务器 <small>线路车站录入系统</small> <span class="version-tag">V3.0_RELEASE</span></h1>
+            <h1>🚆 五洲铁路模组服务器 <small>线路车站录入系统</small> <span class="version-tag">V3.1_RELEASE</span></h1>
             <div class="header-actions">
                 <button id="themeToggleBtn" title="切换深色/浅色">🌓 深色</button>
                 <button id="aboutBtn" title="开发者信息 & 主题配色">ℹ️ 关于</button>
@@ -465,12 +568,14 @@
                 ✏️ 录入区
                 <span class="badge">本地新增</span>
                 <span style="font-size:12px;font-weight:400;color:var(--text-light);">（换乘站需多次添加，每次填一条线路）</span>
+                <span style="flex:1;"></span>
+                <button id="tipBtn" class="small purple">💡 提示</button>
             </div>
             <div class="row row-gap">
-                <input id="sName" placeholder="站点名称">
-                <input id="sLine" placeholder="所属线路（单条）">
-                <input id="sX" placeholder="X坐标">
-                <input id="sZ" placeholder="Z坐标">
+                <input id="sName" placeholder="站点名称" lang="zh" autocomplete="off">
+                <input id="sLine" placeholder="所属线路（单条）" lang="zh" autocomplete="off">
+                <input id="sX" placeholder="X坐标" inputmode="numeric">
+                <input id="sZ" placeholder="Z坐标" inputmode="numeric">
                 <select id="sStatus">
                     <option value="规划中">规划中</option>
                     <option value="在建中">在建中</option>
@@ -555,7 +660,7 @@
                     <span class="sep">&</span>
                     <a href="https://space.bilibili.com/3546698959816732" target="_blank" rel="noopener">五洲社</a>
                 </div>
-                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V3.0_RELEASE</div>
+                <div class="footer-meta">© 2026 五洲铁路模组服务器 · 线路车站录入系统 V3.1_RELEASE</div>
             </div>
         </footer>
     </div>
@@ -564,7 +669,7 @@
         <div class="modal-box">
             <h3>ℹ️ 工具信息 & 主题配色</h3>
             <p style="margin:6px 0 2px;"><strong>开发者：</strong>DeepSeek · 豆包 · 陈之自信</p>
-            <p style="margin:2px 0;"><strong>当前版本：</strong>V3.0_RELEASE</p>
+            <p style="margin:2px 0;"><strong>当前版本：</strong>V3.1_RELEASE</p>
             <p style="margin:2px 0 10px;"><strong>版权归属：</strong>© 五洲铁路模组服务器 2026</p>
             <div style="margin:10px 0 12px;">
                 <div style="font-weight:500;font-size:14px;margin-bottom:6px;">🎨 切换主题配色</div>
@@ -578,14 +683,47 @@
                 </div>
             </div>
             <div style="background:var(--card2);border-radius:10px;padding:10px 14px;border:1px solid var(--border);font-size:13px;max-height:180px;overflow-y:auto;">
-                <strong>📌 更新日志 V3.0_RELEASE</strong>
-                <p style="margin:2px 0;">✦ 🖼️ 线路图适配高DPI屏幕，画质清晰度大幅提升</p>
-                <p style="margin:2px 0;">✦ 🧭 修正Z轴方向：Z坐标越大（南方）显示在画布上方，符合常规地图习惯</p>
-                <p style="margin:2px 0;">✦ 🔓 管理员工具解锁状态持久化，无需重复输入密码</p>
-                <p style="margin:2px 0;">✦ 🚀 版本号正式升级为 V3.0_RELEASE（稳定发布版）</p>
-                <p style="margin:2px 0;">✦ ✨ 所有核心功能稳定，线路图拖拽、缩放、图例交互流畅</p>
+                <strong>📌 更新日志 V3.1_RELEASE</strong>
+                <p style="margin:2px 0;">✦ ✨ 弹窗加入淡出动画，交互体验更流畅</p>
+                <p style="margin:2px 0;">✦ 🐛 修复线路图缩放滑杆导致窗口尺寸异常变大的问题</p>
+                <p style="margin:2px 0;">✦ 🆕 线路图增加「重置线路图」功能，一键恢复所有状态</p>
+                <p style="margin:2px 0;">✦ 📸 导出PNG文件名增加时分秒，便于区分不同版本</p>
+                <p style="margin:2px 0;">✦ 📖 录入区增加使用提示按钮，新手上手更轻松</p>
+                <p style="margin:2px 0;">✦ 🛠️ 修复中文输入法在站名输入框首次无法输入的问题</p>
+                <p style="margin:2px 0;">✦ 🔧 版本号升级至 V3.1_RELEASE</p>
             </div>
             <button class="modal-close-btn" id="closeAbout">关闭</button>
+        </div>
+    </div>
+    <!-- 提示弹窗 -->
+    <div class="modal-mask" id="tipMask">
+        <div class="modal-box">
+            <h2>💡 车站录入指南</h2>
+            <div class="sub">按照以下步骤将新站点录入系统</div>
+            <div class="log-area" style="max-height:380px;">
+                <strong>📝 录入规则</strong>
+                <ul class="tip-list">
+                    <li><span class="tip-highlight">站点名称</span> — 填写车站的正式名称，如 五洲站 （请加上*站*字）</li>
+                    <li><span class="tip-highlight">所属线路</span> — 每次只填 <b>一条</b> 线路名称，如「1号线」「机场快线」（请写完整线路名称）</li>
+                    <li><span class="tip-highlight">X / Z 坐标</span> — 游戏内的坐标数值，支持负数，如 <code>-120</code> 或 <code>340</code></li>
+                    <li><span class="tip-highlight">建设状态</span> — 从下拉菜单中选择：规划中 / 在建中 / 已建成 / 停运 / 已废弃</li>
+                </ul>
+                <br>
+                <strong>🔄 换乘站如何处理？</strong>
+                <p style="padding-left:6px;">换乘站需要 <b>多次录入</b>：同一站名 + 同一坐标，分别填写不同的线路名称。系统会自动合并为换乘站。</p>
+                <br>
+                <strong>📤 如何提交给管理员？</strong>
+                <p style="padding-left:6px;">录入完成后，点击「复制提交文本」按钮，将生成的内容粘贴发送给管理员（群内或私聊）。管理员会通过「管理员工具」中的批量导入功能合并到公共库。</p>
+                <br>
+                <strong>💾 数据保存说明</strong>
+                <p style="padding-left:6px;">你录入的站点仅保存在 <b>浏览器本地</b>（localStorage），刷新页面不会丢失。清空浏览器缓存或点击「清空本地新增」会删除所有本地数据。</p>
+                <br>
+                <strong>⚡ 快捷操作</strong>
+                <p style="padding-left:6px;">• 按 <kbd>Enter</kbd> 快速添加站点（在录入区任意输入框内）</p>
+                <p style="padding-left:6px;">• 使用「去重本地」按钮合并重复的站点记录</p>
+                <p style="padding-left:6px;">• 线路图支持 <b>拖拽平移</b> 和 <b>滚轮缩放</b>，点击图例可隐藏/显示线路</p>
+            </div>
+            <button class="modal-close-btn" id="closeTip">知道了</button>
         </div>
     </div>
     <!-- 线路图弹窗 -->
@@ -603,6 +741,7 @@
                 <label>🔍 缩放 <input type="range" id="zoomSlider" min="0.5" max="2.0" step="0.05" value="1.0"></label>
                 <span class="zoom-val" id="zoomVal">100%</span>
                 <button id="resetViewBtn">↺ 重置视角</button>
+                <button id="resetMapBtn" style="background:#7a3da8;">🔄 重置线路图</button>
                 <button id="exportMapBtn">💾 导出PNG</button>
                 <span style="flex:1;"></span>
                 <span style="font-size:12px;color:var(--text-light);" id="mapStats">站点: 0 | 线路: 0 | 换乘站: 0</span>
@@ -616,7 +755,7 @@
     let localList = [];
     let allList = [];
     let currentUserId = '';
-    let adminUnlocked = false; // 默认锁定
+    let adminUnlocked = false;
 
     let mapZoom = 1;
     let mapOffsetX = 0;
@@ -626,6 +765,10 @@
     let dragStartY = 0;
     let hiddenLines = new Set();
     let stationPosMap = new Map();
+
+    // 缓存canvas尺寸，防止漂移
+    let cachedCanvasWidth = 0;
+    let cachedCanvasHeight = 0;
 
     // 高饱和度颜色（MTR风格）
     const LINE_COLORS = [
@@ -654,6 +797,7 @@
     const entryError = $('entryError');
     const mainApp = $('mainApp');
     const aboutMask = $('aboutMask');
+    const tipMask = $('tipMask');
     const adminPanel = $('adminPanel');
     const adminPwdInput = $('adminPwdInput');
     const adminUnlockBtn = $('adminUnlockBtn');
@@ -675,10 +819,13 @@
     const canvasWrap = $('canvasWrap');
     const exportMapBtn = $('exportMapBtn');
     const resetViewBtn = $('resetViewBtn');
+    const resetMapBtn = $('resetMapBtn');
     const themeToggleBtn = $('themeToggleBtn');
     const aboutBtn = $('aboutBtn');
     const closeAbout = $('closeAbout');
     const themeSelector = $('themeSelector');
+    const tipBtn = $('tipBtn');
+    const closeTip = $('closeTip');
 
     function showMsg(text, isError = false) {
         msg.textContent = text;
@@ -695,7 +842,6 @@
         if (savedId) {
             entryIdInput.value = savedId;
         }
-        // 恢复管理员解锁状态
         const savedUnlock = localStorage.getItem('wrms_admin_unlocked');
         if (savedUnlock === 'true') {
             adminUnlocked = true;
@@ -712,10 +858,14 @@
         }
         localStorage.setItem('wrms_user_id', id);
         currentUserId = id;
+        // 淡出
         entryModal.classList.remove('active');
-        entryModal.style.display = 'none';
-        mainApp.style.display = 'block';
-        loadPublicData();
+        // 等待淡出动画完成再隐藏
+        setTimeout(() => {
+            entryModal.style.display = 'none';
+            mainApp.style.display = 'block';
+            loadPublicData();
+        }, 450);
     };
 
     entryIdInput.addEventListener('keydown', e => {
@@ -908,6 +1058,13 @@
         combineData();
     };
 
+    // Enter 快捷添加
+    [sName, sLine, sX, sZ, sStatus].forEach(el => {
+        el.addEventListener('keydown', e => {
+            if (e.key === 'Enter') $('addBtn').click();
+        });
+    });
+
     $('deduplicateBtn').onclick = () => {
         const map = new Map();
 
@@ -1024,7 +1181,6 @@
             adminContent.style.display = 'block';
             adminLockStatus.textContent = '🔓 已解锁';
             adminLockStatus.style.color = 'var(--status-done)';
-            // 隐藏密码输入框和按钮，或者保持但禁用，我们保留但不影响
         } else {
             adminContent.style.display = 'none';
             adminLockStatus.textContent = '🔒 已锁定';
@@ -1052,7 +1208,6 @@
         if (e.key === 'Enter') adminUnlockBtn.click();
     });
 
-    // 跳转仓库
     jumpRepoBtn.onclick = () => {
         window.open('https://github.com/chenzhizixin2010/WRMS_stations', '_blank');
     };
@@ -1062,7 +1217,6 @@
         adminOpen = !adminOpen;
         adminPanel.classList.toggle('open', adminOpen);
         toggleAdminBtn.textContent = adminOpen ? '🔒 收起' : '🔓 展开 / 折叠';
-        // 如果折叠，不改变解锁状态
     };
 
     parseImportBtn.onclick = () => {
@@ -1172,28 +1326,34 @@
 
     // ===== 核心：基于坐标的等距拓扑布局 =====
     function drawLineChart() {
-        const rect = canvasWrap.getBoundingClientRect();
+        const container = canvasWrap;
+        const rect = container.getBoundingClientRect();
         const dpr = window.devicePixelRatio || 1;
-        const cssW = rect.width;
-        const cssH = rect.height;
 
-        // 物理像素尺寸
-        mapCanvas.width = cssW * dpr;
-        mapCanvas.height = cssH * dpr;
-        mapCanvas.style.width = cssW + 'px';
-        mapCanvas.style.height = cssH + 'px';
+        // 取整防止漂移
+        const cssW = Math.round(rect.width);
+        const cssH = Math.round(rect.height);
 
-        const ctx = mapCanvas.getContext('2d');
-        ctx.scale(dpr, dpr); // 所有绘制坐标按CSS像素处理
+        // 只在尺寸变化时更新canvas（使用整数比较）
+        if (cachedCanvasWidth !== cssW || cachedCanvasHeight !== cssH) {
+            mapCanvas.width = cssW * dpr;
+            mapCanvas.height = cssH * dpr;
+            mapCanvas.style.width = cssW + 'px';
+            mapCanvas.style.height = cssH + 'px';
+            cachedCanvasWidth = cssW;
+            cachedCanvasHeight = cssH;
+        }
 
         const w = cssW;
         const h = cssH;
+
+        const ctx = mapCanvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         // MTR 风格：纯白背景
         ctx.fillStyle = '#fcfcfd';
         ctx.fillRect(0, 0, w, h);
 
-        // 获取所有可见线路
         const allLines = getAllLines();
         const visibleLines = allLines.filter(line => !hiddenLines.has(line));
 
@@ -1207,13 +1367,11 @@
             return;
         }
 
-        // 收集所有可见站点（按线路分组）
         const lineStations = {};
         visibleLines.forEach(line => {
             lineStations[line] = getStationsByLine(line);
         });
 
-        // 第一步：计算所有站点的XZ范围
         let allStations = [];
         visibleLines.forEach(line => {
             lineStations[line].forEach(s => {
@@ -1234,7 +1392,6 @@
             return;
         }
 
-        // 计算XZ范围
         let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
         allStations.forEach(s => {
             const x = parseFloat(s.x), z = parseFloat(s.z);
@@ -1254,11 +1411,9 @@
         const padding = 50;
         const scale = Math.min((w - padding * 2) / rangeX, (h - padding * 2) / rangeZ) * 0.9;
 
-        // 映射函数：X 保持不变，Z 反转使得 Z 越大越靠上
         const mapX = (x) => (x - (minX + maxX) / 2) * scale + w / 2;
-        const mapZ = (z) => ((minZ + maxZ) / 2 - z) * scale + h / 2;  // 反转Z
+        const mapZ = (z) => ((minZ + maxZ) / 2 - z) * scale + h / 2;
 
-        // 为每条线路生成初始坐标
         const linePositions = {};
         visibleLines.forEach(line => {
             const stations = lineStations[line];
@@ -1269,12 +1424,10 @@
             }));
         });
 
-        // 第二步：对每条线路进行等距调整（保持线路形状）
         visibleLines.forEach(line => {
             const points = linePositions[line];
             if (points.length < 2) return;
 
-            // 计算折线总长度
             let totalLen = 0;
             for (let i = 1; i < points.length; i++) {
                 const dx = points[i].x - points[i-1].x;
@@ -1283,17 +1436,13 @@
             }
             if (totalLen === 0) return;
 
-            // 等距重新采样
             const newPoints = [];
             const step = totalLen / (points.length - 1);
-            let accumulated = 0;
-            newPoints.push({ ...points[0] }); // 保留第一个点
+            newPoints.push({ ...points[0] });
 
             for (let i = 1; i < points.length - 1; i++) {
-                // 沿着折线移动 step 距离
                 let targetDist = i * step;
                 let currentDist = 0;
-                let segmentIdx = 0;
                 for (let j = 1; j < points.length; j++) {
                     const dx = points[j].x - points[j-1].x;
                     const dy = points[j].y - points[j-1].y;
@@ -1308,23 +1457,17 @@
                     currentDist += segLen;
                 }
             }
-            newPoints.push({ ...points[points.length-1] }); // 保留最后一个点
-
-            // 替换原坐标
+            newPoints.push({ ...points[points.length-1] });
             linePositions[line] = newPoints;
         });
 
-        // 第三步：绘制线路和站点
-        // 绘制前清空 stationPosMap
         stationPosMap.clear();
 
-        // 先绘制所有线路（连线和站点圆）
         visibleLines.forEach(line => {
             const positions = linePositions[line];
             if (positions.length === 0) return;
             const color = getLineColor(line);
 
-            // 绘制线路连线
             ctx.beginPath();
             ctx.strokeStyle = color;
             ctx.lineWidth = Math.max(3, 4 * mapZoom);
@@ -1342,35 +1485,29 @@
             });
             ctx.stroke();
 
-            // 绘制站点（圆点）
             positions.forEach((p) => {
                 const cx = p.x * mapZoom + mapOffsetX;
                 const cy = p.y * mapZoom + mapOffsetY;
                 const station = p.station;
                 const key = `${station.name}|${station.x}|${station.z}`;
 
-                // 判断是否为换乘站（出现于多条线路）
                 const allLinesForStation = allList.filter(s => s.name === station.name && s.x === station.x && s.z === station.z);
                 const lineNames = allLinesForStation.flatMap(s => s.lines || []);
                 const uniqueLines = [...new Set(lineNames)];
                 const isTransfer = uniqueLines.length > 1;
 
-                // 缓存位置
                 stationPosMap.set(key, { x: p.x, y: p.y, line, station });
 
-                // 站点圆
                 const radius = Math.max(isTransfer ? 11 : 8, 6 * mapZoom);
                 ctx.beginPath();
                 ctx.arc(cx, cy, radius, 0, Math.PI * 2);
                 ctx.fillStyle = color;
                 ctx.fill();
 
-                // 白色描边
                 ctx.strokeStyle = '#ffffff';
                 ctx.lineWidth = Math.max(2, 2.5 * mapZoom);
                 ctx.stroke();
 
-                // 换乘站内圈（白色小圆）
                 if (isTransfer) {
                     ctx.beginPath();
                     ctx.arc(cx, cy, radius * 0.5, 0, Math.PI * 2);
@@ -1378,7 +1515,6 @@
                     ctx.fill();
                 }
 
-                // 站点名称（使用固定深灰色，不随主题变化）
                 ctx.fillStyle = '#2b434f';
                 ctx.font = `${Math.max(11, 12 * mapZoom)}px system-ui`;
                 ctx.textAlign = 'center';
@@ -1387,7 +1523,6 @@
             });
         });
 
-        // 更新图例
         mapLegend.innerHTML = '';
         allLines.forEach(line => {
             const item = document.createElement('div');
@@ -1411,7 +1546,6 @@
             mapLegend.appendChild(item);
         });
 
-        // 更新统计信息
         updateMapStats();
     }
 
@@ -1427,7 +1561,6 @@
                 const key = `${s.name}|${s.x}|${s.z}`;
                 visibleStations.add(key);
 
-                // 检查换乘
                 const allLinesForStation = allList.filter(st => st.name === s.name && st.x === s.x && st.z === s.z);
                 const lineNames = allLinesForStation.flatMap(st => st.lines || []);
                 const uniqueLines = [...new Set(lineNames)];
@@ -1457,6 +1590,7 @@
         mapZoom = 1;
         mapOffsetX = 0;
         mapOffsetY = 0;
+        hiddenLines.clear();
         zoomSlider.value = 1;
         zoomVal.textContent = '100%';
         drawLineChart();
@@ -1473,6 +1607,18 @@
         zoomSlider.value = 1;
         zoomVal.textContent = '100%';
         drawLineChart();
+    };
+
+    // 重置线路图（清空隐藏线路，重置视角）
+    resetMapBtn.onclick = () => {
+        hiddenLines.clear();
+        mapZoom = 1;
+        mapOffsetX = 0;
+        mapOffsetY = 0;
+        zoomSlider.value = 1;
+        zoomVal.textContent = '100%';
+        drawLineChart();
+        showMsg('✅ 线路图已重置');
     };
 
     // 拖拽
@@ -1555,8 +1701,11 @@
     });
 
     exportMapBtn.onclick = () => {
+        const now = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const timeStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
         const link = document.createElement('a');
-        link.download = `五洲铁路线路图_${new Date().toLocaleDateString()}.png`;
+        link.download = `五洲铁路线路图_${timeStr}.png`;
         link.href = mapCanvas.toDataURL('image/png');
         link.click();
         showMsg('✅ 线路图已导出PNG');
@@ -1609,6 +1758,21 @@
     aboutMask.onclick = e => {
         if (e.target === aboutMask) {
             aboutMask.classList.remove('active');
+        }
+    };
+
+    // 提示弹窗
+    tipBtn.onclick = () => {
+        tipMask.classList.add('active');
+    };
+
+    closeTip.onclick = () => {
+        tipMask.classList.remove('active');
+    };
+
+    tipMask.onclick = e => {
+        if (e.target === tipMask) {
+            tipMask.classList.remove('active');
         }
     };
 </script>
